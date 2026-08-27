@@ -1,0 +1,7 @@
+Modificação do CRM
+
+
+- Quero adicionar novas métricas nele: Novas fases de lead como Follow Up, quantidades de abordagens, Quantos responderam, Novos Seguidores, Quantos agendamentos, Quantas reuniões realizadas, quantos no-show, quantas vendas, quantos follow ups.
+
+
+- 

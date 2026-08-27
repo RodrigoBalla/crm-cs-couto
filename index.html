@@ -1,0 +1,1760 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>CRM · CS Couto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0a0a0c;--ink:#141319;--card:#15130d;--gold:#e6b64c;--gold-2:#c8912e;--gold-soft:#f4dc9c;
+    --red:#d8221f;--cream:#f3eee4;--muted:#9e9c93;--line:rgba(230,182,76,.22);
+    --font:'DM Sans',sans-serif;--display:'Oswald',sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--cream);font-family:var(--font);min-height:100vh}
+  a{color:var(--gold)}
+  .wrap{max-width:1680px;margin:0 auto;padding:20px 28px 80px}
+  @media(max-width:640px){ .wrap{padding:20px 14px 80px} }
+  .brand{display:flex;align-items:center;gap:10px;padding:16px 0}
+  .brand__lion{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--gold),var(--gold-2));display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+  .brand__t{font-family:var(--display);text-transform:uppercase;letter-spacing:.08em;font-weight:700;font-size:1.1rem}
+  .brand__t small{display:block;font-size:.6rem;letter-spacing:.2em;color:var(--muted);font-weight:500}
+
+  /* ---- login ---- */
+  .login{max-width:420px;margin:8vh auto 0;background:linear-gradient(180deg,#15130d,#0b0a08);border:1px solid var(--line);border-radius:18px;padding:32px 26px;text-align:center}
+  .login h1{font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;margin:6px 0 4px;font-size:1.5rem}
+  .login p{color:var(--muted);font-size:.92rem;margin:0 0 22px}
+  .field{width:100%;background:#0c0b07;border:1px solid var(--line);border-radius:12px;color:var(--cream);font-family:var(--font);font-size:1rem;padding:14px 16px;outline:none}
+  .field:focus{border-color:var(--gold)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-weight:600;font-size:.92rem;padding:14px 20px;border-radius:12px;transition:transform .15s,filter .15s}
+  .btn:hover{transform:translateY(-1px)}
+  .btn--gold{background:linear-gradient(135deg,var(--gold),var(--gold-2));color:#20160a}
+  .btn--block{width:100%}
+  .btn--ghost{background:transparent;border:1px solid var(--line);color:var(--cream)}
+  .btn--sm{padding:8px 12px;font-size:.78rem;border-radius:9px}
+  /* estado "carregando" dos botões de ação (Atualizar / Reagrupar) */
+  .btn.is-busy{opacity:.85;cursor:progress}
+  .btn-spin{display:inline-block;width:13px;height:13px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:btnspin .6s linear infinite;vertical-align:-2px;margin-right:7px}
+  @keyframes btnspin{to{transform:rotate(360deg)}}
+  .msg{margin-top:14px;font-size:.86rem;min-height:1.1em}
+  .msg.err{color:#ff8a8a}
+  .msg.ok{color:#8ae08a}
+
+  /* ---- painel ---- */
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:18px}
+  .who{font-size:.85rem;color:var(--muted)}
+  .who b{color:var(--gold-soft)}
+  .kpis{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;min-width:130px}
+  .kpi__n{font-family:var(--display);font-size:1.8rem;color:var(--gold)}
+  .kpi__l{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+  .kpis--funil{margin-top:-6px}
+  .kpi--sm{min-width:112px;padding:11px 14px}
+  .kpi--sm .kpi__n{font-size:1.35rem}
+  .kpi__sub{display:block;text-transform:none;letter-spacing:0;font-size:.68rem;color:var(--muted);opacity:.85;margin-top:2px}
+  .kpi--win .kpi__n{color:#25d366}
+  .kpi--edit{cursor:pointer}
+  .kpi--edit:hover{border-color:var(--gold)}
+  .kpis--meta .kpi__n{font-size:1.6rem}
+  .card__sem{margin:6px 0 4px}
+  .sem{display:inline-block;font-size:.68rem;padding:2px 8px;border:1px solid;border-radius:999px;font-weight:600}
+  .sem--off{border-color:var(--line);color:var(--muted);opacity:.7}
+  .card__qual{font-size:.72rem;color:var(--muted);margin-top:3px}
+  .card__trava{font-size:.78rem;color:var(--cream);opacity:.9;margin-top:5px;font-style:italic;
+    border-left:2px solid var(--line);padding-left:7px}
+  .card__ses{font-size:.72rem;color:#38bdf8;margin-top:5px;font-weight:600}
+  .card__ses--nos{color:#f97316}
+  .card__saida{font-size:.72rem;color:#d8221f;margin-top:5px}
+  .card__saida--arq{color:var(--muted)}
+  .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+  .bar .field{flex:1;min-width:180px;padding:10px 14px}
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px}
+  table{border-collapse:collapse;width:100%;min-width:640px;font-size:.9rem}
+  th,td{text-align:left;padding:12px 14px;border-bottom:1px solid rgba(230,182,76,.1);vertical-align:top}
+  th{font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:.72rem;color:var(--gold);position:sticky;top:0;background:#120f09}
+  tr:hover td{background:rgba(230,182,76,.04)}
+  td.motivo{max-width:320px;color:var(--muted);font-size:.85rem}
+  .wa{display:inline-flex;align-items:center;gap:6px;color:#25d366;text-decoration:none;font-weight:600}
+  .chips{display:flex;gap:5px;flex-wrap:wrap}
+  .chip{font-size:.72rem;background:rgba(230,182,76,.12);border:1px solid var(--line);color:var(--gold-soft);padding:2px 8px;border-radius:20px}
+  .empty{padding:40px;text-align:center;color:var(--muted)}
+  /* toggle de visão */
+  .viewtoggle{display:flex;gap:4px;background:#0c0b07;border:1px solid var(--line);border-radius:11px;padding:3px}
+  .vt{border:none;background:transparent;color:var(--muted);font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:.72rem;font-weight:600;padding:8px 12px;border-radius:8px;cursor:pointer}
+  .vt.on{background:linear-gradient(135deg,var(--gold),var(--gold-2));color:#20160a}
+  .filter-com{border:1px solid var(--line);background:#0c0b07;display:inline-flex;align-items:center;gap:6px}
+  .filter-com.on{background:linear-gradient(135deg,#25d366,#128c3e);color:#04340f;border-color:transparent}
+  .com-count{background:rgba(255,255,255,.14);border-radius:999px;padding:1px 7px;font-size:.68rem;min-width:18px;text-align:center}
+  .filter-com.on .com-count{background:rgba(4,52,15,.25)}
+  /* kanban */
+  .board{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px;-webkit-overflow-scrolling:touch}
+  .col{flex:0 0 260px;background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:14px;padding:10px;min-height:120px;transition:border-color .15s,background .15s}
+  .col.over{border-color:var(--gold);background:rgba(230,182,76,.06)}
+  .col__h{display:flex;align-items:center;justify-content:space-between;font-family:var(--display);text-transform:uppercase;letter-spacing:.04em;font-size:.78rem;padding:4px 6px 10px}
+  .col__h .dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:7px;vertical-align:1px}
+  .col__n{background:rgba(255,255,255,.08);color:var(--cream);border-radius:20px;font-size:.7rem;padding:1px 8px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:11px 12px;margin-bottom:9px;cursor:grab;touch-action:pan-y;position:relative}
+  .card:active{cursor:grabbing}
+  .card__nome{font-family:var(--display);font-size:1rem;font-weight:700;color:var(--cream);letter-spacing:.01em;line-height:1.15;margin-bottom:3px;padding-right:18px}
+  .card__wa{display:inline-flex;align-items:center;gap:5px;color:#25d366;text-decoration:none;font-weight:700;font-size:.92rem}
+  .card__meta{color:var(--muted);font-size:.72rem;margin:4px 0 6px}
+  .card__motivo{color:var(--cream);font-size:.82rem;opacity:.85;line-height:1.35;max-height:3.6em;overflow:hidden}
+  .card__del{position:absolute;top:8px;right:9px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:.95rem;line-height:1;opacity:.6}
+  .card__del:hover{color:var(--red);opacity:1}
+  .card.drag-ghost{position:fixed;left:0;top:0;z-index:300;width:236px;margin:0;pointer-events:none;opacity:.95;box-shadow:0 14px 34px rgba(0,0,0,.55);transform:rotate(2deg) scale(1.03);border-color:var(--gold)}
+  .card.dragging-src{opacity:.35}
+  /* enquanto um card está "pego": nada de seleção de texto nem realce de toque atrapalhando */
+  body.is-dragging{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+  body.is-dragging .card{cursor:grabbing}
+  .age{color:var(--muted)}
+  .age--old{color:#ff8a8a;font-weight:700}
+  .card__tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;align-items:center}
+  .tag{display:inline-flex;align-items:center;gap:5px;background:rgba(37,211,102,.14);border:1px solid rgba(37,211,102,.4);color:#8ef0b6;font-size:.72rem;font-weight:600;padding:2px 4px 2px 9px;border-radius:20px}
+  .tag .tagx{cursor:pointer;color:#8ef0b6;opacity:.6;font-weight:700;font-size:.85rem;padding:0 3px}
+  .tag .tagx:hover{opacity:1;color:#fff}
+  .tag-add{background:transparent;border:1px dashed var(--line);color:var(--muted);font-size:.72rem;font-weight:600;padding:2px 10px;border-radius:20px;cursor:pointer}
+  .tag-add:hover{border-color:var(--gold);color:var(--gold)}
+  /* gráfico de motivos */
+  .chart-head{font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;color:var(--gold);font-size:1rem;margin:6px 0 4px}
+  .chart-total{color:var(--muted);font-size:.75rem;font-family:var(--font);text-transform:none;letter-spacing:0;margin-left:6px}
+  .chart{display:flex;gap:10px;align-items:flex-end;overflow-x:auto;padding:24px 6px 4px;min-height:230px;border-bottom:1px solid var(--line)}
+  .colm{flex:0 0 86px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer}
+  .colm__bar{width:44px;border-radius:8px 8px 4px 4px;background:linear-gradient(180deg,var(--gold-soft),var(--gold) 40%,var(--gold-2));position:relative;transition:height .5s cubic-bezier(.22,1,.36,1),transform .15s,filter .15s,box-shadow .15s;box-shadow:0 0 18px rgba(230,182,76,.18);min-height:3px}
+  .colm:hover .colm__bar{transform:translateY(-4px);filter:brightness(1.12);box-shadow:0 0 26px rgba(230,182,76,.45)}
+  .colm:hover .colm__l{color:var(--gold-soft)}
+  .colm.sel .colm__bar{outline:2px solid var(--gold);outline-offset:2px}
+  .catcard.flash{border-color:var(--gold);box-shadow:0 0 0 2px rgba(230,182,76,.4)}
+  .colm__bar::before{content:"";position:absolute;left:50%;top:-14px;width:2px;height:12px;background:var(--gold-2);transform:translateX(-50%);opacity:.5} /* "pavio" da vela */
+  .colm__n{font-family:var(--display);font-size:1.15rem;color:var(--gold-soft);font-weight:700}
+  .colm__emo{font-size:1.15rem;line-height:1}
+  .colm__l{font-size:.66rem;color:var(--muted);text-align:center;line-height:1.15;max-width:84px}
+  .colm__pct{font-size:.6rem;color:var(--muted)}
+  .catlist{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+  .catcard{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .catcard__h{display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer}
+  .catcard__h .bar2{flex:1;height:8px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden}
+  .catcard__h .bar2 i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-2))}
+  .catcard__h b{font-weight:700}
+  .catcard__cnt{font-family:var(--display);color:var(--gold);font-size:1rem;min-width:44px;text-align:right}
+  .catcard__body{padding:0 14px 12px;display:none}
+  .catcard.open .catcard__body{display:block}
+  .catcard__q{border-left:2px solid var(--line);padding:4px 0 4px 10px;margin:6px 0;color:var(--muted);font-size:.84rem}
+  .section-t{font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;color:var(--gold);font-size:1rem;margin:26px 0 12px;display:flex;align-items:center;gap:8px}
+  /* ---- Relatórios ---- */
+  .rel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:6px}
+  .rel-kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+  .rel-kpi__n{font-family:var(--display);font-size:1.7rem;color:var(--gold-soft);line-height:1}
+  .rel-kpi__l{font-size:.72rem;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.04em}
+  .rel-kpi__sub{font-size:.72rem;color:var(--gold);margin-top:2px}
+  .rel-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:14px;overflow:hidden}
+  .rel-card__h{font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;color:var(--gold);font-size:.9rem;margin-bottom:2px}
+  /* 💰 orçamento do mês (topo do painel de Tráfego) — verde = dentro do ritmo, vermelho = acima */
+  .orc{border:1px solid rgba(37,211,102,.4);border-radius:16px;padding:16px 18px 14px;margin-bottom:18px;background:linear-gradient(180deg,rgba(37,211,102,.08),rgba(255,255,255,.01))}
+  .orc--over{border-color:rgba(216,34,31,.5);background:linear-gradient(180deg,rgba(216,34,31,.1),rgba(255,255,255,.01))}
+  .orc__top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:13px}
+  .orc__t{font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:.92rem;color:var(--gold)}
+  .orc__t small{display:block;font-family:var(--font);text-transform:none;letter-spacing:0;font-size:.72rem;color:var(--muted);font-weight:400;margin-top:2px}
+  .orc__badge{font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:.74rem;font-weight:700;padding:6px 13px;border-radius:999px;background:rgba(37,211,102,.16);border:1px solid rgba(37,211,102,.45);color:#8ef0b6;white-space:nowrap}
+  .orc--over .orc__badge{background:rgba(216,34,31,.16);border-color:rgba(216,34,31,.5);color:#ff9d9b}
+  .orc__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:10px;margin-bottom:14px}
+  .orc__kpi{background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+  .orc__n{font-family:var(--display);font-size:1.75rem;line-height:1;color:var(--gold-soft)}
+  .orc__n--ok{color:#8ef0b6}
+  .orc__n--bad{color:#ff9d9b}
+  .orc__l{font-size:.7rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-top:5px}
+  .orc__sub{font-size:.71rem;color:var(--gold);margin-top:3px}
+  .orc__bar{position:relative;height:13px;border-radius:8px;background:rgba(255,255,255,.07);overflow:visible}
+  .orc__bar i{display:block;height:100%;border-radius:8px;background:linear-gradient(90deg,#25d366,#128c3e);transition:width .6s cubic-bezier(.22,1,.36,1);max-width:100%}
+  .orc--over .orc__bar i{background:linear-gradient(90deg,#ff6b68,var(--red))}
+  .orc__mark{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--cream);opacity:.6;border-radius:2px}
+  .orc__mark::after{content:"ritmo previsto";position:absolute;top:-15px;left:50%;transform:translateX(-50%);font-size:.58rem;color:var(--muted);white-space:nowrap;letter-spacing:.04em}
+  .orc__foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.76rem;color:var(--muted);margin-top:13px}
+  .orc__foot b{color:var(--cream)}
+  /* 🧪 diagnóstico de entrega dos criativos (seção de apresentação no painel de Tráfego) */
+  .diag{border:1px solid var(--line);border-radius:18px;padding:22px 24px 20px;margin:22px 0 16px;background:linear-gradient(180deg,rgba(230,182,76,.06),rgba(255,255,255,.012))}
+  .diag__kick{font-family:var(--display);text-transform:uppercase;letter-spacing:.16em;font-size:.68rem;color:var(--gold);opacity:.9}
+  .diag__t{font-family:var(--display);text-transform:uppercase;letter-spacing:.03em;font-size:1.5rem;line-height:1.1;color:var(--cream);margin:4px 0 6px}
+  .diag__sub{font-size:.84rem;color:var(--muted);margin-bottom:18px}
+  .diag__num{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
+  .diag__c{background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:13px;padding:14px 16px}
+  .diag__c b{display:block;font-family:var(--display);font-size:2rem;line-height:1;color:var(--gold-soft)}
+  .diag__c.bad b{color:#ff9d9b}
+  .diag__c.good b{color:#8ef0b6}
+  .diag__c span{display:block;font-size:.71rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-top:6px}
+  .diag__c i{display:block;font-style:normal;font-size:.72rem;color:var(--gold);margin-top:3px}
+  .diag__barra{display:flex;height:26px;border-radius:8px;overflow:hidden;border:1px solid var(--line);margin-bottom:7px}
+  .diag__barra div{display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;white-space:nowrap;overflow:hidden}
+  .diag__leg{display:flex;gap:16px;flex-wrap:wrap;font-size:.72rem;color:var(--muted);margin-bottom:18px}
+  .diag__leg s{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px;text-decoration:none}
+  .diag__h{font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:.9rem;color:var(--gold);margin:20px 0 8px;padding-top:16px;border-top:1px solid var(--line)}
+  .diag__p{font-size:.88rem;color:var(--cream);opacity:.9;line-height:1.55;margin:0 0 10px}
+  .diag__p b{color:var(--gold-soft)}
+  .diag__conj{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:12px 0 16px}
+  .diag__conj div{background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.35);border-radius:12px;padding:12px 14px;text-align:center}
+  .diag__conj b{display:block;font-family:var(--display);font-size:1.35rem;color:#8ef0b6}
+  .diag__conj span{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+  .diag__rod{border:1px solid var(--line);border-radius:11px;padding:11px 14px;margin-bottom:8px;background:rgba(0,0,0,.2)}
+  .diag__rod b{font-family:var(--display);color:var(--gold-soft);font-size:.86rem}
+  .diag__rod ul{margin:6px 0 0;padding-left:18px;font-size:.8rem;color:var(--cream);opacity:.85;line-height:1.5}
+  /* observação da campanha (histórico do que aconteceu com ela) */
+  .camp-nota{display:flex;gap:9px;align-items:flex-start;background:rgba(216,34,31,.09);border:1px solid rgba(216,34,31,.32);border-left:3px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:12px}
+  .camp-nota--info{background:rgba(230,182,76,.09);border-color:rgba(230,182,76,.32);border-left-color:var(--gold)}
+  .camp-nota__ico{font-size:1rem;line-height:1.3}
+  .camp-nota__t{font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:.72rem;color:#ff9d9b;margin-bottom:2px}
+  .camp-nota--info .camp-nota__t{color:var(--gold-soft)}
+  .camp-nota__c{font-size:.84rem;color:var(--cream);opacity:.9;line-height:1.45}
+  .camp-nota__d{font-size:.7rem;color:var(--muted);margin-top:3px}
+  .rel-card__hint{font-size:.72rem;color:var(--muted);margin-bottom:10px}
+  .minibars{display:flex;gap:4px;align-items:flex-end;overflow-x:auto;min-height:120px;padding-top:16px}
+  .minibar{flex:1 0 var(--mbw,20px);display:flex;flex-direction:column;align-items:center;gap:5px;min-width:var(--mbw,20px)}
+  .minibar__bar{width:100%;max-width:34px;border-radius:5px 5px 3px 3px;background:linear-gradient(180deg,var(--gold-soft),var(--gold) 45%,var(--gold-2));min-height:3px;transition:height .4s;position:relative}
+  .minibar.hot .minibar__bar{background:linear-gradient(180deg,#fff0c2,#ffcf4a 45%,#e08a00);box-shadow:0 0 14px rgba(230,182,76,.55)}
+  .minibar__v{font-size:.6rem;color:var(--gold-soft);font-weight:700}
+  .minibar__l{font-size:.58rem;color:var(--muted);text-align:center;line-height:1.1;white-space:nowrap}
+  .rel-tbl{width:100%;border-collapse:collapse;font-size:.82rem}
+  .rel-tbl th{text-align:left;color:var(--muted);font-weight:600;font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;padding:6px 8px;border-bottom:1px solid var(--line)}
+  .rel-tbl td{padding:8px;border-bottom:1px solid rgba(230,182,76,.08)}
+  .rel-tbl tr:last-child td{border-bottom:none}
+  .rel-tbl .num{text-align:right;font-family:var(--display);color:var(--gold-soft)}
+  .stbar{display:flex;align-items:center;gap:10px;margin:7px 0}
+  .stbar__l{min-width:120px;font-size:.82rem;display:flex;align-items:center;gap:6px}
+  .stbar__t{flex:1;height:14px;border-radius:7px;background:rgba(255,255,255,.06);overflow:hidden}
+  .stbar__t i{display:block;height:100%;border-radius:7px}
+  .stbar__n{font-family:var(--display);color:var(--gold-soft);min-width:34px;text-align:right}
+  .admins{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .admin-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid rgba(230,182,76,.1)}
+  .admin-row:last-child{border-bottom:none}
+  .admin-add{display:flex;gap:8px;margin-top:12px}
+  .admin-add .field{flex:1;padding:10px 14px}
+  .hidden{display:none!important}
+  /* popup "quem é você?" (diretoria) */
+  .who-ov{position:fixed;inset:0;background:rgba(4,4,6,.9);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}
+  .who-ov.show{display:flex}
+  .who-card{max-width:420px;width:100%;background:linear-gradient(180deg,#15130d,#0b0a08);border:1px solid var(--line);border-radius:18px;padding:30px 26px;text-align:center}
+  .who-card h2{font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;margin:4px 0 6px;font-size:1.35rem}
+  .who-card p{color:var(--muted);font-size:.9rem;margin:0 0 20px}
+  .who-opts{display:flex;flex-direction:column;gap:10px}
+  .who-opt{display:flex;align-items:center;gap:12px;text-align:left;background:#0c0b07;border:1px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer;transition:border-color .15s,transform .12s;color:var(--cream);font-family:var(--font);font-size:1rem;font-weight:600}
+  .who-opt:hover{border-color:var(--gold);transform:translateY(-1px)}
+  .who-opt .av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-2));color:#20160a;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:700}
+  /* ---- histórico do lead (timeline vertical) ---- */
+  .hist-ov{position:fixed;inset:0;background:rgba(4,4,6,.88);display:none;align-items:flex-start;justify-content:center;z-index:220;padding:24px 14px;overflow-y:auto}
+  .hist-ov.show{display:flex}
+  .hist-card{max-width:580px;width:100%;background:linear-gradient(180deg,#15130d,#0b0a08);border:1px solid var(--line);border-radius:18px;padding:22px 22px 18px;margin:auto 0;position:relative}
+  .hist-x{position:absolute;top:12px;right:14px;background:none;border:none;color:var(--muted);font-size:1.25rem;cursor:pointer;line-height:1}
+  .hist-x:hover{color:var(--gold)}
+  .hist-h{font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:1.05rem;color:var(--cream);padding-right:26px}
+  .hist-sub{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0 4px}
+  .hist-nota{background:rgba(230,182,76,.07);border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin-top:10px;font-size:.84rem;color:var(--muted);line-height:1.45}
+  .tl{list-style:none;margin:16px 0 0;padding:0 0 0 26px;position:relative}
+  .tl::before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,var(--gold),rgba(230,182,76,.15));border-radius:2px}
+  .tl-item{position:relative;padding:0 0 16px 10px}
+  .tl-item:last-child{padding-bottom:2px}
+  .tl-dot{position:absolute;left:-26px;top:1px;width:18px;height:18px;border-radius:50%;background:#0c0b07;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:.62rem}
+  .tl-when{font-size:.72rem;color:var(--gold-soft);font-weight:700;letter-spacing:.03em}
+  .tl-txt{font-size:.9rem;color:var(--cream);line-height:1.4;margin-top:1px}
+  .tl-txt b{color:var(--gold-soft)}
+  .tl-note{font-size:.74rem;color:var(--muted);margin-top:2px;line-height:1.35}
+  .tl-item.tl--retro .tl-txt,.tl-item.tl--retro .tl-when{opacity:.72}
+  .tl-retro{display:inline-block;font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:1px 8px;margin-left:6px;vertical-align:1px}
+  .card{-webkit-tap-highlight-color:transparent}
+  .spin{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:var(--gold);border-radius:50%;animation:sp .7s linear infinite;vertical-align:-3px}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .foot{margin-top:30px;color:var(--muted);font-size:.72rem;text-align:center}
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<div id="loginView" class="wrap">
+  <div class="brand" style="justify-content:center">
+    <div class="brand__lion">🎯</div>
+    <div class="brand__t">CS COUTO<small>Reposicionamento de Liderança</small></div>
+  </div>
+  <div class="login">
+    <h1>Painel CRM</h1>
+    <p>Acesso restrito. Entre com o e-mail cadastrado.</p>
+    <input id="email" class="field" type="email" placeholder="seu@email.com" autocomplete="email" />
+    <button id="loginBtn" class="btn btn--gold btn--block" style="margin-top:14px">Entrar</button>
+    <div id="loginMsg" class="msg"></div>
+  </div>
+  <div class="foot">Acesso restrito · só por e-mail cadastrado</div>
+</div>
+
+<!-- ============ POPUP "QUEM É VOCÊ?" (diretoria) ============ -->
+<div id="whoOv" class="who-ov">
+  <div class="who-card">
+    <div class="brand__lion" style="margin:0 auto 10px">🎯</div>
+    <h2>Quem está acessando?</h2>
+    <p>Este acesso é compartilhado. Selecione quem é você.</p>
+    <div id="whoOpts" class="who-opts"></div>
+  </div>
+</div>
+
+<!-- ============ HISTÓRICO DO LEAD (timeline) ============ -->
+<div id="histOv" class="hist-ov" aria-hidden="true" role="dialog" aria-modal="true">
+  <div class="hist-card">
+    <button class="hist-x" id="histX" type="button" aria-label="Fechar">✕</button>
+    <div class="hist-h" id="histTitle">Histórico do lead</div>
+    <div id="histBody"></div>
+  </div>
+</div>
+
+<!-- ============ PAINEL ============ -->
+<div id="panel" class="wrap hidden">
+  <div class="topbar">
+    <div class="who">Logado como <b id="whoEmail"></b></div>
+    <div style="display:flex;gap:8px">
+      <button id="refreshBtn" class="btn btn--ghost btn--sm">↻ Atualizar</button>
+      <button id="csvBtn" class="btn btn--ghost btn--sm">⬇ CSV</button>
+      <button id="logoutBtn" class="btn btn--ghost btn--sm">Sair</button>
+    </div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="kpi__n" id="kpiTotal">0</div><div class="kpi__l">Leads</div></div>
+    <div class="kpi"><div class="kpi__n" id="kpiHoje">0</div><div class="kpi__l">Hoje</div></div>
+    <div class="kpi"><div class="kpi__n" id="kpi7">0</div><div class="kpi__l">7 dias</div></div>
+  </div>
+  <!-- OS TRÊS NÚMEROS (Comercial_Pocket_v3, aba Gestão) - medidos toda sexta -->
+  <div class="kpis kpis--meta">
+    <div class="kpi kpi--sm" id="kpiSlaBox" title="Tempo até a primeira resposta HUMANA. Resposta automática não conta (ESPEC 5.1)."><div class="kpi__n" id="kpiSla">—</div><div class="kpi__l">Resp. ≤ 5 min<span class="kpi__sub">meta 90% · precisa do log</span></div></div>
+    <div class="kpi kpi--sm" title="Agendou e apareceu. Abaixo de 80% é preciso agendar mais para entregar o mesmo."><div class="kpi__n" id="kpiComp">—</div><div class="kpi__l">Comparecimento<span id="kpiCompTx" class="kpi__sub">meta 80%</span></div></div>
+    <div class="kpi kpi--sm" title="Sessão realizada que virou cliente. Diz se o tempo da sessão basta para fechar."><div class="kpi__n" id="kpiFech">—</div><div class="kpi__l">Sessão → venda<span id="kpiFechTx" class="kpi__sub">meta 33%</span></div></div>
+  </div>
+  <!-- NÚMEROS DA SEMANA - cumulativos, na ordem do funil -->
+  <div class="kpis kpis--funil">
+    <div class="kpi kpi--sm" title="Leads que já receberam a primeira tentativa de contato"><div class="kpi__n" id="kpiContat">0</div><div class="kpi__l">Contactados</div></div>
+    <div class="kpi kpi--sm" title="Passaram no corte: 2 perguntas respondidas e Régua Semáforo preenchida"><div class="kpi__n" id="kpiQual">0</div><div class="kpi__l">Qualificados<span id="kpiQualTx" class="kpi__sub"></span></div></div>
+    <div class="kpi kpi--sm" title="Sessões de Diagnóstico marcadas na agenda da Camila"><div class="kpi__n" id="kpiAgend">0</div><div class="kpi__l">Agendadas</div></div>
+    <div class="kpi kpi--sm" title="Sessões que realmente aconteceram"><div class="kpi__n" id="kpiReal">0</div><div class="kpi__l">Realizadas</div></div>
+    <div class="kpi kpi--sm" title="Agendou e não apareceu (está parado em Sessão agendada com a data no passado)"><div class="kpi__n" id="kpiNoshow">0</div><div class="kpi__l">No-show</div></div>
+    <div class="kpi kpi--sm" title="Respondeu e não avançou. Nunca encerrar quem já respondeu."><div class="kpi__n" id="kpiFup">0</div><div class="kpi__l">Follow up</div></div>
+    <div class="kpi kpi--sm kpi--win" title="Contrato assinado e pagamento confirmado"><div class="kpi__n" id="kpiCli">0</div><div class="kpi__l">Clientes</div></div>
+    <div class="kpi kpi--sm" title="Saíram do funil. Perda comercial e arquivamento contam separado."><div class="kpi__n" id="kpiEnc">0</div><div class="kpi__l">Encerrados<span id="kpiEncTx" class="kpi__sub"></span></div></div>
+  </div>
+  <div class="bar">
+    <input id="search" class="field" placeholder="🔎 Buscar por nome, telefone, cargo, empresa ou o que está travando..." />
+    <select id="ownerFilter" class="field" style="max-width:230px;display:none" title="Filtrar o kanban por dono do lead"></select>
+    <select id="semFilter" class="field" style="max-width:190px" title="Filtrar pela Régua Semáforo">
+      <option value="">🚦 Todo semáforo</option>
+      <option value="verde">🟢 Verde</option>
+      <option value="amarelo">🟡 Amarelo</option>
+      <option value="vermelho">🔴 Vermelho</option>
+      <option value="sem">⚪ Sem semáforo</option>
+    </select>
+    <div class="viewtoggle">
+      <button id="viewKanban" class="vt on">🗂 Kanban</button>
+      <button id="viewLista" class="vt">📋 Lista</button>
+      <button id="viewTeam" class="vt" style="display:none">👥 Equipe</button>
+      <button id="viewRel" class="vt" style="display:none">📈 Relatórios</button>
+      <button id="viewTraf" class="vt" style="display:none">🚦 Tráfego</button>
+    </div>
+  </div>
+
+  <!-- RELATÓRIOS (só admin geral) -->
+  <div id="relView" class="hidden">
+    <div id="relStatus" class="chart-total" style="display:block;margin:2px 0 10px">Carregando relatórios…</div>
+    <div id="relBody"></div>
+  </div>
+
+  <!-- EQUIPE / PRODUTIVIDADE POR PESSOA (só admin geral) -->
+  <div id="teamView" class="hidden">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin:2px 0 10px">
+      <div id="teamStatus" class="chart-total" style="display:block">Carregando equipe…</div>
+      <button id="teamRefresh" class="btn btn--ghost btn--sm">🔄 Atualizar</button>
+    </div>
+    <div id="teamBody"></div>
+  </div>
+
+  <!-- TRÁFEGO / CAMPANHA (só admin geral) -->
+  <div id="trafView" class="hidden">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin:2px 0 10px">
+      <div id="trafStatus" class="chart-total" style="display:block">Carregando painel…</div>
+      <button id="trafRefresh" class="btn btn--ghost btn--sm">🔄 Atualizar</button>
+    </div>
+    <div id="trafBody"></div>
+  </div>
+
+  <!-- KANBAN -->
+  <div id="kanbanView">
+    <div id="board" class="board"></div>
+    <div id="emptyK" class="empty hidden">Nenhum lead ainda. Assim que alguém enviar o formulário, aparece aqui. 🎯</div>
+  </div>
+
+  <!-- LISTA -->
+  <div id="listView" class="tablewrap hidden">
+    <table>
+      <thead><tr><th>Quando</th><th>Nome</th><th>WhatsApp</th><th>Cargo / empresa</th><th>O que está travando</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div id="empty" class="empty hidden">Nenhum lead ainda. Assim que alguém enviar o formulário, aparece aqui. 🎯</div>
+  </div>
+
+  <div class="section-t" id="admSection">👤 Administradores <span id="admToggle" style="cursor:pointer;font-size:.72rem;color:var(--muted)">(mostrar)</span></div>
+  <div id="adminsBox" class="admins hidden">
+    <div id="adminsList"></div>
+    <div class="admin-add">
+      <input id="newAdmin" class="field" type="email" placeholder="email@novousuario.com" />
+      <select id="newAdminRole" class="field" style="max-width:190px">
+        <option value="diretoria">Gestão · só os próprios leads</option>
+        <option value="geral">Admin · vê tudo</option>
+      </select>
+      <button id="addAdminBtn" class="btn btn--gold btn--sm">Cadastrar</button>
+    </div>
+    <div id="adminMsg" class="msg"></div>
+  </div>
+
+  <div class="foot">CS Couto Treinamentos · acesso só por e-mail cadastrado</div>
+</div>
+
+<script>
+(function(){
+  /* ⚠️ PREENCHER — as credenciais reais foram REMOVIDAS desta cópia (ver LEIA-ME.md).
+     FN_URL  = URL da sua Edge Function     (Supabase > Edge Functions)
+     PUBKEY  = publishable key do projeto   (Supabase > Settings > API Keys)
+     SESS_KEY= nome da chave de sessão no localStorage (qualquer nome único) */
+  var FN_URL = "https://SEU-PROJETO.supabase.co/functions/v1/SUA-FUNCAO";
+  var PUBKEY = "SUA_PUBLISHABLE_KEY_AQUI";
+  var SESS_KEY = "meu_crm_sess";
+
+  /* ============================================================================
+     🚧 MODO DEMO — TEMPORARIO (sem backend). Adicionado a pedido: pular o login.
+     Enquanto DEMO_MODE = true:
+       - nao ha tela de login: abre direto no CRM
+       - NENHUMA chamada de rede acontece (api() e servida localmente)
+       - os leads abaixo sao FICTICIOS, so pra visualizar o CRM funcionando
+     PARA VOLTAR AO NORMAL: troque para false. Nada mais precisa mudar.
+     ============================================================================ */
+  var DEMO_MODE = true;
+
+  var DEMO_ADMINS = [
+    { email:"contato@camilacouto.com",   role:"geral",     created_at:"2026-08-27T12:00:00Z", added_by:"seed" },
+    { email:"igorfreitasnf@gmail.com",   role:"geral",     created_at:"2026-08-27T12:00:00Z", added_by:"seed" },
+    { email:"comercial@camilacouto.com", role:"diretoria", created_at:"2026-08-27T12:00:00Z", added_by:"seed" }
+  ];
+  // Kanban vazio: nenhum lead de exemplo. Leads reais so entram quando o backend existir.
+  var DEMO_LEADS = [];
+
+  // Responde no lugar do servidor. Sem fetch: tudo resolvido na memoria do navegador.
+  function demoApi(action, b){
+    b = b || {};
+    var achar = function(id){ for(var i=0;i<DEMO_LEADS.length;i++){ if(DEMO_LEADS[i].id===Number(id)) return DEMO_LEADS[i]; } return null; };
+    var porFase = function(ls){ var o={}; ls.forEach(function(l){ o[l.status]=(o[l.status]||0)+1; }); return o; };
+
+    if(action==="leads")       return { ok:true, email:sess.email, meuNome:sess.name, role:sess.role, leads:DEMO_LEADS.slice() };
+    if(action==="admins")      return { ok:true, email:sess.email, admins:DEMO_ADMINS.slice() };
+    if(action==="motive_cats") return { ok:true, cats:[] };
+    if(action==="lead_move"){  var l1=achar(b.id); if(l1) l1.status=String(b.status||l1.status); return { ok:true }; }
+    if(action==="lead_tag_add"){ var l2=achar(b.id); if(l2 && l2.tags.indexOf(sess.name)<0) l2.tags.push(sess.name); return { ok:true, tag:sess.name }; }
+    if(action==="lead_tag_remove"){ var l3=achar(b.id); if(l3) l3.tags=l3.tags.filter(function(t){ return t!==b.tag; }); return { ok:true }; }
+    if(action==="lead_delete"){ DEMO_LEADS=DEMO_LEADS.filter(function(x){ return x.id!==Number(b.id); }); return { ok:true }; }
+    if(action==="lead_history"){
+      var l4=achar(b.id); if(!l4) return { ok:false, error:"nao_encontrado" };
+      return { ok:true, lead:l4, events:[{ kind:"create", actor:null, at:l4.created_at, note:"lead de exemplo (modo demo)", from_status:null, to_status:null }] };
+    }
+    if(action==="stats"){
+      var hoje=DEMO_LEADS.length, byOwner={};
+      DEMO_LEADS.forEach(function(l){ l.tags.forEach(function(t){ byOwner[t]=(byOwner[t]||0)+1; }); });
+      return { ok:true, perUser:[], byDay:[], byHour:[], byWeekday:[],
+        leadsByStatus:Object.keys(porFase(DEMO_LEADS)).map(function(k){ return { status:k, n:porFase(DEMO_LEADS)[k] }; }),
+        leadsByOwner:Object.keys(byOwner).map(function(k){ return { tag:k, n:byOwner[k] }; }),
+        leadsByCat:[],
+        totals:{ total:DEMO_LEADS.length, hoje:hoje, d7:DEMO_LEADS.length, d30:DEMO_LEADS.length,
+                 cliente:porFase(DEMO_LEADS)["cliente"]||0, encerrado:porFase(DEMO_LEADS)["encerrado"]||0,
+                 sem_dono:DEMO_LEADS.filter(function(l){ return !l.tags.length; }).length } };
+    }
+    if(action==="team_stats"){
+      var mapa={};
+      DEMO_LEADS.forEach(function(l){
+        l.tags.forEach(function(t){
+          if(!mapa[t]) mapa[t]={ nome:t, total:0, porFase:{}, paradoMedioMs:null, atendMedioMs:null, leads:[] };
+          mapa[t].total++; mapa[t].porFase[l.status]=(mapa[t].porFase[l.status]||0)+1;
+          mapa[t].leads.push({ nome:l.nome, whatsapp:l.whatsapp, status:l.status, motive_cat:l.motive_cat, changed_ms:Date.parse(l.created_at) });
+        });
+      });
+      return { ok:true, pessoas:Object.keys(mapa).map(function(k){ return mapa[k]; }),
+        fasesGlobais:porFase(DEMO_LEADS), semDono:DEMO_LEADS.filter(function(l){ return !l.tags.length; }).length, now_ms:Date.now() };
+    }
+    if(action==="traffic_stats"){
+      return { ok:true, metaConfigurado:false, meta:{ porDia:[] },
+        visitas:{ visitantes:0, pageviews:0, pagas:0 }, leads:{ total:DEMO_LEADS.length } };
+    }
+    return { ok:true }; // beat, set_identity, logout, classify_pending, admin_add/remove...
+  }
+
+  var $ = function(id){ return document.getElementById(id); };
+  var sess = null, allLeads = [], currentView = "kanban", filterCommunity = false, filterOwner = "", filterSem = "";
+  var COMMUNITY_TAG = "__none__"; // sem tag de comunidade nesta operação (mantido só pra não quebrar o filtro legado)
+  // 💰 VERBA DE TRÁFEGO POR MÊS (reinicia sozinho quando o mês vira).
+  // Chave = ano-mês no fuso de São Paulo. Meses não listados usam ORCAMENTO_PADRAO.
+  var ORCAMENTO_MES = { "2026-08": 1200, "2026-09": 1200, "2026-10": 1200 };
+  var ORCAMENTO_PADRAO = 1200;
+  function hojeSP(){ return new Date().toLocaleDateString("en-CA",{timeZone:"America/Sao_Paulo"}); } // "AAAA-MM-DD"
+  function diasNoMes(ym){ var p=String(ym).split("-"); return new Date(Number(p[0]), Number(p[1]), 0).getDate(); }
+  function verbaDoMes(ym){ return ORCAMENTO_MES[ym]!=null ? ORCAMENTO_MES[ym] : ORCAMENTO_PADRAO; }
+  var MESES_PT=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+  // Bloco do topo do painel de Tráfego: verba total, % gasto e quanto sobra.
+  // Verde enquanto o gasto está dentro do ritmo previsto (linear no mês); vermelho quando passa.
+  function orcamentoHTML(m){
+    var hoje=hojeSP(), ym=hoje.slice(0,7), dia=Number(hoje.slice(8,10));
+    var verba=verbaDoMes(ym), nd=diasNoMes(ym);
+    // gasto do MÊS CORRENTE: soma só os dias deste mês (por isso a contagem zera sozinha na virada)
+    var gasto=0, temDados=false;
+    (((m||{}).porDia)||[]).forEach(function(x){
+      if(String(x.dia||"").slice(0,7)===ym){ gasto+=Number(x.spend||0); temDados=true; }
+    });
+    var pct = verba>0 ? (gasto/verba*100) : 0;
+    var restante = verba-gasto;
+    var previsto = verba*(dia/nd);            // quanto já poderia ter sido gasto até hoje
+    var estourou = gasto>previsto || restante<0;
+    var diasRest = Math.max(0, nd-dia+1);     // inclui hoje
+    var porDia = diasRest>0 ? Math.max(0,restante)/diasRest : 0;
+    var pctPrev = Math.min(100, dia/nd*100);
+    var nomeMes = MESES_PT[Number(ym.slice(5,7))-1]+" de "+ym.slice(0,4);
+    var f1=function(n){ return (Math.round(n*10)/10).toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1}); };
+    // dinheiro com sinal na frente (negativo vira "-R$ 300,00", não "R$ -300,00")
+    var fmtBRLs=function(n){ return (n<0? "-" : "")+fmtBRL(Math.abs(n)); };
+    return '<div class="orc'+(estourou?" orc--over":"")+'">'
+      +'<div class="orc__top"><div class="orc__t">💰 Verba de tráfego · '+esc(nomeMes)
+        +'<small>'+(temDados?("gasto real da campanha neste mês · zera sozinho na virada"):("sem gasto registrado neste mês ainda"))+'</small></div>'
+        +'<div class="orc__badge">'+(estourou? "⚠️ acima do previsto" : "✅ dentro do previsto")+'</div></div>'
+      +'<div class="orc__grid">'
+        +'<div class="orc__kpi"><div class="orc__n">'+fmtBRL(verba)+'</div><div class="orc__l">Valor total</div>'
+          +'<div class="orc__sub">'+nd+' dias · '+fmtBRL(verba/nd)+'/dia</div></div>'
+        +'<div class="orc__kpi"><div class="orc__n '+(estourou?"orc__n--bad":"orc__n--ok")+'">'+f1(pct)+'%</div><div class="orc__l">% do valor gasto</div>'
+          +'<div class="orc__sub">'+fmtBRL(gasto)+' investidos</div></div>'
+        +'<div class="orc__kpi"><div class="orc__n '+(restante<0?"orc__n--bad":"orc__n--ok")+'">'+fmtBRLs(restante)+'</div><div class="orc__l">Restante p/ investir</div>'
+          +'<div class="orc__sub">'+(restante<0? "verba estourada" : (diasRest+" dia"+(diasRest===1?"":"s")+" · "+fmtBRL(porDia)+"/dia"))+'</div></div>'
+      +'</div>'
+      +'<div class="orc__bar"><i style="width:'+Math.min(100,Math.max(0,pct))+'%"></i>'
+        +'<span class="orc__mark" style="left:'+pctPrev+'%"></span></div>'
+      +'<div class="orc__foot">'
+        +'<span>Dia <b>'+dia+'</b> de <b>'+nd+'</b> · previsto até hoje <b>'+fmtBRL(previsto)+'</b></span>'
+        +'<span>'+(estourou
+            ? ("Passou <b>"+fmtBRL(Math.max(0,gasto-previsto))+"</b> do ritmo previsto")
+            : ("Sobra <b>"+fmtBRL(Math.max(0,previsto-gasto))+"</b> de folga no ritmo"))+'</span>'
+      +'</div></div>';
+  }
+
+  // 🧪 Plano de teste de criativos (usado no diagnóstico do painel de Tráfego).
+  // Regra: com CBO a Meta escolhe quem gasta; pra TODO criativo entregar é preciso
+  // 1 criativo por conjunto + verba no conjunto (ABO) + rodízio dos criativos.
+  var PLANO_TESTE = {
+    conjuntos: 3,            // quantos conjuntos rodam ao mesmo tempo
+    verbas: [18, 18, 17],    // R$/dia em cada conjunto (soma = verba diária da campanha)
+    diasPorRodada: 2,        // quanto tempo cada leva de criativos fica no ar
+    minEntrega: 2            // gasto (R$) abaixo disso = o criativo NÃO entregou
+  };
+
+  // Observações das campanhas (histórico do que aconteceu com cada uma — some no painel Tráfego).
+  // chave = id da campanha no Meta. tipo: "pausada" (vermelho) | "info" (dourado).
+  // (esvaziado nesta cópia base — preencha com os ids das SUAS campanhas)
+  var CAMP_NOTAS = {
+    // "ID_DA_CAMPANHA_NO_META": { tipo:"pausada", titulo:"Campanha pausada", data:"01/01/2026",
+    //   texto:"Motivo da pausa, o que foi aprendido e o que substituiu." }
+  };
+  function campNotaHTML(id){
+    var n = CAMP_NOTAS[String(id)]; if(!n) return "";
+    var info = n.tipo==="info";
+    return '<div class="camp-nota'+(info?' camp-nota--info':'')+'">'
+      +'<span class="camp-nota__ico">'+(info?'💡':'⏸️')+'</span>'
+      +'<span><span class="camp-nota__t">'+esc(n.titulo||"Observação")+'</span>'
+      +'<div class="camp-nota__c">'+esc(n.texto||"")+'</div>'
+      +(n.data?'<div class="camp-nota__d">registrado em '+esc(n.data)+'</div>':'')+'</span></div>';
+  }
+  /* Maquina de estados da CS Couto - ESPEC_CRM_CS_COUTO_v1, secao 4.
+     `dono` = quem trabalha o card nessa fase. */
+  var STAGES = [
+    { key:"solicitacao", label:"0 \u00b7 Solicita\u00e7\u00e3o",     cor:"#8ea9c9", dono:"sistema" },
+    { key:"novo",        label:"1 \u00b7 Novo lead",       cor:"#7aa2ff", dono:"SDR" },
+    { key:"contato",     label:"2 \u00b7 Primeiro contato", cor:"#e6b64c", dono:"SDR" },
+    { key:"qualificado", label:"3 \u00b7 Qualificado",      cor:"#a3e635", dono:"SDR" },
+    { key:"agendada",    label:"4 \u00b7 Sess\u00e3o agendada",  cor:"#ff9d3c", dono:"SDR" },
+    { key:"realizada",   label:"5 \u00b7 Sess\u00e3o realizada", cor:"#38bdf8", dono:"Camila" },
+    { key:"proposta",    label:"6 \u00b7 Proposta",         cor:"#c084fc", dono:"Camila" },
+    { key:"cliente",     label:"7 \u00b7 Cliente",          cor:"#25d366", dono:"Igor" },
+    { key:"followup",    label:"8 \u00b7 Follow up",        cor:"#f97316", dono:"SDR" },
+    { key:"encerrado",   label:"9 \u00b7 Encerrado",        cor:"#d8221f", dono:"SDR" }
+  ];
+  /* Metricas cumulativas: quem virou Cliente tambem foi qualificado, agendou e compareceu.
+     Sem `lead_events` no banco ainda, o minimo de cada fase e deduzido da fase atual.
+     Follow up (8) so entra apos ter respondido => minimo de "primeiro contato". */
+  var RANK = { solicitacao:0, novo:1, contato:2, followup:2, encerrado:2,
+               qualificado:3, agendada:4, realizada:5, proposta:6, cliente:7 };
+  function rankDe(l){ var r=RANK[l&&l.status]; return r==null ? 1 : r; }
+  function contarMin(min){ return allLeads.filter(function(l){ return rankDe(l)>=min; }).length; }
+  function contarFase(st){ return allLeads.filter(function(l){ return l.status===st; }).length; }
+
+  /* Regua Semaforo - Comercial_Pocket_v3, leitura rapida depois da ligacao de qualificacao. */
+  var SEMAFORO = {
+    verde:    { emo:"🟢", cor:"#25d366", label:"Verde",    regra:"Lidera 5+, nomeou problema concreto, j\u00e1 tentou resolver, quer agora. Mant\u00e9m a agenda." },
+    amarelo:  { emo:"🟡", cor:"#e6b64c", label:"Amarelo",  regra:"Tem perfil, mas urg\u00eancia vaga ou decis\u00e3o passa por outra pessoa. Mant\u00e9m e sinaliza." },
+    vermelho: { emo:"🔴", cor:"#d8221f", label:"Vermelho", regra:"N\u00e3o lidera equipe, recoloca\u00e7\u00e3o, quer s\u00f3 material gr\u00e1tis. Cancela e libera o hor\u00e1rio." }
+  };
+  /* Saida do funil - ESPEC 3.2: tipo_saida e SEPARADO de motivo_perda, senao a taxa de perda
+     deixa de ser indicador (perda comercial misturada com limpeza de base). */
+  var TIPO_SAIDA = { perda_comercial:"Perda comercial", arquivamento:"Arquivamento (limpeza de base)" };
+  var MOTIVOS_PERDA = [
+    { key:"sem_resposta_10d",  txt:"10 dias sem responder nada",              tipo:"perda_comercial" },
+    { key:"6_tentativas",      txt:"6 tentativas sem resposta",               tipo:"perda_comercial" },
+    { key:"disse_nao",         txt:"Disse explicitamente que n\u00e3o quer",      tipo:"perda_comercial" },
+    { key:"satisfeito",        txt:"Satisfeito com a situa\u00e7\u00e3o atual",       tipo:"perda_comercial" },
+    { key:"nao_lidera",        txt:"N\u00e3o lidera equipe hoje",                 tipo:"perda_comercial" },
+    { key:"nao_decide",        txt:"N\u00e3o decide e n\u00e3o indica quem decide",    tipo:"perda_comercial" },
+    { key:"outro_produto",     txt:"Quer produto que a empresa n\u00e3o vende",   tipo:"perda_comercial" },
+    { key:"base_antiga",       txt:"Limpeza de base antiga",                  tipo:"arquivamento" },
+    { key:"duplicado",         txt:"Card duplicado",                          tipo:"arquivamento" },
+    { key:"contato_invalido",  txt:"Contato inv\u00e1lido",                       tipo:"arquivamento" }
+  ];
+  function motivoTxt(k){ for(var i=0;i<MOTIVOS_PERDA.length;i++) if(MOTIVOS_PERDA[i].key===k) return MOTIVOS_PERDA[i].txt; return k||""; }
+  function motivoTipo(k){ for(var i=0;i<MOTIVOS_PERDA.length;i++) if(MOTIVOS_PERDA[i].key===k) return MOTIVOS_PERDA[i].tipo; return null; }
+
+  try{ sess = JSON.parse(localStorage.getItem(SESS_KEY)||"null"); }catch(e){}
+
+  function api(action, extra){
+    var body = Object.assign({action:action}, extra||{});
+    if(DEMO_MODE) return Promise.resolve(demoApi(action, body)); // 🚧 demo: nada sai pela rede
+    return fetch(FN_URL, {
+      method:"POST",
+      headers:{ "Content-Type":"application/json", "apikey":PUBKEY, "Authorization":"Bearer "+PUBKEY },
+      body: JSON.stringify(body)
+    }).then(function(r){ return r.json().catch(function(){ return {ok:false,error:"resposta_invalida"}; }); });
+  }
+
+  // ---------- LOGIN ----------
+  function doLogin(){
+    var email = ($("email").value||"").trim().toLowerCase();
+    var msg = $("loginMsg"); msg.className="msg"; msg.textContent="";
+    if(!email || email.indexOf("@")<0){ msg.className="msg err"; msg.textContent="Digite um e-mail válido."; return; }
+    var btn=$("loginBtn"); btn.disabled=true; btn.innerHTML='<span class="spin"></span> Entrando...';
+    api("login",{email:email}).then(function(d){
+      btn.disabled=false; btn.textContent="Entrar";
+      if(d && d.ok){
+        sess = {token:d.token, email:d.email, role:d.role, members:d.members||[], who:null, name:d.name||null};
+        localStorage.setItem(SESS_KEY, JSON.stringify(sess));
+        if(sess.members && sess.members.length){ askIdentity(); }
+        else { showPanel(); }
+      } else if(d && d.error==="nao_autorizado"){
+        msg.className="msg err"; msg.textContent="Esse e-mail não está autorizado. Fale com o admin.";
+      } else {
+        msg.className="msg err"; msg.textContent="Não deu pra entrar. Tenta de novo.";
+      }
+    });
+  }
+
+  function logout(){
+    stopHeartbeat(); stopSync();
+    if(sess) api("logout",{token:sess.token});
+    localStorage.removeItem(SESS_KEY); sess=null;
+    $("panel").classList.add("hidden"); $("loginView").classList.remove("hidden");
+    $("email").value="";
+  }
+
+  // ---------- POPUP "QUEM É VOCÊ?" ----------
+  function askIdentity(){
+    var box=$("whoOpts"); box.innerHTML="";
+    (sess.members||[]).forEach(function(nome){
+      var b=document.createElement("button"); b.className="who-opt";
+      var iniciais=nome.split(" ").map(function(p){return p[0];}).slice(0,2).join("").toUpperCase();
+      b.innerHTML='<span class="av">'+iniciais+'</span> '+nome;
+      b.onclick=function(){ pickIdentity(nome); };
+      box.appendChild(b);
+    });
+    $("whoOv").classList.add("show");
+  }
+  function pickIdentity(nome){
+    sess.who=nome; localStorage.setItem(SESS_KEY, JSON.stringify(sess));
+    api("set_identity",{token:sess.token, who:nome}); // registra no log
+    $("whoOv").classList.remove("show");
+    showPanel();
+  }
+
+  // ---------- PAINEL ----------
+  function showPanel(){
+    $("loginView").classList.add("hidden");
+    $("whoOv").classList.remove("show");
+    $("panel").classList.remove("hidden");
+    var nomeExib = sess.who || sess.name;
+    $("whoEmail").textContent = nomeExib ? (nomeExib+" · "+sess.email) : sess.email;
+    // gestão de admins só pro admin geral
+    var ehGeral = sess.role === "geral";
+    $("admSection").classList.toggle("hidden", !ehGeral);
+    $("adminsBox").classList.toggle("hidden", !ehGeral); // geral já vê aberto
+    if($("admToggle")) $("admToggle").textContent = ehGeral ? "(esconder)" : "(mostrar)";
+    $("viewTeam").style.display = ehGeral ? "" : "none"; // aba Equipe só pro admin geral
+    $("viewRel").style.display = ehGeral ? "" : "none"; // aba Relatórios só pro admin geral
+    $("viewTraf").style.display = ehGeral ? "" : "none"; // aba Tráfego só pro admin geral
+    $("ownerFilter").style.display = ""; // seletor de dono do kanban (todos)
+    loadLeads(); if(ehGeral) loadAdmins();
+    startHeartbeat(); // marca presença enquanto o painel está aberto
+    startSync();      // mantém o painel em dia com o que a equipe muda
+  }
+
+  function loadLeads(){
+    return api("leads",{token:sess.token}).then(function(d){
+      if(!d || !d.ok){ if(d && (d.error==="sessao_invalida"||d.error==="sem_sessao")) return logout(); return; }
+      allLeads = d.leads||[];
+      populateOwnerFilter();
+      renderKpis(); renderAll();
+    });
+  }
+
+  // ----- SINCRONIA EM TEMPO REAL ENTRE A EQUIPE -----
+  // Camila, Igor e a SDR mexem nos MESMOS cards (fase, semáforo, dono, sessão...).
+  // Aqui a gente repesca sozinho, sem precisar clicar em Atualizar. Só re-renderiza
+  // quando algo REALMENTE mudou, e nunca no meio de um arraste ou digitação.
+  var syncTimer=null, ultimaAssin="";
+  function assinaturaLeads(arr){
+    return (arr||[]).map(function(l){
+      return [l.id,l.status,l.nome,l.whatsapp,l.semaforo,(l.tags||[]).join(","),
+              l.sessao_agendada_para,l.motivo_perda,(l.o_que_esta_travando||"").length].join("~");
+    }).join("|");
+  }
+  function podeSincronizar(){
+    if(!sess || document.visibilityState!=="visible") return false;
+    if(drag) return false;                                   // arrastando card
+    var a=document.activeElement;
+    if(a && (a.tagName==="INPUT"||a.tagName==="TEXTAREA"||a.tagName==="SELECT")) return false;
+    return true;
+  }
+  function sincronizarLeads(){
+    if(!podeSincronizar()) return;
+    api("leads",{token:sess.token}).then(function(d){
+      if(!d || !d.ok || !d.leads) return;
+      var assin=assinaturaLeads(d.leads);
+      if(assin===ultimaAssin) return;                        // nada mudou
+      ultimaAssin=assin;
+      allLeads=d.leads;
+      populateOwnerFilter(); renderKpis(); renderAll();
+    }).catch(function(){});
+  }
+  function startSync(){ stopSync(); ultimaAssin=assinaturaLeads(allLeads); syncTimer=setInterval(sincronizarLeads,15000); }
+  function stopSync(){ if(syncTimer){ clearInterval(syncTimer); syncTimer=null; } }
+  // volta pra aba -> atualiza na hora
+  document.addEventListener("visibilitychange",function(){ if(document.visibilityState==="visible") sincronizarLeads(); });
+
+  function renderKpis(){
+    var now=Date.now(), dia=864e5;
+    var hoje=0, sete=0;
+    allLeads.forEach(function(l){
+      var t=new Date(l.created_at).getTime();
+      if(now-t < dia) hoje++;
+      if(now-t < 7*dia) sete++;
+    });
+    $("kpiTotal").textContent=allLeads.length;
+    $("kpiHoje").textContent=hoje;
+    $("kpi7").textContent=sete;
+
+    // --- os tres numeros + numeros da semana ---
+    var contat=contarMin(2), qual=contarMin(3), agend=contarMin(4), real=contarMin(5);
+    var fup=contarFase("followup"), cli=contarFase("cliente"), enc=contarFase("encerrado");
+    var noshow=allLeads.filter(ehNoShow).length;
+    var pct=function(n,base){ return base>0 ? Math.round(n/base*100)+"%" : "\u2014"; };
+    var alvo=function(el,n,base,meta){            // pinta a meta: verde bate, vermelho nao bate
+      var e=$(el); if(!e) return;
+      if(!base){ e.textContent="\u2014"; e.style.color=""; return; }
+      var v=Math.round(n/base*100); e.textContent=v+"%";
+      e.style.color = v>=meta ? "#25d366" : "#d8221f";
+    };
+    // 1) resposta em ate 5 min: depende do log de interacoes (backend). Nao inventa numero.
+    alvo("kpiComp", real, agend, 80);
+    $("kpiCompTx").textContent = agend? (real+" de "+agend+" agendadas \u00b7 meta 80%") : "meta 80%";
+    alvo("kpiFech", cli, real, 33);
+    $("kpiFechTx").textContent = real? (cli+" de "+real+" sess\u00f5es \u00b7 meta 33%") : "meta 33%";
+
+    $("kpiContat").textContent=contat;
+    $("kpiQual").textContent=qual;  $("kpiQualTx").textContent = allLeads.length? pct(qual,allLeads.length)+" dos leads" : "";
+    $("kpiAgend").textContent=agend;
+    $("kpiReal").textContent=real;
+    $("kpiNoshow").textContent=noshow;
+    $("kpiFup").textContent=fup;
+    $("kpiCli").textContent=cli;
+    var perdas=allLeads.filter(function(l){ return l.status==="encerrado" && motivoTipo(l.motivo_perda)==="perda_comercial"; }).length;
+    $("kpiEnc").textContent=enc;
+    $("kpiEncTx").textContent = enc? (perdas+" perda"+(perdas===1?"":"s")+" \u00b7 "+(enc-perdas)+" arquiv.") : "";
+  }
+
+  // No-show: continua em "Sess\u00e3o agendada" com o hor\u00e1rio j\u00e1 no passado (ESPEC automacao 9).
+  function ehNoShow(l){
+    if(l.status!=="agendada" || !l.sessao_agendada_para) return false;
+    var t=Date.parse(l.sessao_agendada_para);
+    return !isNaN(t) && (Date.now()-t) > 30*60*1000;   // 30 min depois do horario
+  }
+
+  function fmtDate(s){
+    var d=new Date(s);
+    return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  }
+  function waLink(phone){
+    var d=(phone||"").replace(/\D/g,"");
+    if(d && d.length<=11) d="55"+d;
+    return d ? "https://wa.me/"+d : null;
+  }
+  function esc(s){ return (s==null?"":String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+  function isCommunity(l){ return (l.tags||[]).indexOf(COMMUNITY_TAG)>=0; }
+  // ----- dono do lead (etiqueta de pessoa; ignora a flag "Comunidade") -----
+  function firstName(n){ return String(n||"").trim().split(/\s+/)[0].toLowerCase(); }
+  function personTags(l){ return (l.tags||[]).filter(function(t){ return String(t).toLowerCase()!==COMMUNITY_TAG.toLowerCase(); }); }
+  function hasOwner(l){ return personTags(l).length>0; }
+  function ownedByMe(l){ var mf=firstName(meuNome()); return personTags(l).some(function(t){ return firstName(t)===mf; }); }
+  function ownedByName(l, nome){ var f=firstName(nome); return personTags(l).some(function(t){ return firstName(t)===f; }); }
+  function filtered(){
+    var q=($("search").value||"").trim().toLowerCase();
+    return allLeads.filter(function(l){
+      if(filterCommunity && !isCommunity(l)) return false;
+      if(filterSem){                                   // Régua Semáforo
+        if(filterSem==="sem"){ if(l.semaforo) return false; }
+        else if(l.semaforo!==filterSem) return false;
+      }
+      // filtro por dono (kanban individual / admin vê o kanban de cada pessoa)
+      if(filterOwner==="__mine__" && !ownedByMe(l)) return false;
+      else if(filterOwner==="__pool__" && hasOwner(l)) return false;
+      else if(filterOwner && filterOwner.charAt(0)!=="_" && !ownedByName(l, filterOwner)) return false;
+      if(!q) return true;
+      return ((l.nome||"")+" "+(l.whatsapp||"")+" "+(l.cargo||"")+" "+(l.empresa||"")+" "+(l.o_que_esta_travando||"")).toLowerCase().indexOf(q)>=0;
+    });
+  }
+  // popula o seletor de dono conforme o papel: admin (geral) vê todos os donos; gestão alterna entre pool e os seus
+  function populateOwnerFilter(){
+    var sel=$("ownerFilter"); if(!sel) return;
+    var opts=[];
+    if(ehGeral()){
+      opts.push(["","👥 Todos os leads"]);
+      opts.push(["__pool__","🆕 Sem dono (pool novo)"]);
+      opts.push(["__mine__","👤 Meus leads"]);
+      var nomes={};
+      allLeads.forEach(function(l){ personTags(l).forEach(function(t){ nomes[t]=(nomes[t]||0)+1; }); });
+      Object.keys(nomes).sort(function(a,b){ return nomes[b]-nomes[a]; }).forEach(function(nome){
+        if(firstName(nome)===firstName(meuNome())) return; // "Meus" já cobre
+        opts.push([nome, "🗂 "+nome+" ("+nomes[nome]+")"]);
+      });
+    } else {
+      opts.push(["","🆕 Novos + meus leads"]);
+      opts.push(["__mine__","👤 Só os meus"]);
+      opts.push(["__pool__","🆕 Só os novos (sem dono)"]);
+    }
+    var atual=filterOwner;
+    sel.innerHTML=opts.map(function(o){ return '<option value="'+esc(o[0])+'"'+(o[0]===atual?' selected':'')+'>'+esc(o[1])+'</option>'; }).join("");
+    if(!opts.some(function(o){return o[0]===atual;})){ filterOwner=""; sel.value=""; }
+  }
+  function updateComCount(){
+    var n=allLeads.filter(isCommunity).length;
+    var el=$("comCount"); if(el) el.textContent=n;
+    var btn=$("filterComunidade"); if(btn) btn.classList.toggle("on", filterCommunity);
+  }
+  function renderAll(){ renderTable(); renderKanban(); updateComCount(); }
+
+  // ----- LISTA -----
+  function renderTable(){
+    var list=filtered(), tb=$("rows"); tb.innerHTML="";
+    $("empty").classList.toggle("hidden", list.length>0);
+    list.forEach(function(l){
+      var tr=document.createElement("tr");
+      var wa=waLink(l.whatsapp);
+      var velho = ageDays(l.created_at)>5 && l.status!=="cliente" && l.status!=="encerrado";
+      var tags=(l.tags||[]).map(function(t){return '<span class="tag" style="padding:2px 9px">'+esc(t)+'</span>';}).join(" ");
+      // cargo / empresa / quantas pessoas lidera - o que a Camila precisa ver de relance
+      var q=[];
+      if(l.cargo) q.push(esc(l.cargo));
+      if(l.empresa) q.push(esc(l.empresa));
+      if(l.tamanho_equipe!=null && l.tamanho_equipe!=="") q.push('👥 '+esc(l.tamanho_equipe));
+      var sem=SEMAFORO[l.semaforo];
+      var semHTML = sem? '<span class="sem" style="border-color:'+sem.cor+';color:'+sem.cor+'">'+sem.emo+'</span> ' : '';
+      tr.innerHTML =
+        '<td style="white-space:nowrap;color:var(--muted)">'+fmtDate(l.created_at)+'<br><span class="age'+(velho?' age--old':'')+'">\u23f1 '+ageStr(l.created_at)+'</span></td>'
+        +'<td style="font-weight:600;color:var(--cream)">'+semHTML+esc(l.nome||'\u2014')+'</td>'
+        +'<td>'+(wa?'<a class="wa" href="'+wa+'" target="_blank" rel="noopener">🟢 '+esc(l.whatsapp)+'</a>':esc(l.whatsapp||'\u2014'))+(tags?'<div class="card__tags" style="margin-top:5px">'+tags+'</div>':'')+'</td>'
+        +'<td>'+(q.length? q.join(' \u00b7 ') : '\u2014')+'</td>'
+        +'<td class="motivo">'+esc(l.o_que_esta_travando||'\u2014')+'</td>';
+      tr.style.cursor="pointer";
+      tr.addEventListener("click", function(e){ if(e.target.closest("a")) return; abrirHistorico(l.id); });
+      tb.appendChild(tr);
+    });
+  }
+
+  // ----- KANBAN -----
+  var ehGeral = function(){ return sess && sess.role==="geral"; };
+  var meuNome = function(){ return (sess && (sess.who || sess.name || sess.email)) || ""; };
+  function ageStr(s){
+    var ms=Date.now()-new Date(s).getTime();
+    var min=Math.floor(ms/6e4), h=Math.floor(min/60), d=Math.floor(h/24);
+    if(d>=1) return "há "+d+"d"; if(h>=1) return "há "+h+"h"; if(min>=1) return "há "+min+"min"; return "agora";
+  }
+  function ageDays(s){ return (Date.now()-new Date(s).getTime())/864e5; }
+  // Lista fechada de motivos (Pocket "Quando dar perdido" + ESPEC 4.1).
+  function pedirMotivoSaida(l){
+    var linhas = MOTIVOS_PERDA.map(function(m,i){
+      return (i+1)+") "+m.txt+"  ["+TIPO_SAIDA[m.tipo]+"]";
+    }).join("\n");
+    var aviso = "";
+    if(rankDe(l)>=2 && l.status!=="novo") aviso = "\n\u26a0\ufe0f Aten\u00e7\u00e3o: quem j\u00e1 respondeu alguma coisa vai para Follow up, n\u00e3o para Encerrado.\n";
+    var r = prompt("Encerrar \u201c"+(l.nome||"lead")+"\u201d exige motivo.\n"+aviso+"\nDigite o n\u00famero:\n\n"+linhas);
+    if(r===null) return null;
+    var n = parseInt(String(r).trim(), 10);
+    if(!n || n<1 || n>MOTIVOS_PERDA.length){ alert("Motivo inv\u00e1lido. O card n\u00e3o foi movido."); return null; }
+    return MOTIVOS_PERDA[n-1].key;
+  }
+
+  function cardHTML(l){
+    var wa=waLink(l.whatsapp);
+    var profs="";   // cargo/empresa agora aparecem no bloco de qualificacao, abaixo
+    var velho = ageDays(l.created_at)>5 && l.status!=="venda" && l.status!=="perdido";
+    var tags=(l.tags||[]).map(function(t){ return '<span class="tag">'+esc(t)+'<b class="tagx" data-tagx="'+esc(t)+'" data-tid="'+l.id+'">✕</b></span>'; }).join("");
+    var jaMarquei=(l.tags||[]).indexOf(meuNome())>=0;
+    // Regua Semaforo (Pocket) - leitura rapida depois da ligacao de qualificacao
+    var sem = SEMAFORO[l.semaforo];
+    var semHTML = sem
+      ? '<span class="sem" style="border-color:'+sem.cor+';color:'+sem.cor+'" title="'+esc(sem.regra)+'">'+sem.emo+' '+sem.label+'</span>'
+      : '<span class="sem sem--off" title="Sem\u00e1foro ainda n\u00e3o preenchido. Preencher depois da liga\u00e7\u00e3o de qualifica\u00e7\u00e3o.">\u26aa sem sem\u00e1foro</span>';
+    // contexto da qualificacao: o que a Camila precisa saber antes de entrar na sessao
+    var q=[];
+    if(l.tamanho_equipe!=null && l.tamanho_equipe!=="") q.push('👥 lidera '+esc(l.tamanho_equipe));
+    if(l.cargo)   q.push(esc(l.cargo));
+    if(l.empresa) q.push(esc(l.empresa));
+    if(l.camada)  q.push('vaza em: '+esc(l.camada));
+    var qual = q.length? '<div class="card__qual">'+q.join(' \u00b7 ')+'</div>' : '';
+    // "o que esta travando", nas palavras da pessoa (contexto, nunca rotulo)
+    var trava = l.o_que_esta_travando ? '<div class="card__trava">\u201c'+esc(l.o_que_esta_travando)+'\u201d</div>' : '';
+    // sessao marcada + alerta de no-show
+    var ses='';
+    if(l.sessao_agendada_para){
+      var nos=ehNoShow(l);
+      ses='<div class="card__ses'+(nos?' card__ses--nos':'')+'">'+(nos?'\u26a0\ufe0f no-show \u00b7 ':'📅 ')+fmtDate(l.sessao_agendada_para)+'</div>';
+    }
+    // saida do funil: perda comercial e arquivamento sao coisas diferentes (ESPEC 3.2)
+    var saida='';
+    if(l.status==="encerrado" && l.motivo_perda){
+      var arq = motivoTipo(l.motivo_perda)==="arquivamento";
+      saida='<div class="card__saida'+(arq?' card__saida--arq':'')+'">'+(arq?'🗃 ':'\u274c ')+esc(motivoTxt(l.motivo_perda))+'</div>';
+    }
+    return (ehGeral()?'<button class="card__del" title="Excluir" data-del="'+l.id+'">✕</button>':'')
+      +(l.nome?'<div class="card__nome">'+esc(l.nome)+'</div>':'')
+      +(wa?'<a class="card__wa" href="'+wa+'" target="_blank" rel="noopener">🟢 '+esc(l.whatsapp)+'</a>':'<span class="card__wa">'+esc(l.whatsapp||'—')+'</span>')
+      +'<div class="card__meta"><span class="age'+(velho?' age--old':'')+'">⏱ '+ageStr(l.created_at)+'</span> · '+fmtDate(l.created_at)+(profs?' · ':'')+profs+'</div>'
+      +'<div class="card__sem">'+semHTML+'</div>'
+      +qual + trava + ses + saida
+      +'<div class="card__tags">'+tags+(jaMarquei?'':'<button class="tag-add" data-tagadd="'+l.id+'">🏷 meu nome</button>')+'</div>';
+  }
+  function renderKanban(){
+    var list=filtered(), board=$("board"); board.innerHTML="";
+    $("emptyK").classList.toggle("hidden", allLeads.length>0);
+    STAGES.forEach(function(s){
+      var col=document.createElement("div"); col.className="col"; col.setAttribute("data-stage",s.key);
+      var itens=list.filter(function(l){ return (l.status||"novo")===s.key; });
+      var head='<div class="col__h"><span><span class="dot" style="background:'+s.cor+'"></span>'+s.label+'</span><span class="col__n">'+itens.length+'</span></div>';
+      col.innerHTML=head;
+      itens.forEach(function(l){
+        var card=document.createElement("div"); card.className="card"; card.setAttribute("data-id",l.id);
+        card.innerHTML=cardHTML(l);
+        col.appendChild(card);
+      });
+      board.appendChild(col);
+    });
+  }
+
+  // ----- arraste (mouse + toque) -----
+  // NO TOQUE: "segura pra pegar" (long-press). Antes de pegar, a rolagem normal do celular funciona;
+  // depois de pegar, a rolagem é travada (touchmove não-passivo) e o board rola sozinho perto das bordas.
+  // NO MOUSE: continua pegando por limiar de movimento.
+  // pointercancel/blur SEMPRE limpam — era o que faltava: o navegador cancelava o gesto no meio,
+  // parava de mandar pointermove e o fantasma (position:fixed) ficava preso na tela.
+  var drag=null, autoRAF=null, autoDX=0;
+  var HOLD_MS=280, MOVE_MOUSE=8, MOVE_TOUCH=12, EDGE=64, EDGE_SPEED=16;
+
+  function pararAuto(){ if(autoRAF){ cancelAnimationFrame(autoRAF); autoRAF=null; } autoDX=0; }
+  function passoAuto(){
+    autoRAF=null;
+    if(!drag || !drag.started || !autoDX) return;
+    $("board").scrollLeft += autoDX;
+    if(drag) posicionarGhost(drag.x, drag.y);   // acompanha a coluna que passou a estar sob o dedo
+    autoRAF=requestAnimationFrame(passoAuto);
+  }
+  function avaliarAuto(x){                       // rola o board quando o dedo chega perto das bordas
+    var b=$("board"); if(!b){ pararAuto(); return; }
+    var r=b.getBoundingClientRect(), dx=0;
+    if(x < r.left+EDGE)       dx = -EDGE_SPEED*Math.min(1,(r.left+EDGE-x)/EDGE);
+    else if(x > r.right-EDGE) dx =  EDGE_SPEED*Math.min(1,(x-(r.right-EDGE))/EDGE);
+    autoDX=Math.round(dx);
+    if(autoDX && !autoRAF) autoRAF=requestAnimationFrame(passoAuto);
+    else if(!autoDX) pararAuto();
+  }
+  // limpeza idempotente: pode ser chamada quantas vezes for, nunca deixa fantasma na tela
+  function limparDrag(){
+    pararAuto();
+    var d=drag; drag=null;
+    if(!d) return null;
+    if(d.holdTimer) clearTimeout(d.holdTimer);
+    if(d.captureEl && d.pointerId!=null){ try{ d.captureEl.releasePointerCapture(d.pointerId); }catch(_){} }
+    if(d.ghost && d.ghost.parentNode) d.ghost.parentNode.removeChild(d.ghost);
+    if(d.card) d.card.classList.remove("dragging-src");
+    [].forEach.call(document.querySelectorAll(".col.over"), function(c){ c.classList.remove("over"); });
+    document.body.classList.remove("is-dragging");
+    return d;
+  }
+  function posicionarGhost(x,y){
+    if(!drag || !drag.ghost) return;
+    drag.ghost.style.left=(x-drag.offx)+"px";
+    drag.ghost.style.top =(y-drag.offy)+"px";
+    var el=document.elementFromPoint(x,y);
+    var col=el && el.closest ? el.closest(".col") : null;
+    [].forEach.call(document.querySelectorAll(".col.over"), function(c){ if(c!==col) c.classList.remove("over"); });
+    if(col) col.classList.add("over");
+  }
+  function pegarCard(x,y){                        // cria o fantasma e entra em modo arraste
+    if(!drag || drag.started) return;
+    drag.started=true;
+    if(drag.holdTimer){ clearTimeout(drag.holdTimer); drag.holdTimer=null; }
+    var r=drag.card.getBoundingClientRect();
+    drag.offx=x-r.left; drag.offy=y-r.top;
+    var g=drag.card.cloneNode(true);
+    g.classList.add("drag-ghost");
+    g.style.width=r.width+"px";                   // fantasma do tamanho real do card (telas variadas)
+    document.body.appendChild(g);
+    drag.ghost=g;
+    drag.card.classList.add("dragging-src");
+    document.body.classList.add("is-dragging");
+    try{ drag.captureEl.setPointerCapture(drag.pointerId); }catch(_){ drag.captureEl=null; }
+    if(drag.touch && navigator.vibrate){ try{ navigator.vibrate(15); }catch(_){} } // confirma que "pegou"
+    posicionarGhost(x,y);
+  }
+
+  $("board").addEventListener("pointerdown", function(e){
+    if(e.target.closest(".card__del") || e.target.closest("a") || e.target.closest(".tag-add") || e.target.closest(".tagx")) return; // não arrasta ao clicar em controles
+    var card=e.target.closest(".card"); if(!card) return;
+    var col=card.closest(".col"); if(!col) return;
+    limparDrag();                                  // garante que nada sobrou de um gesto anterior
+    var toque = e.pointerType!=="mouse";
+    drag={ card:card, id:card.getAttribute("data-id"), from:col.getAttribute("data-stage"),
+           x0:e.clientX, y0:e.clientY, x:e.clientX, y:e.clientY,
+           ghost:null, started:false, touch:toque, pointerId:e.pointerId,
+           captureEl:e.currentTarget, holdTimer:null };
+    if(toque){                                     // segura ~280ms pra pegar (não briga com a rolagem)
+      drag.holdTimer=setTimeout(function(){
+        if(drag && !drag.started) pegarCard(drag.x, drag.y);
+      }, HOLD_MS);
+    }
+  });
+  window.addEventListener("pointermove", function(e){
+    if(!drag || (drag.pointerId!=null && e.pointerId!==drag.pointerId)) return;
+    drag.x=e.clientX; drag.y=e.clientY;
+    if(!drag.started){
+      var dist=Math.abs(e.clientX-drag.x0)+Math.abs(e.clientY-drag.y0);
+      if(drag.touch){ if(dist>MOVE_TOUCH) limparDrag(); return; } // mexeu antes do long-press = rolagem
+      if(dist<MOVE_MOUSE) return;
+      pegarCard(e.clientX, e.clientY);
+      return;
+    }
+    posicionarGhost(e.clientX, e.clientY);
+    avaliarAuto(e.clientX);
+  });
+  // trava a rolagem da página SÓ enquanto o card está pego (precisa ser não-passivo)
+  document.addEventListener("touchmove", function(e){
+    if(drag && drag.started) e.preventDefault();
+  }, {passive:false});
+  window.addEventListener("pointerup", function(e){
+    if(!drag || (drag.pointerId!=null && e.pointerId!==drag.pointerId)) return;
+    var started=drag.started, from=drag.from, id=drag.id, to=null;
+    if(started){
+      posicionarGhost(e.clientX, e.clientY);   // a posição FINAL do dedo é quem decide o destino
+      var col=document.querySelector(".col.over");
+      to = col && col.getAttribute("data-stage");
+      suppressClick=true; setTimeout(function(){ suppressClick=false; }, 350); // arraste NÃO abre o histórico
+    }
+    limparDrag();
+    if(started && to && to!==from) moveLead(id, to);   // toque/clique simples não move nada
+  });
+  // 🔴 o fix do fantasma preso: o navegador cancela o gesto (rolagem, ligação, troca de app...)
+  window.addEventListener("pointercancel", function(){ limparDrag(); });
+  window.addEventListener("blur", function(){ limparDrag(); });
+  document.addEventListener("visibilitychange", function(){ if(document.visibilityState!=="visible") limparDrag(); });
+
+  function moveLead(id, status){
+    var l=allLeads.filter(function(x){return String(x.id)===String(id);})[0];
+    if(l){
+      // ESPEC 4.1 + 3.2: encerrar exige motivo, e o tipo de sa\u00edda \u00e9 campo separado.
+      // O sistema SUGERE o encerramento, nunca aplica sozinho - por isso \u00e9 aqui, na m\u00e3o.
+      if(status==="encerrado"){
+        var m = pedirMotivoSaida(l);
+        if(!m) return;                       // cancelou: o card volta pra fase de origem
+        l.motivo_perda = m; l.tipo_saida = motivoTipo(m);
+      } else if(l.status==="encerrado"){
+        l.motivo_perda = null; l.tipo_saida = null;   // reativado: limpa a sa\u00edda anterior
+      }
+      l.status=status; renderKanban(); renderKpis();
+    } // otimista
+    api("lead_move",{token:sess.token,id:id,status:status}).then(function(d){
+      if(!d || !d.ok){ loadLeads(); } // se falhar, recarrega do servidor
+    });
+  }
+  function deleteLead(id){
+    api("lead_delete",{token:sess.token,id:id}).then(function(d){
+      if(d && d.ok){ allLeads=allLeads.filter(function(x){return String(x.id)!==String(id);}); renderAll(); renderKpis(); }
+      else if(d && d.error==="sem_permissao"){ alert("Só o admin geral pode excluir."); }
+    });
+  }
+  function findLead(id){ return allLeads.filter(function(x){return String(x.id)===String(id);})[0]; }
+  function tagAdd(id){
+    api("lead_tag_add",{token:sess.token,id:id}).then(function(d){
+      if(d && d.ok){ var l=findLead(id); if(l){ l.tags=l.tags||[]; if(l.tags.indexOf(d.tag)<0) l.tags.push(d.tag); renderAll(); } }
+    });
+  }
+  function tagRemove(id,nome){
+    api("lead_tag_remove",{token:sess.token,id:id,tag:nome}).then(function(d){
+      if(d && d.ok){ var l=findLead(id); if(l){ l.tags=(l.tags||[]).filter(function(t){return t!==nome;}); renderAll(); } }
+    });
+  }
+  var suppressClick=false; // ligado logo após um arraste real (o click que o navegador dispara em seguida não deve abrir o histórico)
+  $("board").addEventListener("click", function(e){
+    var del=e.target.closest(".card__del");
+    if(del){ var id=del.getAttribute("data-del"); if(confirm("Excluir este lead? Não dá pra desfazer.")) deleteLead(id); return; }
+    var add=e.target.closest(".tag-add");
+    if(add){ tagAdd(add.getAttribute("data-tagadd")); return; }
+    var rem=e.target.closest(".tagx");
+    if(rem){ tagRemove(rem.getAttribute("data-tid"), rem.getAttribute("data-tagx")); return; }
+    if(e.target.closest("a")) return; // link do WhatsApp segue normal
+    if(suppressClick){ suppressClick=false; return; }
+    var card=e.target.closest(".card");
+    if(card) abrirHistorico(card.getAttribute("data-id")); // clique simples no card = timeline do lead
+  });
+
+  // ---------- HISTÓRICO DO LEAD (timeline vertical) ----------
+  function fmtSP(s){
+    var d=new Date(s);
+    return d.toLocaleDateString("pt-BR",{timeZone:"America/Sao_Paulo",day:"2-digit",month:"2-digit",year:"numeric"})
+      +" às "+d.toLocaleTimeString("pt-BR",{timeZone:"America/Sao_Paulo",hour:"2-digit",minute:"2-digit"});
+  }
+  function abrirHistorico(id){
+    $("histOv").classList.add("show"); $("histOv").setAttribute("aria-hidden","false");
+    $("histTitle").textContent="Histórico do lead";
+    $("histBody").innerHTML='<div class="empty" style="padding:26px"><span class="spin"></span> Carregando histórico…</div>';
+    api("lead_history",{token:sess.token,id:id}).then(function(d){
+      if(!d || !d.ok){
+        $("histBody").innerHTML='<div class="empty" style="padding:26px">'+(d&&d.error==="sem_permissao"
+          ? "Esse lead está com outra pessoa — só o dono (ou um admin) vê o histórico."
+          : "Não deu pra carregar o histórico agora.")+'</div>';
+        return;
+      }
+      renderHistorico(d.lead, d.events||[]);
+    }).catch(function(){ $("histBody").innerHTML='<div class="empty" style="padding:26px">Não deu pra carregar o histórico agora.</div>'; });
+  }
+  function fecharHistorico(){ $("histOv").classList.remove("show"); $("histOv").setAttribute("aria-hidden","true"); }
+  function renderHistorico(l, events){
+    $("histTitle").textContent = l.nome ? l.nome : (l.whatsapp || ("Lead #"+l.id));
+    var st=stageInfo(l.status), wa=waLink(l.whatsapp);
+    var pago=/utm_medium=paid|fbclid=|utm_id=/.test(String(l.page_url||""));
+    var H='';
+    H+='<div class="hist-sub">'
+      +(wa?'<a class="wa" href="'+wa+'" target="_blank" rel="noopener">🟢 '+esc(l.whatsapp)+'</a>':esc(l.whatsapp||""))
+      +'<span class="chip" style="border-color:'+st.cor+';color:'+st.cor+'">'+st.label+'</span>'
+      +(l.motive_cat?'<span class="chip">'+esc(l.motive_cat)+'</span>':'')
+      +'</div>';
+    var profs=[l.cargo,l.empresa].filter(Boolean).join(" · ");
+    if(profs) H+='<div class="tl-note" style="margin-top:2px">💼 '+esc(profs)+'</div>';
+    if(l.motivo) H+='<div class="hist-nota">💬 "'+esc(l.motivo)+'"</div>';
+
+    // linha do tempo: chegada + eventos (já vêm em ordem cronológica do servidor)
+    var itens=[];
+    itens.push({ at:l.created_at, ico:"📥", cor:"#7aa2ff",
+      txt:"<b>Chegou</b> · "+(pago?"veio de anúncio (tráfego pago)":"orgânico")+(l.source&&l.source!=="formulario"?" · "+esc(l.source):""), note:null, retro:false });
+    events.forEach(function(ev){
+      var retro=/^retroativo/.test(String(ev.note||"")); var it=null;
+      if(ev.kind==="move"){
+        var de=ev.from_status?stageInfo(ev.from_status):null, para=stageInfo(ev.to_status||"novo");
+        it={ ico:"🔀", cor:para.cor,
+          txt:"<b>"+esc(ev.actor||"(autor não registrado)")+"</b> moveu"+(de?" de <b>"+de.label+"</b>":"")+" para <b style=\"color:"+para.cor+"\">"+para.label+"</b>" };
+      } else if(ev.kind==="assign"){
+        it={ ico:"🏷", cor:"#25d366", txt:"<b>"+esc(ev.actor||"?")+"</b> assumiu o lead" };
+      } else if(ev.kind==="unassign"){
+        it={ ico:"✂️", cor:"#9e9c93", txt:"<b>"+esc(ev.actor||"?")+"</b> soltou o lead" };
+      } else if(ev.kind==="create"){
+        it={ ico:"📲", cor:"#b285f0", txt:"<b>"+esc(ev.actor||"sistema")+"</b> importou o lead" };
+      } else if(ev.kind==="community"){
+        it={ ico:"💬", cor:"#25d366", txt:"Chegou pelo <b>botão de WhatsApp</b> da página" };
+      } else if(ev.kind==="correction"){
+        it={ ico:"🛠", cor:"#d8221f", txt:"<b>Correção do sistema</b>" };
+      } else {
+        it={ ico:"•", cor:"var(--gold)", txt:esc(ev.kind) };
+      }
+      it.at=ev.at; it.note=ev.note||null; it.retro=retro;
+      itens.push(it);
+    });
+    H+='<ul class="tl">'+itens.map(function(it){
+      return '<li class="tl-item'+(it.retro?' tl--retro':'')+'">'
+        +'<span class="tl-dot" style="border-color:'+it.cor+'">'+it.ico+'</span>'
+        +'<div class="tl-when">'+fmtSP(it.at)+(it.retro?'<span class="tl-retro">retroativo</span>':'')+'</div>'
+        +'<div class="tl-txt">'+it.txt+'</div>'
+        +(it.note?'<div class="tl-note">'+esc(it.note)+'</div>':'')
+        +'</li>';
+    }).join("")+'</ul>';
+    $("histBody").innerHTML=H;
+  }
+  $("histX").addEventListener("click", fecharHistorico);
+  $("histOv").addEventListener("click", function(e){ if(e.target===this) fecharHistorico(); });
+  document.addEventListener("keydown", function(e){ if(e.key==="Escape" && $("histOv").classList.contains("show")) fecharHistorico(); });
+
+  // ---------- HEARTBEAT (tempo online) ----------
+  // grava 1 "beat" por minuto enquanto a aba está visível; o backend deduplica por minuto.
+  var hbTimer=null;
+  function beatNow(){ if(sess && sess.token && document.visibilityState==="visible") api("beat",{token:sess.token}); }
+  function onVis(){ if(document.visibilityState==="visible") beatNow(); }
+  function startHeartbeat(){ stopHeartbeat(); beatNow(); hbTimer=setInterval(beatNow,60000); document.addEventListener("visibilitychange",onVis); }
+  function stopHeartbeat(){ if(hbTimer){clearInterval(hbTimer);hbTimer=null;} document.removeEventListener("visibilitychange",onVis); }
+
+  // ---------- RELATÓRIOS (só admin geral) ----------
+  var DIAS_SEM=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+  function fmtMin(m){ m=Math.round(m||0); if(m<60) return m+"min"; var h=Math.floor(m/60), r=m%60; return h+"h"+(r?" "+r+"min":""); }
+  function fmtDia(iso){ var p=String(iso).split("-"); return p.length===3 ? p[2]+"/"+p[1] : iso; }
+  function esc2(s){ return esc(String(s==null?"":s)); }
+
+  // barras verticais (dia / hora / semana). items:[{l,v}], hotFn(i,v,max)->bool
+  function miniBars(items, hotFn, barW){
+    var max=items.reduce(function(a,b){return Math.max(a,b.v);},0)||1;
+    var w=barW||20;
+    return '<div class="minibars">'+items.map(function(it,i){
+      var h=Math.max(3, Math.round(it.v/max*96));
+      var hot=hotFn && hotFn(i,it.v,max);
+      return '<div class="minibar'+(hot?" hot":"")+'" style="--mbw:'+w+'px" title="'+esc2(it.l)+': '+fmtMin(it.v)+'">'
+        +'<div class="minibar__v">'+(it.v?fmtMin(it.v):"")+'</div>'
+        +'<div class="minibar__bar" style="height:'+h+'px"></div>'
+        +'<div class="minibar__l">'+esc2(it.l)+'</div></div>';
+    }).join("")+'</div>';
+  }
+  // barras horizontais (fase / dono). items:[{l,n,cor?}]
+  function stBars(items){
+    var max=items.reduce(function(a,b){return Math.max(a,b.n);},0)||1;
+    return items.map(function(it){
+      var cor=it.cor||"linear-gradient(90deg,var(--gold),var(--gold-2))";
+      return '<div class="stbar"><span class="stbar__l">'+esc2(it.l)+'</span>'
+        +'<span class="stbar__t"><i style="width:'+Math.round(it.n/max*100)+'%;background:'+cor+'"></i></span>'
+        +'<span class="stbar__n">'+it.n+'</span></div>';
+    }).join("");
+  }
+
+  function loadStats(){
+    $("relStatus").style.display="block"; $("relStatus").textContent="Carregando relatórios…";
+    $("relBody").innerHTML="";
+    api("stats",{token:sess.token}).then(function(d){
+      if(!d || !d.ok){ $("relStatus").textContent = (d&&d.error==="sem_permissao")?"Sem permissão.":"Não deu pra carregar os relatórios."; return; }
+      $("relStatus").style.display="none";
+      renderStats(d);
+    });
+  }
+
+  function renderStats(d){
+    var t=d.totals||{}, H=[];
+    var conv = t.total ? Math.round((t.cliente||0)/t.total*100) : 0;
+    // 1) KPIs
+    H.push('<div class="rel-grid">'
+      +kpi(t.total||0,"Leads no total")
+      +kpi(t.hoje||0,"Entraram hoje")
+      +kpi(t.d7||0,"Últimos 7 dias")
+      +kpi(t.d30||0,"Últimos 30 dias")
+      +kpi((t.cliente||0),"Clientes",conv+"% de conversão")
+      +kpi((t.sem_dono||0),"Sem dono","ninguém etiquetou")
+      +'</div>');
+
+    // 2) tempo online por pessoa
+    var owner={}; (d.leadsByOwner||[]).forEach(function(o){ owner[o.tag]=o.n; });
+    var pu=(d.perUser||[]);
+    if(pu.length){
+      var linhas=pu.map(function(u){
+        return '<tr><td><b>'+esc2(u.label)+'</b><br><span style="color:var(--muted);font-size:.72rem">'+esc2(u.email)+'</span></td>'
+          +'<td class="num">'+fmtMin(u.min_hoje)+'</td>'
+          +'<td class="num">'+fmtMin(u.min_7d)+'</td>'
+          +'<td class="num">'+fmtMin(u.min_30d)+'</td>'
+          +'<td class="num">'+fmtMin(u.min_total)+'</td>'
+          +'<td class="num">'+(owner[u.label]||0)+'</td>'
+          +'<td style="color:var(--muted)">'+(u.last_seen?ageStr(u.last_seen):"—")+'</td></tr>';
+      }).join("");
+      H.push(card("⏱ Tempo online por pessoa","Minutos com a aba ativa. \"Leads\" = quantos essa pessoa etiquetou.",
+        '<div style="overflow-x:auto"><table class="rel-tbl"><thead><tr><th>Pessoa</th><th class="num">Hoje</th><th class="num">7d</th><th class="num">30d</th><th class="num">Total</th><th class="num">Leads</th><th>Visto</th></tr></thead><tbody>'+linhas+'</tbody></table></div>'));
+    } else {
+      H.push(card("⏱ Tempo online por pessoa","","<div class=\"empty\">Ainda sem registros de atividade. Assim que a equipe usar o painel, o tempo online aparece aqui. ⏱</div>"));
+    }
+
+    // 3) atividade por dia (30d)
+    var bd=(d.byDay||[]).map(function(x){return {l:fmtDia(x.dia), v:x.min, raw:x.dia};});
+    var maxDia = bd.reduce(function(a,b){return b.v>a.v?b:a;}, {v:0});
+    H.push(card("📅 Atividade por dia (30 dias)",
+      maxDia.v?("Dia de mais atividade: "+fmtDia(maxDia.raw)+" ("+fmtMin(maxDia.v)+")"):"",
+      bd.length? miniBars(bd,function(i,v){return v===maxDia.v && v>0;}, 26) : semDados()));
+
+    // 4) horários de pico (0-23h)
+    var horas=[]; for(var h=0;h<24;h++) horas.push({l:h+"h", v:0});
+    (d.byHour||[]).forEach(function(x){ if(x.h>=0&&x.h<24) horas[x.h].v=x.min; });
+    var maxH=horas.reduce(function(a,b){return Math.max(a,b.v);},0);
+    var pico=horas.reduce(function(a,b){return b.v>a.v?b:a;},{v:0,l:"—"});
+    H.push(card("🕐 Horários de pico",
+      maxH?("Pico às "+pico.l+". Barras acima de 75% do pico estão destacadas."):"",
+      miniBars(horas,function(i,v){return maxH>0 && v>=maxH*0.75;}, 16)));
+
+    // 5) dias da semana
+    var sem=DIAS_SEM.map(function(n){return {l:n, v:0};});
+    (d.byWeekday||[]).forEach(function(x){ if(x.d>=0&&x.d<7) sem[x.d].v=x.min; });
+    var maxSem=sem.reduce(function(a,b){return Math.max(a,b.v);},0);
+    H.push(card("📆 Atividade por dia da semana","",
+      miniBars(sem,function(i,v){return maxSem>0 && v===maxSem;}, 30)));
+
+    // 6) leads por fase
+    var stMap={}; (d.leadsByStatus||[]).forEach(function(s){ stMap[s.status]=s.n; });
+    var fases=STAGES.map(function(s){ return {l:s.label, n:stMap[s.key]||0, cor:s.cor}; });
+    H.push(card("🗂 Leads por fase","Quantos leads em cada etapa do funil.", stBars(fases)));
+
+    // 7) leads por dono
+    var donos=(d.leadsByOwner||[]).map(function(o){ return {l:o.tag, n:o.n}; });
+    H.push(card("🏷 Leads por dono","Leads que cada pessoa está trabalhando (etiquetas).",
+      donos.length? stBars(donos) : "<div class=\"empty\">Ninguém etiquetou leads ainda.</div>"));
+
+    // 8) leads por motivo
+    var cats=(d.leadsByCat||[]).map(function(o){ return {l:o.cat, n:o.n}; });
+    H.push(card("💬 Leads por motivo","", cats.length? stBars(cats) : semDados()));
+
+    $("relBody").innerHTML=H.join("");
+    function kpi(n,l,sub){ return '<div class="rel-kpi"><div class="rel-kpi__n">'+n+'</div><div class="rel-kpi__l">'+l+'</div>'+(sub?'<div class="rel-kpi__sub">'+sub+'</div>':'')+'</div>'; }
+    function card(h,hint,body){ return '<div class="rel-card"><div class="rel-card__h">'+h+'</div>'+(hint?'<div class="rel-card__hint">'+hint+'</div>':'')+body+'</div>'; }
+    function semDados(){ return '<div class="empty" style="padding:14px">Ainda sem dados suficientes.</div>'; }
+  }
+
+  // ---------- TRÁFEGO / CAMPANHA (só admin geral) ----------
+  var trafTimer=null;
+  function fmtBRL(n){ return "R$ "+Number(n||0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  function fmtInt(n){ return Number(n||0).toLocaleString("pt-BR"); }
+  // ---------- EQUIPE (produtividade por pessoa) ----------
+  function fmtDur(ms){
+    if(ms==null) return "—";
+    var s=Math.round(ms/1000);
+    if(s<60) return s+"s";
+    var m=Math.round(s/60); if(m<60) return m+" min";
+    var h=Math.floor(m/60), mm=m%60; if(h<24) return h+"h"+(mm?" "+mm+"min":"");
+    var dd=Math.floor(h/24), hh=h%24; return dd+" dia"+(dd>1?"s":"")+(hh?" "+hh+"h":"");
+  }
+  function loadTeam(silent){
+    if(!silent) $("teamStatus").textContent="Carregando equipe…";
+    return api("team_stats",{token:sess.token}).then(function(d){
+      if(!d||!d.ok){ $("teamStatus").textContent=(d&&d.error==="sem_permissao")?"Sem permissão.":"Não deu pra carregar a equipe."; return; }
+      var a=new Date(), hh=String(a.getHours()).padStart(2,"0")+":"+String(a.getMinutes()).padStart(2,"0")+":"+String(a.getSeconds()).padStart(2,"0");
+      $("teamStatus").textContent="🟢 atualizado às "+hh;
+      renderTeam(d);
+    });
+  }
+  function stageInfo(key){ var s=null; STAGES.forEach(function(x){ if(x.key===key) s=x; }); return s||STAGES[0]; }
+  function faseChips(porFase){
+    return STAGES.map(function(s){
+      var n=porFase[s.key]||0;
+      return '<span class="chip" style="border-color:'+s.cor+';color:'+s.cor+(n?'':';opacity:.4')+'">'+s.label+' '+n+'</span>';
+    }).join(" ");
+  }
+  function renderTeam(d){
+    var NOW=d.now_ms||Date.now();
+    var H=[];
+    function kpi(n,lab,sub){ return '<div class="rel-kpi"><div class="rel-kpi__n">'+n+'</div><div class="rel-kpi__l">'+lab+'</div>'+(sub?'<div class="rel-kpi__sub">'+sub+'</div>':'')+'</div>'; }
+    function card(h,hint,body){ return '<div class="rel-card"><div class="rel-card__h">'+h+'</div>'+(hint?'<div class="rel-card__hint">'+hint+'</div>':'')+body+'</div>'; }
+
+    // funil geral: quantos leads em cada fase
+    var fg=d.fasesGlobais||{}, totalGeral=STAGES.reduce(function(a,s){return a+(fg[s.key]||0);},0);
+    H.push(card("📊 Leads em cada fase","total geral: "+totalGeral+(d.semDono? " · "+d.semDono+" sem responsável":""),
+      '<div style="display:flex;gap:8px;flex-wrap:wrap">'+faseChips(fg)+'</div>'));
+
+    // por pessoa
+    var pessoas=(d.pessoas||[]);
+    if(!pessoas.length){ H.push(card("👥 Equipe","","<div class=\"empty\">Ninguém com leads ainda.</div>")); $("teamBody").innerHTML=H.join(""); return; }
+
+    pessoas.forEach(function(p){
+      var body='';
+      body+='<div class="rel-grid" style="margin-bottom:10px">'
+        +kpi(String(p.total),"Leads no total", p.total? "atendidos por "+esc(p.nome).split(" ")[0] : "nenhum ainda")
+        +kpi(fmtDur(p.atendMedioMs),"Tempo médio de atendimento", p.atendMedioMs!=null? "da entrada até fechar" : "sem fechamentos ainda")
+        +kpi(fmtDur(p.paradoMedioMs),"Parados em média há", p.paradoMedioMs!=null? "na fase atual (abertos)" : "—")
+        +'</div>';
+      body+='<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px">'+faseChips(p.porFase)+'</div>';
+      // lista dos leads da pessoa
+      if(p.leads&&p.leads.length){
+        var linhas=p.leads.map(function(r){
+          var st=stageInfo(r.status), wa=waLink(r.whatsapp);
+          var naFase=fmtDur(NOW-(r.changed_ms||NOW));
+          return '<tr><td>'+(r.nome?'<div style="font-weight:600;color:var(--cream)">'+esc(r.nome)+'</div>':'')+(wa?'<a class="wa" href="'+wa+'" target="_blank" rel="noopener">🟢 '+esc(r.whatsapp)+'</a>':esc(r.whatsapp||"—"))+'</td>'
+            +'<td><span class="chip" style="border-color:'+st.cor+';color:'+st.cor+'">'+st.label+'</span></td>'
+            +'<td style="color:var(--muted);white-space:nowrap">há '+naFase+'</td>'
+            +'<td style="color:var(--muted)">'+esc(r.motive_cat||"—")+'</td></tr>';
+        }).join("");
+        body+='<details><summary style="cursor:pointer;color:var(--muted);font-size:.9rem;margin-top:4px">Ver os '+p.leads.length+' leads de '+esc(p.nome.split(" ")[0])+'</summary>'
+          +'<div style="overflow-x:auto;margin-top:8px"><table class="rel-tbl"><thead><tr><th>WhatsApp</th><th>Fase</th><th>Nessa fase</th><th>Motivo</th></tr></thead><tbody>'+linhas+'</tbody></table></div></details>';
+      } else {
+        body+='<div class="rel-card__hint" style="margin:0">Ainda não pegou nenhum lead.</div>';
+      }
+      H.push(card("👤 "+esc(p.nome), "", body));
+    });
+
+    $("teamBody").innerHTML=H.join("");
+  }
+
+  function loadTraffic(silent){
+    if(!silent){ $("trafStatus").textContent="Carregando painel…"; }
+    return api("traffic_stats",{token:sess.token}).then(function(d){
+      if(!d || !d.ok){ $("trafStatus").textContent=(d&&d.error==="sem_permissao")?"Sem permissão.":"Não deu pra carregar o painel."; return; }
+      var agora=new Date(), hh=String(agora.getHours()).padStart(2,"0")+":"+String(agora.getMinutes()).padStart(2,"0")+":"+String(agora.getSeconds()).padStart(2,"0");
+      $("trafStatus").textContent="🟢 atualizado às "+hh+" · atualiza sozinho a cada 60s";
+      renderTraffic(d);
+    });
+  }
+  function renderTraffic(d){
+    var H=[];
+    var m=d.meta, v=d.visitas||{}, l=d.leads||{};
+    function kpi(n,lab,sub){ return '<div class="rel-kpi"><div class="rel-kpi__n">'+n+'</div><div class="rel-kpi__l">'+lab+'</div>'+(sub?'<div class="rel-kpi__sub">'+sub+'</div>':'')+'</div>'; }
+    function card(h,hint,body){ return '<div class="rel-card"><div class="rel-card__h">'+h+'</div>'+(hint?'<div class="rel-card__hint">'+hint+'</div>':'')+body+'</div>'; }
+
+    // 💰 VERBA DO MÊS — sempre no topo do painel
+    H.push(orcamentoHTML(m));
+
+    // aviso de estado da campanha
+    if(!d.metaConfigurado){
+      H.push('<div class="rel-card" style="border-color:rgba(230,182,76,.45)"><div class="rel-card__h">🔌 Campanha ainda não conectada</div>'
+        +'<div class="rel-card__hint" style="margin-bottom:0">Quando você ativar a campanha no Meta Ads, me manda o <b>token da Marketing API</b> e o <b>ID da campanha</b> que eu conecto aqui (investido, ROAS e a tabela por anúncio passam a atualizar em tempo real). As visitas e os leads abaixo já estão sendo medidos ao vivo.</div></div>');
+    } else if(d.metaError){
+      H.push('<div class="rel-card" style="border-color:rgba(216,34,31,.5)"><div class="rel-card__h">⚠️ Meta Ads com erro</div>'
+        +'<div class="rel-card__hint" style="margin-bottom:0">'+esc(d.metaError)+'</div></div>');
+    }
+
+    // placar principal — DADOS REAIS (formulário + LP); do Meta só o que ele é fonte: R$, impressões, cliques
+    var matric=l.clientes||l.vendas||0;
+    var lpTot=v.visitantes||0, crmLeads=l.total||0;
+    // visitas pagas: dado da campanha (Meta lpv = visualizações reais da página vindas do anúncio);
+    // quando o contador próprio da LP (src) acumular histórico, ele passa a valer se for maior
+    var payVis = Math.max(m? (m.lpv||0) : 0, v.pagas||0);
+    var orgVis = Math.max(0, lpTot-payVis);
+    var payLeads=l.pagos||0, orgLeads=Math.max(0, crmLeads-payLeads);
+    var conv=lpTot? Math.round(crmLeads/lpTot*1000)/10 : 0;
+    var receita=matric*(d.ticket||0);
+    var spend=m? m.spend : null;
+    var inicio = (m&&m.since) ? m.since : (v.primeira||l.primeiro||null);
+    var dias = inicio? Math.max(1, Math.ceil((Date.now()-new Date(inicio).getTime())/86400000)) : 0;
+    var cards = [ kpi(spend!=null? fmtBRL(spend) : "—","Investido total", spend!=null?"Meta Ads":"aguardando campanha") ];
+    cards.push(kpi(fmtInt(payLeads),"Leads da campanha", (l.hoje_pagos? "+"+l.hoje_pagos+" hoje · " : "")+"chegaram pelo anúncio (real)"));
+    cards.push(kpi(fmtInt(orgLeads),"Leads orgânicos", "sem marcação de anúncio"));
+    cards.push(kpi(spend!=null&&payLeads? fmtBRL(spend/payLeads) : "—","Custo por lead","investido ÷ leads reais do anúncio"));
+    cards.push(kpi(fmtInt(payVis),"Visitas pagas", "da campanha"+(m? " · "+fmtInt(m.clicks||0)+" cliques no anúncio" : "")));
+    cards.push(kpi(fmtInt(orgVis),"Visitas orgânicas", fmtInt(lpTot)+" no total · "+fmtInt(v.pageviews||0)+" pageviews"));
+    cards.push(kpi(lpTot? (String(conv).replace(".",","))+"%" : "—","Conversão da página", fmtInt(crmLeads)+" leads ÷ "+fmtInt(lpTot)+" visitas (reais)"));
+    cards.push(kpi(fmtBRL(receita),"Receita estimada", matric+" venda"+(matric===1?"":"s")+" × "+fmtBRL(d.ticket)+(spend>0? " · ROAS "+(Math.round(receita/spend*100)/100).toLocaleString("pt-BR") : "")));
+    cards.push(kpi(dias||"—","Dias de campanha", dias&&crmLeads? ("média "+(Math.round(crmLeads/dias*10)/10).toLocaleString("pt-BR")+" leads/dia") : ""));
+    H.push('<div class="rel-grid">'+cards.join("")+'</div>');
+
+    // HOJE — pago × orgânico com dados reais
+    var hj=[];
+    var hpl=l.hoje_pagos||0, hol=Math.max(0,(l.hoje||0)-hpl);
+    var hpv=Math.max(m? ((m.hoje&&m.hoje.lpv)||0) : 0, v.hoje_pagas||0), hov=Math.max(0,(v.hoje||0)-hpv);
+    if(m) hj.push("Investido <b>"+fmtBRL(m.hoje&&m.hoje.spend)+"</b>");
+    hj.push("Leads campanha <b>"+fmtInt(hpl)+"</b>");
+    hj.push("Leads orgânicos <b>"+fmtInt(hol)+"</b>");
+    hj.push("Visitas pagas <b>"+fmtInt(hpv)+"</b>");
+    hj.push("Visitas orgânicas <b>"+fmtInt(hov)+"</b>");
+    if(v.hoje) hj.push("Conversão <b>"+(Math.round((l.hoje||0)/v.hoje*1000)/10+"").replace(".",",")+"%</b>");
+    H.push(card("⚡ Hoje","",'<div style="display:flex;gap:22px;flex-wrap:wrap;font-size:.92rem;color:var(--muted)">'
+      +hj.map(function(x){return '<span>'+x+'</span>';}).join("")+'</div>'));
+
+    // últimos leads (tempo real)
+    var rec=(d.recentes||[]);
+    if(rec.length){
+      var linhas=rec.map(function(r){
+        var st=null; STAGES.forEach(function(s){ if(s.key===(r.status||"novo")) st=s; }); st=st||STAGES[0];
+        var wa=waLink(r.whatsapp);
+        var org = r.origem==='pago'
+          ? '<span class="chip" style="border-color:rgba(230,182,76,.55);color:var(--gold-soft)">💰 Anúncio</span>'
+          : '<span class="chip" style="border-color:rgba(120,190,120,.5);color:#9fd49f">🌱 Orgânico</span>';
+        return '<tr><td>'+(r.nome?'<div style="font-weight:600;color:var(--cream)">'+esc(r.nome)+'</div>':'')+(wa?'<a class="wa" href="'+wa+'" target="_blank" rel="noopener">🟢 '+esc(r.whatsapp)+'</a>':esc(r.whatsapp||"—"))+'</td>'
+          +'<td style="color:var(--muted);white-space:nowrap">'+fmtDate(r.created_at)+' · '+ageStr(r.created_at)+'</td>'
+          +'<td>'+org+'</td>'
+          +'<td><span class="chip" style="border-color:'+st.cor+';color:'+st.cor+'">'+st.label+'</span></td>'
+          +'<td style="color:var(--muted)">'+esc(r.motive_cat||"—")+'</td></tr>';
+      }).join("");
+      H.push(card("🔥 Últimos leads","banco do CRM · tempo real",
+        '<div style="overflow-x:auto"><table class="rel-tbl"><thead><tr><th>WhatsApp</th><th>Quando</th><th>Origem</th><th>Fase</th><th>Motivo</th></tr></thead><tbody>'+linhas+'</tbody></table></div>'));
+    } else {
+      H.push(card("🔥 Últimos leads","","<div class=\"empty\">Nenhum lead ainda. Assim que a campanha rodar, eles aparecem aqui em tempo real. 🎯</div>"));
+    }
+
+    // por dia (30d): dados reais — leads do formulário e visitas medidas na LP
+    var lpd=(d.leadsPorDia||[]), vpd=(d.visitasPorDia||[]);
+    H.push(card("📅 Leads por dia (30 dias)","formulário da LP · dados reais", lpd.length? miniBarsN(lpd) : '<div class="empty" style="padding:14px">Sem dados ainda.</div>'));
+    H.push(card("👀 Visitas por dia (30 dias)","medidas na própria página · sem robôs", vpd.length? miniBarsN(vpd) : '<div class="empty" style="padding:14px">Sem dados ainda.</div>'));
+
+    // 📣 POR CAMPANHA (V1 × V2) — mesmas métricas, individualizadas por campanha
+    var camps=(m && m.campanhas)||[];
+    if(camps.length){
+      H.push('<div class="chart-total" style="display:block;margin:18px 0 4px;font-size:1rem">📣 Por campanha</div>');
+      camps.forEach(function(cc){
+        var custoLead = cc.leadsReais ? fmtBRL(cc.spend/cc.leadsReais) : "—";
+        var body=campNotaHTML(cc.id) /* observação da campanha (ex.: por que foi pausada) */
+          +'<div class="rel-grid" style="margin-bottom:10px">'
+          +kpi(fmtBRL(cc.spend),"Investido", cc.spend>0?"Meta Ads":"sem gasto ainda")
+          +kpi(fmtInt(cc.leadsReais),"Leads reais", (cc.leadsReaisHoje? "+"+cc.leadsReaisHoje+" hoje · ":"")+"formulário (utm)")
+          +kpi(custoLead,"Custo por lead", cc.leadsReais? "investido ÷ leads reais" : "—")
+          +kpi(fmtInt(cc.impressions),"Impressões", fmtInt(cc.clicks)+" cliques")
+          +kpi(fmtInt(cc.lpv),"Visitas pagas","landing page views")
+          +kpi(fmtInt(cc.leads),"Leads (Meta)","atribuição — só p/ comparar")
+          +'</div>';
+        body+='<div style="display:flex;gap:20px;flex-wrap:wrap;font-size:.9rem;color:var(--muted);margin-bottom:8px">'
+          +'<span>⚡ Hoje: Investido <b>'+fmtBRL(cc.hoje&&cc.hoje.spend)+'</b></span>'
+          +'<span>Leads reais <b>'+fmtInt(cc.leadsReaisHoje)+'</b></span>'
+          +'<span>Visitas pagas <b>'+fmtInt((cc.hoje&&cc.hoje.lpv)||0)+'</b></span></div>';
+        var adsD=(cc.ads||[]);
+        if(adsD.length){
+          var lin=adsD.map(function(a){
+            return '<tr><td><b>'+esc(a.name)+'</b>'+(a.leads?' <span class="chip" style="background:rgba(230,182,76,.15);border-color:rgba(230,182,76,.5);color:var(--gold-soft)">'+a.leads+' lead'+(a.leads>1?'s':'')+'</span>':'')+'</td>'
+              +'<td class="num">'+fmtInt(a.leads)+'</td><td class="num">'+fmtBRL(a.spend)+'</td>'
+              +'<td class="num">'+fmtInt(a.impressions)+'</td><td class="num">'+fmtInt(a.clicks)+'</td></tr>';
+          }).join("");
+          body+='<details'+(cc.spend>0?' open':'')+'><summary style="cursor:pointer;color:var(--muted);font-size:.9rem;margin-top:4px">Ver os '+adsD.length+' anúncios (Leads = contagem do Meta, só p/ comparar)</summary>'
+            +'<div style="overflow-x:auto;margin-top:8px"><table class="rel-tbl"><thead><tr><th>Anúncio</th><th class="num">Leads</th><th class="num">Gasto</th><th class="num">Impr.</th><th class="num">Cliques</th></tr></thead><tbody>'+lin+'</tbody></table></div></details>';
+        }
+        var hint = cc.spend>0 ? esc(cc.nome) : esc(cc.nome)+" · pausada / sem entrega ainda";
+        H.push(card("📣 Campanha "+esc(cc.tag), hint, body));
+      });
+    }
+
+    // 🧪 diagnóstico de entrega dos criativos + plano de rodízio
+    H.push(renderDiagnostico(m));
+
+    $("trafBody").innerHTML=H.join("");
+  }
+  // ---------- 🧪 DIAGNÓSTICO DE ENTREGA DOS CRIATIVOS (seção de apresentação) ----------
+  // Mede AO VIVO a concentração da campanha de teste (quanto da verba foi parar em poucos
+  // criativos) e monta o plano de rodízio que faz TODOS entregarem dentro da verba diária.
+  function renderDiagnostico(m){
+    var camps=(m&&m.campanhas)||[];
+    if(!camps.length) return "";
+    // campanha de teste = a que tem mais criativos (a V3 é 1 anúncio por conjunto)
+    var cc=camps.slice().sort(function(a,b){ return ((b.ads||[]).length)-((a.ads||[]).length); })[0];
+    var ads=(cc.ads||[]).slice().sort(function(a,b){ return Number(b.spend||0)-Number(a.spend||0); });
+    if(ads.length<3) return "";
+    var total=ads.reduce(function(s,a){ return s+Number(a.spend||0); },0);
+    if(total<=0) return "";
+    var top2=Number(ads[0].spend||0)+Number(ads[1].spend||0);
+    var pct2=Math.round(top2/total*100);
+    var mudos=ads.filter(function(a){ return Number(a.spend||0) < PLANO_TESTE.minEntrega; });
+    var pctResto=100-pct2;
+
+    // plano de rodízio
+    var n=ads.length, k=PLANO_TESTE.conjuntos;
+    var diaria=PLANO_TESTE.verbas.reduce(function(s,v){ return s+Number(v); },0);
+    var rodadas=Math.ceil(n/k);
+    var dias=rodadas*PLANO_TESTE.diasPorRodada;
+    var custo=dias*diaria;
+    var porCriativo=(diaria/k)*PLANO_TESTE.diasPorRodada;
+
+    var H='<div class="diag">';
+    H+='<div class="diag__kick">Diagnóstico de mídia</div>';
+    H+='<div class="diag__t">🧪 Por que a Meta não entrega todos os criativos</div>';
+    H+='<div class="diag__sub">Campanha analisada: <b style="color:var(--gold-soft)">'+esc(cc.nome)+'</b> · '+n+' criativos · '+fmtBRL(total)+' investidos</div>';
+
+    // ---- os números do problema ----
+    H+='<div class="diag__num">'
+      +'<div class="diag__c bad"><b>'+pct2+'%</b><span>da verba em 2 criativos</span><i>'+fmtBRL(top2)+' de '+fmtBRL(total)+'</i></div>'
+      +'<div class="diag__c bad"><b>'+mudos.length+'</b><span>criativos sem entrega</span><i>gastaram menos de '+fmtBRL(PLANO_TESTE.minEntrega)+'</i></div>'
+      +'<div class="diag__c"><b>'+n+'</b><span>criativos no ar</span><i>1 por conjunto</i></div>'
+      +'</div>';
+
+    // ---- barra de concentração ----
+    H+='<div class="diag__barra">'
+      +'<div style="width:'+pct2+'%;background:linear-gradient(90deg,#ff6b68,var(--red));color:#fff">'+(pct2>=18?('2 criativos · '+pct2+'%'):'')+'</div>'
+      +'<div style="width:'+pctResto+'%;background:rgba(255,255,255,.09);color:var(--muted)">'+(pctResto>=18?((n-2)+' criativos · '+pctResto+'%'):'')+'</div>'
+      +'</div>'
+      +'<div class="diag__leg"><span><s style="background:var(--red)"></s>os 2 que a Meta escolheu</span>'
+      +'<span><s style="background:rgba(255,255,255,.25)"></s>todos os outros '+(n-2)+' juntos</span></div>';
+
+    // ---- causa ----
+    H+='<div class="diag__h">O que está acontecendo</div>'
+      +'<div class="diag__p">A campanha está em <b>CBO</b> — a verba fica na campanha e <b>a Meta decide sozinha</b> quem gasta. '
+      +'Ela aposta cedo em quem parece melhor e trava o resto. Separar em 1 anúncio por conjunto <b>não resolveu</b>: '
+      +'a concentração só mudou de lugar — antes um anúncio comia a verba dentro do conjunto, agora <b>2 conjuntos</b> comem a verba da campanha.</div>';
+
+    // ---- solução ----
+    H+='<div class="diag__h">A solução: verba no conjunto (ABO) + rodízio</div>'
+      +'<div class="diag__p">Com a verba <b>dentro de cada conjunto</b>, a Meta é obrigada a gastar em todos. '
+      +'Como '+fmtBRL(diaria)+'/dia só comporta <b>'+k+' conjuntos</b> com verba relevante, os criativos entram em <b>levas</b>:</div>';
+
+    H+='<div class="diag__conj">'+PLANO_TESTE.verbas.map(function(v,i){
+        return '<div><b>'+fmtBRL(v)+'</b><span>Conjunto '+(i+1)+' · 1 criativo</span></div>';
+      }).join('')+'</div>';
+
+    H+='<div style="overflow-x:auto"><table class="rel-tbl"><tbody>'
+      +'<tr><td>Verba diária</td><td class="num">'+fmtBRL(diaria)+'</td></tr>'
+      +'<tr><td>Criativos por leva</td><td class="num">'+k+'</td></tr>'
+      +'<tr><td>Dias por leva</td><td class="num">'+PLANO_TESTE.diasPorRodada+'</td></tr>'
+      +'<tr><td>Levas até rodar tudo</td><td class="num">'+rodadas+'</td></tr>'
+      +'<tr><td><b>Tempo total</b></td><td class="num"><b>'+dias+' dias</b></td></tr>'
+      +'<tr><td><b>Investimento total</b></td><td class="num"><b>'+fmtBRL(custo)+'</b></td></tr>'
+      +'<tr><td>Entrega garantida por criativo</td><td class="num">'+fmtBRL(porCriativo)+'</td></tr>'
+      +'</tbody></table></div>';
+
+    // ---- as levas, com os criativos reais ----
+    var levas=[];
+    for(var i=0;i<n;i+=k) levas.push(ads.slice(i,i+k));
+    H+='<div class="diag__h">As '+rodadas+' levas (na ordem)</div>';
+    H+='<details><summary style="cursor:pointer;color:var(--muted);font-size:.86rem;margin-bottom:10px">Ver quais criativos entram em cada leva</summary>';
+    H+=levas.map(function(g,i){
+      var d1=i*PLANO_TESTE.diasPorRodada+1, d2=d1+PLANO_TESTE.diasPorRodada-1;
+      return '<div class="diag__rod"><b>Leva '+(i+1)+' · dias '+d1+'–'+d2+'</b><ul>'
+        +g.map(function(a){ return '<li>'+esc(a.name)+'</li>'; }).join('')+'</ul></div>';
+    }).join('');
+    H+='</details>';
+
+    H+='<div class="diag__p" style="margin-top:14px;color:var(--muted);font-size:.78rem">'
+      +'Números medidos direto na conta de anúncios. O plano assume '+fmtBRL(diaria)+'/dia — '
+      +'mudando a verba, o tempo e o custo mudam junto.</div>';
+    return H+'</div>';
+  }
+
+  // barras de CONTAGEM (sem sufixo "min"): mesma estética do miniBars
+  function miniBarsN(arr){
+    var items=arr.map(function(x){ var p=String(x.dia).split("-"); return {l:p.length===3?p[2]+"/"+p[1]:x.dia, v:x.n}; });
+    var max=items.reduce(function(a,b){return Math.max(a,b.v);},0)||1;
+    return '<div class="minibars">'+items.map(function(it){
+      var h=Math.max(3, Math.round(it.v/max*96));
+      var hot=it.v===max&&it.v>0;
+      return '<div class="minibar'+(hot?" hot":"")+'" style="--mbw:26px" title="'+esc(it.l)+': '+fmtInt(it.v)+'">'
+        +'<div class="minibar__v">'+(it.v?fmtInt(it.v):"")+'</div>'
+        +'<div class="minibar__bar" style="height:'+h+'px"></div>'
+        +'<div class="minibar__l">'+esc(it.l)+'</div></div>';
+    }).join("")+'</div>';
+  }
+
+  // ----- toggle de visão -----
+  function setView(v){
+    currentView=v;
+    $("kanbanView").classList.toggle("hidden", v!=="kanban");
+    $("listView").classList.toggle("hidden", v!=="lista");
+    $("teamView").classList.toggle("hidden", v!=="team");
+    $("relView").classList.toggle("hidden", v!=="rel");
+    $("trafView").classList.toggle("hidden", v!=="traf");
+    $("viewKanban").classList.toggle("on", v==="kanban");
+    $("viewLista").classList.toggle("on", v==="lista");
+    $("viewTeam").classList.toggle("on", v==="team");
+    $("viewRel").classList.toggle("on", v==="rel");
+    $("viewTraf").classList.toggle("on", v==="traf");
+    // seletor de dono só faz sentido nas visões de leads (kanban/lista/públicos)
+    $("ownerFilter").style.display = (v==="kanban"||v==="lista") ? "" : "none";
+    if(v==="team") loadTeam(false);
+    if(v==="rel") loadStats();
+    if(v==="traf"){
+      loadTraffic(false);
+      if(!trafTimer) trafTimer=setInterval(function(){ if(currentView==="traf"&&document.visibilityState==="visible") loadTraffic(true); },60000);
+    } else if(trafTimer){ clearInterval(trafTimer); trafTimer=null; }
+  }
+
+  function exportCSV(){
+    var head=["id","data","nome","whatsapp","profissao","motivo","event_id"];
+    var rows=allLeads.map(function(l){
+      return [l.id,l.created_at,l.nome,l.whatsapp,l.profissao,l.motivo,l.event_id].map(function(v){
+        return '"'+String(v==null?"":v).replace(/"/g,'""')+'"';
+      }).join(",");
+    });
+    var csv=head.join(",")+"\n"+rows.join("\n");
+    var blob=new Blob(["﻿"+csv],{type:"text/csv;charset=utf-8"});
+    var a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+    a.download="leads-cscouto.csv"; a.click();
+  }
+
+  // ---------- ADMINS ----------
+  function loadAdmins(){
+    return api("admins",{token:sess.token}).then(function(d){
+      if(!d || !d.ok) return;
+      var box=$("adminsList"); box.innerHTML="";
+      (d.admins||[]).forEach(function(a){
+        var row=document.createElement("div"); row.className="admin-row";
+        var me = a.email===sess.email;
+        var papel = a.role==='geral' ? '<span class="chip" style="background:rgba(216,34,31,.16);border-color:rgba(216,34,31,.4);color:#ff9d9b">admin · vê tudo</span>' : '<span class="chip">gestão · só os próprios</span>';
+        row.innerHTML='<span>'+esc(a.email)+' '+papel+(me?' <span class="chip">você</span>':'')+'</span>';
+        var btn=document.createElement("button");
+        btn.className="btn btn--ghost btn--sm"; btn.textContent="Remover";
+        btn.onclick=function(){ if(confirm("Remover acesso de "+a.email+"?")) removeAdmin(a.email); };
+        row.appendChild(btn);
+        box.appendChild(row);
+      });
+    });
+  }
+  function addAdmin(){
+    var e=($("newAdmin").value||"").trim().toLowerCase();
+    var msg=$("adminMsg"); msg.className="msg"; msg.textContent="";
+    if(!e || e.indexOf("@")<0){ msg.className="msg err"; msg.textContent="E-mail inválido."; return; }
+    var papel = $("newAdminRole") ? $("newAdminRole").value : "diretoria";
+    api("admin_add",{token:sess.token,email:e,role:papel}).then(function(d){
+      if(d && d.ok){ $("newAdmin").value=""; msg.className="msg ok"; msg.textContent="Cadastrado! "+e+" ("+papel+") já pode acessar."; loadAdmins(); }
+      else { msg.className="msg err"; msg.textContent="Não deu pra cadastrar."; }
+    });
+  }
+  function removeAdmin(email){
+    api("admin_remove",{token:sess.token,email:email}).then(function(d){
+      var msg=$("adminMsg"); msg.className="msg";
+      if(d && d.ok){ msg.className="msg ok"; msg.textContent="Removido."; loadAdmins(); }
+      else if(d && d.error==="ultimo_admin"){ msg.className="msg err"; msg.textContent="Não dá pra remover o último admin."; }
+      else { msg.className="msg err"; msg.textContent="Não deu pra remover."; }
+    });
+  }
+
+  // ---------- eventos ----------
+  $("loginBtn").addEventListener("click", doLogin);
+  $("email").addEventListener("keydown", function(e){ if(e.key==="Enter") doLogin(); });
+  $("logoutBtn").addEventListener("click", logout);
+  /* feedback visual de "carregando" nos botões de ação (spinner + desabilita até terminar) */
+  function btnBusy(btn, busy, label){
+    if(!btn) return;
+    if(busy){
+      if(btn.dataset.orig==null) btn.dataset.orig=btn.innerHTML;
+      btn.disabled=true; btn.classList.add("is-busy");
+      btn.innerHTML='<span class="btn-spin" aria-hidden="true"></span>'+(label||"Atualizando…");
+    } else {
+      btn.disabled=false; btn.classList.remove("is-busy");
+      if(btn.dataset.orig!=null){ btn.innerHTML=btn.dataset.orig; delete btn.dataset.orig; }
+    }
+  }
+  function runWithBtn(btn, label, fn){
+    btnBusy(btn, true, label); /* spinner ANTES de rodar (mesmo que a função falhe) */
+    var t0=Date.now();
+    return Promise.resolve().then(fn).catch(function(){}).then(function(r){
+      var wait=Math.max(0, 450-(Date.now()-t0)); /* mínimo pra o spinner não "piscar" */
+      setTimeout(function(){ btnBusy(btn, false); }, wait);
+      return r;
+    });
+  }
+  $("refreshBtn").addEventListener("click", function(){ runWithBtn(this, "Atualizando…", function(){ return Promise.all([loadLeads(), loadAdmins()]); }); });
+  $("csvBtn").addEventListener("click", exportCSV);
+  $("search").addEventListener("input", renderAll);
+  $("viewKanban").addEventListener("click", function(){ setView("kanban"); });
+  $("viewLista").addEventListener("click", function(){ setView("lista"); });
+  $("ownerFilter").addEventListener("change", function(){ filterOwner=this.value; renderAll(); });
+  $("viewTeam").addEventListener("click", function(){ setView("team"); });
+  $("viewRel").addEventListener("click", function(){ setView("rel"); });
+  $("viewTraf").addEventListener("click", function(){ setView("traf"); });
+  $("teamRefresh").addEventListener("click", function(){ runWithBtn(this, "Atualizando…", function(){ return loadTeam(false); }); });
+  $("trafRefresh").addEventListener("click", function(){ runWithBtn(this, "Atualizando…", function(){ return loadTraffic(false); }); });
+  $("semFilter").addEventListener("change", function(){ filterSem=this.value; renderAll(); });
+  $("addAdminBtn").addEventListener("click", addAdmin);
+  $("newAdmin").addEventListener("keydown", function(e){ if(e.key==="Enter") addAdmin(); });
+  $("admToggle").addEventListener("click", function(){
+    var box=$("adminsBox"), hid=box.classList.toggle("hidden");
+    $("admToggle").textContent = hid ? "(mostrar)" : "(esconder)";
+  });
+
+  // 🚧 MODO DEMO: sessao ficticia local, entra direto no CRM (sem login, sem rede)
+  if(DEMO_MODE){
+    sess = { token:"demo", email:"contato@camilacouto.com", role:"geral", members:[], who:null, name:"Camila Couto" };
+    showPanel();
+  }
+  // auto-login se já tem sessão salva
+  else if(sess && sess.token){
+    if(sess.role===undefined){ localStorage.removeItem(SESS_KEY); sess=null; } // sessão antiga sem papel: força novo login
+    else if(sess.members && sess.members.length && !sess.who){ askIdentity(); }
+    else { showPanel(); }
+  }
+})();
+</script>
+</body>
+</html>

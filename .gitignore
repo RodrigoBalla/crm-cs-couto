@@ -1,0 +1,9 @@
+# credenciais — NUNCA versionar
+DOCUMENTOS/.env.txt
+*.env
+.env*
+!.env.example
+
+# temporários do build/teste
+_teste*.html
+_js.js

@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comercial Pocket v3 | CS Couto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--vinho:#490F17;--vinho2:#6B1C26;--gold:#C9963C;--areia:#F3EBE3;--papel:#FBF8F5;--tinta:#2A1B1B;--cinza:#7A6A66;--linha:#E2D5CB}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.55;padding-bottom:80px}
+header{background:var(--vinho);color:var(--areia);padding:18px 18px 14px}
+header .marca{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600}
+header h1{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:25px;line-height:1.15;margin-top:3px}
+header p{font-size:12.5px;color:#D9C8C0;margin-top:5px;max-width:540px}
+nav{position:sticky;top:0;z-index:30;background:var(--vinho);display:flex;gap:2px;overflow-x:auto;padding:0 10px;border-top:1px solid rgba(201,150,60,.25);scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav>button{flex:0 0 auto;background:none;border:none;cursor:pointer;color:#C6ADA6;font-family:inherit;font-size:12.5px;font-weight:500;padding:13px 12px;border-bottom:2px solid transparent;white-space:nowrap}
+nav>button[aria-selected="true"]{color:var(--gold);border-bottom-color:var(--gold)}
+nav>button:focus-visible{outline:2px solid var(--gold);outline-offset:-4px}
+main{max-width:780px;margin:0 auto;padding:20px 16px}
+section[hidden],.sub-pane[hidden]{display:none}
+h2{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:21px;margin-bottom:2px}
+.sub{font-size:13px;color:var(--cinza);margin-bottom:18px}
+.subnav{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.subnav button{background:#fff;border:1px solid var(--linha);border-radius:20px;padding:7px 14px;font-family:inherit;font-size:12.5px;font-weight:500;color:var(--cinza);cursor:pointer}
+.subnav button[aria-selected="true"]{background:var(--vinho);border-color:var(--vinho);color:var(--gold)}
+.bloco{background:#fff;border:1px solid var(--linha);border-radius:10px;padding:16px;margin-bottom:14px}
+.bloco h3{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--vinho2);font-weight:600;margin-bottom:2px}
+.bloco .quando{font-size:12px;color:var(--cinza);margin-bottom:12px}
+label.item{display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-top:1px solid #F0E9E3;cursor:pointer}
+label.item:first-of-type{border-top:none}
+label.item input{appearance:none;flex:0 0 19px;height:19px;margin-top:1px;border:1.5px solid var(--linha);border-radius:5px;background:#fff;cursor:pointer}
+label.item input:checked{background:var(--vinho);border-color:var(--vinho)}
+label.item input:checked::after{content:"";display:block;width:5px;height:9px;margin:2px auto;border:solid var(--gold);border-width:0 2px 2px 0;transform:rotate(45deg)}
+label.item input:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+label.item input:checked ~ span{color:var(--cinza);text-decoration:line-through}
+label.item span{font-size:14.5px}
+label.item span em{display:block;font-style:normal;font-size:12.5px;color:var(--cinza);margin-top:2px}
+label.item input:checked ~ span em{text-decoration:none}
+.turno{border-left:3px solid var(--gold);background:var(--areia);border-radius:0 8px 8px 0;padding:12px 13px;margin:10px 0}
+.turno .rotulo{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--vinho2);font-weight:600;margin-bottom:6px}
+.turno .tom{display:inline-block;font-size:11px;color:var(--vinho2);background:#fff;border:1px solid var(--linha);border-radius:20px;padding:2px 9px;margin-bottom:7px;font-weight:500}
+.turno p{font-size:14.5px;margin-bottom:8px;white-space:pre-line}
+.espera{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:#8C2F2F;font-weight:600;margin:2px 0 8px}
+.copiar{background:var(--vinho);color:var(--areia);border:none;border-radius:6px;font-family:inherit;font-size:12px;font-weight:600;letter-spacing:.04em;padding:7px 14px;cursor:pointer}
+.copiar:hover{background:var(--vinho2)}
+.copiar.ok{background:var(--gold);color:var(--vinho)}
+.regra{border:1px dashed var(--gold);border-radius:8px;background:#FFFBF4;padding:13px 14px;margin-bottom:16px;font-size:13.5px}
+.regra strong{color:var(--vinho)}
+.leitura{font-size:13px;color:var(--cinza);margin-bottom:12px}
+.leitura b{color:var(--tinta);font-weight:600}
+details.obj{border:1px solid var(--linha);border-radius:9px;background:#fff;margin-bottom:9px;overflow:hidden}
+details.obj>summary{cursor:pointer;padding:13px 15px;font-weight:600;font-size:14px;list-style:none;color:var(--vinho)}
+details.obj>summary::-webkit-details-marker{display:none}
+details.obj>summary::after{content:"+";float:right;color:var(--gold);font-weight:600}
+details.obj[open]>summary::after{content:"–"}
+details.obj[open]>summary{border-bottom:1px solid var(--linha)}
+details.obj .corpo{padding:4px 15px 14px}
+.veredito{display:grid;gap:10px;grid-template-columns:1fr 1fr}
+@media(max-width:520px){.veredito{grid-template-columns:1fr}}
+.veredito div{border:1px solid var(--linha);border-radius:8px;padding:12px;background:#fff}
+.veredito .t{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px}
+.segue .t{color:#2E6B4F}.corta .t{color:#8C2F2F}
+.veredito p{font-size:13.5px;color:var(--cinza)}
+.dia{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);background:var(--vinho);border-radius:20px;padding:3px 10px;display:inline-block;margin-bottom:6px}
+footer{position:fixed;bottom:0;left:0;right:0;background:var(--vinho);color:#C6ADA6;font-size:11.5px;text-align:center;padding:9px 14px;border-top:1px solid rgba(201,150,60,.3)}
+footer b{color:var(--gold);font-weight:600}
+@media(prefers-reduced-motion:no-preference){section{animation:s .2s ease}@keyframes s{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}}
+
+.barra-edit{position:fixed;bottom:34px;left:0;right:0;z-index:40;display:flex;gap:8px;justify-content:center;padding:8px 12px;background:rgba(251,248,245,.96);border-top:1px solid var(--linha)}
+.barra-edit button{background:#fff;border:1px solid var(--linha);border-radius:20px;padding:7px 14px;font-family:inherit;font-size:12px;font-weight:600;color:var(--vinho);cursor:pointer}
+.barra-edit button.on{background:var(--vinho);border-color:var(--vinho);color:var(--gold)}
+.barra-edit button:disabled{opacity:.4;cursor:default}
+body.editando .turno p{outline:1px dashed var(--gold);outline-offset:3px;border-radius:3px}
+body.editando .turno p:focus{outline:2px solid var(--vinho);background:#fff}
+body.editando .copiar{opacity:.35;pointer-events:none}
+body{padding-bottom:130px}
+.aviso-edit{font-size:11.5px;color:var(--cinza);text-align:center;padding:0 16px 6px}
+
+.add-msg{display:none;background:none;border:1px dashed var(--linha);border-radius:8px;width:100%;padding:9px;margin-top:6px;font-family:inherit;font-size:12.5px;font-weight:600;color:var(--vinho2);cursor:pointer}
+.add-msg:hover{border-color:var(--gold);background:#FFFBF4}
+body.editando .add-msg{display:block}
+.apagar-msg{display:none;background:none;border:none;color:#8C2F2F;font-family:inherit;font-size:11.5px;font-weight:600;cursor:pointer;padding:4px 0 0;margin-left:10px}
+body.editando .apagar-msg{display:inline-block}
+
+.rotas{display:grid;gap:9px;grid-template-columns:1fr 1fr;margin-bottom:18px}
+@media(max-width:560px){.rotas{grid-template-columns:1fr}}
+.rota{text-align:left;background:#fff;border:1px solid var(--linha);border-left:3px solid var(--gold);border-radius:10px;padding:13px 14px;font-family:inherit;cursor:pointer}
+.rota:hover{border-left-color:var(--vinho);background:#FFFBF4}
+.rota b{display:block;font-size:14.5px;color:var(--vinho);margin-bottom:3px}
+.rota i{font-style:normal;font-size:12.5px;color:var(--cinza)}
+.reguat{width:100%;border-collapse:collapse;font-size:13.5px}
+.reguat td{padding:8px 6px;border-top:1px solid #F0E9E3}
+.reguat tr:first-child td{border-top:none}
+.reguat td:first-child{color:var(--vinho2);font-weight:600;white-space:nowrap;width:1%}
+.reguat td:last-child{text-align:right;font-weight:600;color:var(--gold);white-space:nowrap}
+
+.rev{display:none;border-radius:9px;padding:12px 14px;margin:0 0 14px;font-size:13.5px;border:1px solid}
+body.revisando .rev{display:block}
+.rev .rt{font-size:11px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;margin-bottom:5px}
+.rev p{margin-top:7px}
+.rev p:first-of-type{margin-top:0}
+.rev.add{background:#F2F8F4;border-color:#BEDCC8}.rev.add .rt{color:#2E6B4F}
+.rev.tira{background:#FCF2F1;border-color:#EBC9C4}.rev.tira .rt{color:#8C2F2F}
+.rev.conf{background:#FFFAF0;border-color:#EBD9B4}.rev.conf .rt{color:#8A6510}
+.novo{display:none;font-size:10px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--vinho);background:var(--gold);border-radius:20px;padding:2px 8px;margin-left:8px;vertical-align:2px}
+body.revisando .novo{display:inline-block}
+</style>
+<header>
+  <div class="marca">CS Couto Treinamentos</div>
+  <h1>Comercial Pocket</h1>
+  <p>Da entrada do lead até a Reunião de Diagnóstico. Camila e Daniele. Versão 3, agosto de 2026.</p>
+</header>
+
+<nav role="tablist">
+  <button role="tab" aria-selected="true" data-alvo="agora">Agora</button>
+  <button role="tab" aria-selected="false" data-alvo="mensagens">Mensagens</button>
+  <button role="tab" aria-selected="false" data-alvo="ligacao">Ligação</button>
+  <button role="tab" aria-selected="false" data-alvo="objecoes">Objeções</button>
+  <button role="tab" aria-selected="false" data-alvo="passagem">O card</button>
+  <button role="tab" aria-selected="false" data-alvo="kommo">Kommo</button>
+  <button role="tab" aria-selected="false" data-alvo="fechamento">Fechamento</button>
+  <button role="tab" aria-selected="false" data-alvo="gestao">Gestão</button>
+  <button role="tab" aria-selected="false" data-alvo="regras">Inegociáveis</button>
+</nav>
+
+<main>
+
+<section id="agora">
+  <h2>O que aconteceu?</h2>
+  <p class="sub">Escolha a situação e vá direto para a mensagem certa.</p>
+
+<div class="rev conf"><div class="rt">Antes de tudo, três coisas que eu preciso que você confirme</div><p><b>1. Quem apoia a Daniele.</b> O manual de onboarding que eu gerei ontem cita Pricilla, Raquell e Andreza. Segundo o CONTEXTO_COMERCIAL_ago2026_v3, as três saíram, confirmado por você em 15/08. Eu escrevi em cima das Instruções do projeto, que estão desatualizadas nesse ponto. O erro é meu. Me diga quem a Daniele procura para dúvida de processo e para escuta de ligação, porque hoje o documento manda ela procurar quem não está mais aqui.</p><p><b>2. O portal mistura duas pessoas.</b> As abas Fechamento e Gestão são da Camila, o resto é da Daniele. Hoje a Daniele abre o portal e vê a aba onde está escrito o que fazer para pedir o pagamento. Ou separa em dois arquivos, ou fica assim de propósito. Sua decisão.</p><p><b>3. O arquivo publicado estava quebrado.</b> A aba Inegociáveis estava fora da área principal da página, o rodapé, a barra de botões e os scripts estavam duplicados, e o arquivo tinha dois fechamentos de HTML. Parecia funcionar porque o navegador conserta na marra. Isso está corrigido nesta versão.</p></div>
+  <div class="rotas">
+    <button class="rota" data-ir="m-A">
+      <b>Entrou um lead novo e ele já agendou</b>
+      <i>Mande a M1 em até 5 minutos</i>
+    </button>
+    <button class="rota" data-ir="m-B">
+      <b>Entrou um lead novo e ele não agendou</b>
+      <i>Mande a R1 em 15 minutos</i>
+    </button>
+    <button class="rota" data-ir="m-lig">
+      <b>Ele respondeu</b>
+      <i>Avise que vai ligar e ligue hoje</i>
+    </button>
+    <button class="rota" data-ir="lig-abrir">
+      <b>Estou ligando agora</b>
+      <i>As 4 perguntas, na ordem</i>
+    </button>
+    <button class="rota" data-ir="m-fup">
+      <b>Sumiu, não responde</b>
+      <i>Follow up por dia: D+1, D+3, D+7</i>
+    </button>
+    <button class="rota" data-ir="m-ns">
+      <b>Faltou na reunião</b>
+      <i>Mensagem em 10 minutos</i>
+    </button>
+    <button class="rota" data-ir="obj-abrir">
+      <b>Ele deu uma desculpa</b>
+      <i>Resposta pronta para cada objeção</i>
+    </button>
+    <button class="rota" data-ir="card-abrir">
+      <b>Terminei a ligação</b>
+      <i>O que registrar antes de esquecer</i>
+    </button>
+  </div>
+
+  <div class="bloco">
+    <h3>Antes de responder, confira duas coisas<span class="novo">novo</span></h3>
+    <div class="quando">Trinta segundos. Evita os dois erros mais comuns na primeira mensagem.</div>
+    <label class="item"><input type="checkbox"><span>O robô já falou com essa pessoa?<em>Fora do horário comercial o robô responde sozinho, assinado como Camila Couto: de segunda a sexta das 18h às 23h30 e das 00h às 9h, e sábado e domingo o dia inteiro. Das 9h às 18h ninguém responde automático, a primeira mensagem é sua. Se ela escreveu de madrugada, leia o que o robô já disse antes de escrever, senão a conversa fica com duas Camilas.</em></span></label>
+    <label class="item"><input type="checkbox"><span>Existe card repetido dessa pessoa?<em>A mesma pessoa entra duas vezes, uma pelo formulário e outra pelo WhatsApp, e o sistema não junta sozinho. Busque pelo nome e pelo telefone antes de trabalhar o card. Achou dois: trabalhe o que tem a conversa do WhatsApp e escreva no outro que é duplicado, para ninguém abordar de novo.</em></span></label>
+  </div>
+<div class="rev add"><div class="rt">Por que este bloco entrou</div><p>Os dois pontos vieram do trabalho desta semana e não estavam no portal. O robô fora do horário foi configurado em 25/08. Os cards duplicados foram diagnosticados em DIAGNOSTICO_CARDS_DUPLICADOS_KOMMO_v1, e a correção no sistema ainda não foi aplicada, então por enquanto a checagem é na mão.</p></div>
+  <div class="bloco">
+    <h3>A régua, em uma tela</h3>
+    <div class="quando">Se você não souber o que fazer, é uma destas linhas.</div>
+    <table class="reguat">
+
+      <tr><td>0 a 5 min</td><td>Lead novo que agendou</td><td>M1</td></tr>
+      <tr><td>15 min</td><td>Lead novo que não agendou</td><td>R1</td></tr>
+      <tr><td>45 min</td><td>Não respondeu a M1</td><td>M2</td></tr>
+      <tr><td>1 h</td><td>Não respondeu a R1</td><td>Ligar</td></tr>
+      <tr><td>Respondeu</td><td>Qualquer um dos dois</td><td>Ligar hoje</td></tr>
+      <tr><td>Não atendeu</td><td>Depois da ligação</td><td>M3</td></tr>
+      <tr><td>D+1</td><td>Silêncio</td><td>M4</td></tr>
+      <tr><td>D+3</td><td>Silêncio</td><td>M5</td></tr>
+      <tr><td>D+7</td><td>Silêncio</td><td>M6, encerra</td></tr>
+      <tr><td>D+10</td><td>Ou 6 tentativas</td><td>Perdido, com motivo</td></tr>
+    </table>
+  </div>
+
+  <div class="bloco">
+    <h3>Rotina do dia</h3>
+    <div class="quando">Três blocos, nesta ordem. A lista zera amanhã.</div>
+    <label class="item"><input type="checkbox"><span>Manhã: abrir o Kommo e confirmar quem tem reunião hoje e amanhã<em>Ligar para cada um. Sem ligação, o horário não está confirmado.</em></span></label>
+    <label class="item"><input type="checkbox"><span>Manhã: cancelar e liberar os horários que não passaram no filtro</span></label>
+    <label class="item"><input type="checkbox"><span>Meio do dia: responder quem respondeu<em>Antes de tocar em lead novo. Quem está em conversa esfria mais rápido.</em></span></label>
+    <label class="item"><input type="checkbox"><span>Meio do dia: leads novos que entraram, M1 ou R1</span></label>
+    <label class="item"><input type="checkbox"><span>Meio do dia: follow up de quem está em silêncio</span></label>
+    <label class="item"><input type="checkbox"><span>Fim do dia: preencher o card de cada lead tocado</span></label>
+    <label class="item"><input type="checkbox"><span>Fim do dia: fechar os números<em>Leads novos, contactados, respostas, ligações, agendas confirmadas, canceladas, no-show.</em></span></label>
+  </div>
+
+<div class="rev conf"><div class="rt">A régua daqui e a régua do manual da Daniele não são a mesma</div><p>Este portal manda M1, M2, ligar, D+1, D+3, D+7 e corte no D+10, com 6 tentativas. O manual que eu escrevi ontem manda 10 toques em 8 dias, misturando WhatsApp, ligação e e-mail, com a última no D+8.</p><p>As duas funcionam, mas a Daniele não pode receber as duas. Eu ficaria com a deste portal, que é mais leve para um número com histórico de banimento, e traria do manual só uma coisa: o e-mail como segundo canal, que aqui não existe em lugar nenhum. Me confirme e eu unifico.</p></div>
+  <div class="bloco">
+    <h3>Se der branco</h3>
+    <p class="leitura"><b>Não pergunte se a pessoa recebeu.</b> Pergunte o que a levou a procurar você.</p>
+    <p class="leitura"><b>Na ligação, ela fala 60% do tempo.</b> Se você falou mais, a ligação foi ruim mesmo que tenha agendado.</p>
+    <p class="leitura"><b>Sempre duas opções fechadas</b>, nunca pergunta aberta para quem parou ou faltou.</p>
+    <p class="leitura"><b>Avise antes de ligar.</b> Número desconhecido não é atendido.</p>
+    <p class="leitura"><b>Não fale preço.</b> Quem apresenta é a Camila, na reunião.</p>
+  </div>
+</section>
+<section id="mensagens" hidden>
+  <h2>Mensagens</h2>
+  <p class="sub">Tudo o que você escreve, na ordem em que acontece.</p>
+
+  <div class="subnav">
+    <button aria-selected="true" data-sub="m-A">Já agendou</button>
+    <button aria-selected="false" data-sub="m-B">Não agendou</button>
+    <button aria-selected="false" data-sub="m-lig">Vou ligar</button>
+    <button aria-selected="false" data-sub="m-fup">Sumiu</button>
+    <button aria-selected="false" data-sub="m-ns">Faltou</button>
+    <button aria-selected="false" data-sub="m-rea">Base antiga</button>
+  </div>
+
+  <div class="sub-pane" id="m-A">
+    <div class="regra"><strong>O agendamento não é confirmação.</strong> Ele marcou sozinho na página. Quem confirma o horário é você, na ligação.</div>
+    <div class="bloco">
+      <h3>De onde veio a mensagem dela<span class="novo">novo</span></h3>
+      <div class="quando">A página tem quatro botões de WhatsApp. Cada frase que chega pronta já te diz em que ponto a pessoa está.</div>
+      <label class="item"><input type="checkbox"><span>"Quero confirmar meu agendamento agora mesmo"<em>Acabou de agendar e clicou no botão verde. É o lead mais quente do dia. Responde na hora e já puxa para a ligação.</em></span></label>
+      <label class="item"><input type="checkbox"><span>"Não encontrei um horário"<em>Quis agendar e nenhum horário coube. Não é falta de interesse, é agenda. Ofereça dois horários fechados.</em></span></label>
+      <label class="item"><input type="checkbox"><span>"Tenho uma dúvida antes de agendar o Diagnóstico"<em>Não agendou ainda. Responda a dúvida em uma linha e conduza para o horário, não para uma conversa longa por texto.</em></span></label>
+      <label class="item"><input type="checkbox"><span>"Tenho uma dúvida sobre a minha Sessão de Diagnóstico"<em>Já tem horário marcado. Trate como confirmação, não como dúvida solta.</em></span></label>
+    </div>
+<div class="rev add"><div class="rt">Por que este bloco entrou</div><p>As quatro frases estão vivas na página de agendamento e chegam prontas no WhatsApp da empresa. A Daniele precisa saber ler o botão de origem, senão trata as quatro do mesmo jeito e perde o lead que acabou de agendar.</p></div>
+
+    <div class="bloco">
+      <h3>M1</h3>
+      <div class="quando">Até 5 minutos depois de o lead entrar. Quanto mais rápido, mais resposta.</div>
+      <div class="turno">
+        <p>Oi [nome], aqui é a [seu nome], da equipe da Camila Couto.</p>
+        <p>Vi a sua inscrição e a sua Reunião de Diagnóstico marcada para [dia] às [hora].</p>
+        <p>Antes de você falar com a Camila, me conta uma coisa: o que te fez procurar a gente agora?</p>
+        <button class="copiar">Copiar</button>
+      </div>
+      <p class="leitura"><b>Nunca pergunte se ele recebeu.</b> Perguntar o que motivou foi a troca que mais aumentou resposta. "Recebeu?" só admite sim ou não e não abre conversa.</p>
+    </div>
+
+    <div class="bloco">
+      <h3>M2</h3>
+      <div class="quando">45 minutos sem resposta.</div>
+      <div class="turno">
+        <p>[nome], sigo aqui. Preciso de uns 5 minutos com você no telefone antes da conversa com a Camila, para ela já chegar sabendo o que está acontecendo na sua liderança e não gastar o tempo de vocês recapitulando.</p>
+        <p>Posso te ligar agora ou prefere no fim do dia?</p>
+        <button class="copiar">Copiar</button>
+      </div>
+      <p class="leitura">Duas opções, sempre. <b>"Quando você pode?" devolve o trabalho para ele e ele some.</b></p>
+    </div>
+
+    <div class="bloco">
+      <h3>Reunião em menos de 24 horas</h3>
+      <div class="quando">Não dá tempo de rodar a régua. Encurte.</div>
+      <div class="turno">
+        <p>Oi [nome], sua Reunião de Diagnóstico está próxima e o horário ainda não está confirmado. A confirmação é feita por uma ligação rápida de 5 minutos. Posso te ligar hoje?</p>
+        <button class="copiar">Copiar</button>
+      </div>
+    </div>
+
+    <div class="bloco">
+      <h3>Não deu para falar antes</h3>
+      <div class="quando">Chegou a hora da reunião e vocês nunca conversaram.</div>
+      <div class="turno">
+        <p>Oi [nome], como não consegui te confirmar a tempo, vou precisar liberar esse horário para outra pessoa da fila. Se você ainda quiser, me responde aqui que eu vejo o próximo horário disponível com a Camila.</p>
+        <button class="copiar">Copiar</button>
+      </div>
+      <p class="leitura"><b>Libere de verdade.</b> Se você avisa que vai liberar e não libera, o aviso perde efeito para sempre.</p>
+    </div>
+  </div>
+
+  <div class="sub-pane" id="m-B" hidden>
+    <div class="regra"><strong>Ele preencheu e parou na hora de escolher o horário.</strong> Isso quase sempre tem um de dois motivos, e a mensagem já oferece os dois para ele escolher.</div>
+
+    <div class="bloco">
+      <h3>R1</h3>
+      <div class="quando">15 minutos depois da inscrição.</div>
+      <div class="turno">
+        <p>Oi [nome], aqui é a [seu nome], da equipe da Camila Couto.</p>
+        <p>Vi que você preencheu a inscrição e parou na hora de escolher o horário. Isso costuma acontecer por dois motivos: ou nenhum horário coube na sua agenda, ou você quis entender melhor o que acontece nessa conversa antes de marcar.</p>
+        <p>Qual dos dois foi?</p>
+        <button class="copiar">Copiar</button>
+      </div>
+      <p class="leitura"><b>Duas opções fechadas, nunca pergunta aberta.</b> Pergunta aberta para quem já parou devolve silêncio.</p>
+    </div>
+
+    <div class="bloco">
+      <h3>R2</h3>
+      <div class="quando">1 hora sem resposta. Aqui você liga, avisando antes.</div>
+      <div class="turno">
+        <p>[nome], vou te ligar daqui a 2 minutos. É rapidinho.</p>
+        <button class="copiar">Copiar</button>
+      </div>
+    </div>
+
+    <div class="bloco">
+      <h3>Encerrar</h3>
+      <div class="quando">Depois da régua completa, sem resposta.</div>
+      <div class="turno">
+        <p>Oi [nome], como não consegui falar com você, vou encerrar a sua inscrição por aqui. Se em algum momento fizer sentido retomar, me avisa.</p>
+        <button class="copiar">Copiar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub-pane" id="m-lig" hidden>
+    <div class="regra"><strong>Avise sempre antes de discar.</strong> Número desconhecido no Brasil não é atendido. Essa mensagem sozinha muda a taxa de atendimento.</div>
+
+    <div class="bloco">
+      <h3>Antes de ligar</h3>
+      <div class="turno">
+        <p>[nome], vou te ligar daqui a 2 minutos. É rapidinho.</p>
+        <button class="copiar">Copiar</button>
+      </div>
+    </div>
+
+    <div class="bloco">
+      <h3>M3, não atendeu</h3>
+      <div class="turno">
+        <p>Te liguei agora e não consegui falar. Sem problema. Me responde com um horário de hoje ou de amanhã cedo que eu te ligo na hora que você marcar.</p>
+        <button class="copiar">Copiar</button>
+      </div>
+      <p class="leitura">Se cair rápido, ligue de novo. <b>Não quer dizer que ele desligou na sua cara</b>, sinal ruim acontece muito.</p>
+    </div>
+
+    <div class="bloco">
+      <h3>Se ele não atender no horário que ele mesmo marcou</h3>
+      <div class="turno">
+        <p>Oi [nome], deu algum imprevisto aí? Você costuma estar mais livre de manhã, no almoço ou no fim do dia?</p>
+        <button class="copiar">Copiar</button>
+      </div>
+    </div>
+
+    <div class="bloco">
+      <h3>Pedir áudio</h3>
+      <div class="quando">Áudio responde melhor que texto, mas pedir antes evita ser ignorada.</div>
+      <div class="turno">
+        <p>Posso te mandar um áudio rapidinho?</p>
+        <button class="copiar">Copiar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub-pane" id="m-fup" hidden>
+    <div class="regra"><strong>Quem já respondeu alguma coisa nunca recebe texto genérico.</strong> Abra a inscrição dele e use as palavras que ele escreveu. É a diferença entre follow up e cobrança.</div>
+
+    <div class="bloco">
+      <h3>M4</h3>
+      <div class="quando">D+1. Retoma pelo que ele escreveu.</div>
+      <div class="turno">
+        <p>[nome], quando você se inscreveu, você escreveu que o que estava te travando era "[citar literalmente]".</p>
+        <p>Como está isso agora, no segundo semestre, que costuma ser mais corrido por conta de resultado?</p>
+        <button class="copiar">Copiar</button>
+      </div>
+    </div>
+
+    <div class="bloco">
+      <h3>M5</h3>
+      <div class="quando">D+3. É a mensagem de maior retorno da sequência.</div>
+      <div class="turno">
+        <p>[nome], me responde com sinceridade: eu fiz alguma coisa que te desagradou, ou o momento simplesmente deixou de ser esse?</p>
+        <p>Qualquer uma das duas serve, eu só preciso saber para não continuar te procurando à toa.</p>
+        <button class="copiar">Copiar</button>
+      </div>
+      <p class="leitura">Parece arriscada e não é. <b>Ela dá saída fácil, e quem responde volta a conversar.</b> Quem ficaria irritado com você já ia sumir de qualquer forma.</p>
+    </div>
+
+    <div class="bloco">
+      <h3>M6</h3>
+      <div class="quando">D+7. Encerra sem cobrança.</div>
+      <div class="turno">
+        <p>[nome], vou finalizar meu contato por aqui e liberar o horário que estava separado para você.</p>
+        <p>Me mantenho à disposição. Se a liderança voltar a ser prioridade, é só me chamar nesta mesma conversa.</p>
+        <button class="copiar">Copiar</button>
+      </div>
+    </div>
+
+    <div class="bloco">
+      <h3>Se ele responder no meio do caminho</h3>
+      <div class="turno">
+        <p>[nome], continua sendo prioridade para mim falar com você. Como está isso aí?</p>
+        <button class="copiar">Copiar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub-pane" id="m-ns" hidden>
+    <div class="bloco">
+      <h3>N1</h3>
+      <div class="quando">10 minutos depois da hora marcada. Sem cobrança.</div>
+      <div class="turno">
+        <p>[nome], a Camila ficou na sala e você não conseguiu entrar. Aconteceu alguma coisa?</p>
+        <p>Se foi imprevisto, sem problema, é normal. Me fala que eu vejo outro horário com ela.</p>
+        <button class="copiar">Copiar</button>
+      </div>
+    </div>
+
+    <div class="bloco">
+      <h3>N2</h3>
+      <div class="quando">2 horas depois. Duas opções fechadas.</div>
+      <div class="turno">
+        <p>[nome], consegui dois horários com a Camila: [opção 1] ou [opção 2]. Qual dos dois funciona melhor?</p>
+        <button class="copiar">Copiar</button>
+      </div>
+    </div>
+
+    <div class="bloco">
+      <h3>N3</h3>
+      <div class="quando">D+3. Encerra e libera.</div>
+      <div class="turno">
+        <p>[nome], não consegui te encontrar desde [dia]. Vou liberar o horário que estava separado.</p>
+        <p>Se a liderança voltar para o topo da sua lista, me chama aqui que eu te encaixo de novo. Sem cobrança nenhuma da minha parte.</p>
+        <button class="copiar">Copiar</button>
+      </div>
+      <div class="regra" style="margin-bottom:0"><strong>Regra de corte.</strong> Quem remarca e falta de novo não recebe terceira data.</div>
+    </div>
+  </div>
+
+  <div class="sub-pane" id="m-rea" hidden>
+    <div class="regra"><strong>Base antiga não lembra de você.</strong> Por isso aqui vale dizer quem é a Camila logo na primeira linha, ao contrário das mensagens de lead novo.</div>
+
+    <div class="bloco">
+      <h3>Sete variações</h3>
+      <div class="quando">Alterne entre elas. Comece por quem é mais recente e suba o volume aos poucos.</div>
+      <div class="turno"><div class="rotulo">1, pelo que travava</div><p>Oi [nome], tudo bem? Aqui é do time da Camila Couto, que trabalha com líderes que entregam resultado e não são reconhecidos por quem decide. Você deixou uma inscrição com a gente há um tempo e a nossa conversa acabou não acontecendo. Antes de eu encerrar seu cadastro, queria saber: você já resolveu o que estava travando na sua liderança naquela época?</p><button class="copiar">Copiar</button></div>
+      <div class="turno"><div class="rotulo">2, versão curta</div><p>Oi [nome], tudo bem? Aqui é do time da Camila Couto, que trabalha com liderança. Você deixou uma inscrição com a gente há um tempo e a gente acabou não conversando. Antes de eu encerrar seu cadastro, só me diz uma coisa: você já resolveu o que estava travando na sua liderança?</p><button class="copiar">Copiar</button></div>
+      <div class="turno"><div class="rotulo">3, mudou do lado de cá</div><p>Oi [nome], tudo bem? Aqui é do time da Camila Couto, que trabalha com liderança. Você deixou uma inscrição com a gente há um tempo e a conversa não chegou a acontecer. Desde então mudou bastante coisa aqui, inclusive a forma como a Camila atende. Você ainda lidera equipe hoje?</p><button class="copiar">Copiar</button></div>
+      <div class="turno"><div class="rotulo">4, pergunta única</div><p>Oi [nome], tudo bem? Aqui é do time da Camila Couto. Só uma pergunta, sem compromisso nenhum: hoje você é reconhecido pela diretoria pelo resultado que entrega, ou sente que passa despercebido?</p><button class="copiar">Copiar</button></div>
+      <div class="turno"><div class="rotulo">5, organizando a base</div><p>Oi [nome], tudo bem? Aqui é do time da Camila Couto, que trabalha com liderança. Estou organizando os contatos que ficaram sem retorno e o seu está aqui. Antes de arquivar: faz sentido a gente conversar, ou prefere que eu encerre?</p><button class="copiar">Copiar</button></div>
+      <div class="turno"><div class="rotulo">6, o tempo que passou</div><p>Oi [nome], tudo bem? Aqui é do time da Camila Couto. Faz um tempo que você deixou uma inscrição com a gente. De lá para cá, mudou alguma coisa na sua liderança, ou continua igual?</p><button class="copiar">Copiar</button></div>
+      <div class="turno"><div class="rotulo">7, pelo Raio X</div><p>Oi [nome], é do time da Camila Couto aqui. Ela montou um Raio X de 12 perguntas que mostra como você é percebido hoje pelo seu time, pelos seus pares e pela diretoria, e qual desses três está te segurando. Três minutos e o resultado sai na hora. Quer que eu te mande?</p><button class="copiar">Copiar</button></div>
+      <p class="leitura">A número 5 é a mais segura para disparo em volume, porque <b>já dá a saída explícita antes de a pessoa procurar o botão de bloquear.</b></p>
+<div class="rev tira"><div class="rt">Disparo em volume para base antiga não é tarefa de SDR</div><p>Sete variações para reativar base fria, disparadas em volume, é a operação de maior risco do portal inteiro e está escrita como se fosse rotina. Nenhuma dessas mensagens deveria sair sem você olhando o volume do dia e a nota de qualidade do número.</p><p>Sugestão: manter o texto, tirar da aba de rotina e marcar como campanha, com data, lote e autorização sua. A Daniele executa, não decide o volume.</p></div>
+    </div>
+  </div>
+</section>
+<section id="ligacao" hidden>
+  <h2>A ligação</h2>
+  <p class="sub">De 5 a 8 minutos. O objetivo não é vender, é entender o contexto e travar a agenda.</p>
+
+  <div class="regra"><strong>A regra que mede se a ligação foi boa.</strong> O lead fala pelo menos 60% do tempo. Se você falou mais que ele, a ligação foi ruim mesmo que ele tenha marcado.</div>
+
+  <div class="regra"><strong>Antes de discar.</strong> Abra o card dele e leia o que ele escreveu. Tenha um bloco de notas do lado e anote as palavras que ele repetir. São elas que você vai usar depois.</div>
+
+  <div class="bloco" id="lig-abrir">
+    <h3>1. Abertura</h3>
+    <div class="turno">
+      <span class="tom">tom tranquilo</span>
+      <p>[nome], tudo bem? Aqui é a [seu nome], da equipe da Camila Couto. A gente se falou no WhatsApp.</p>
+      <p>Meu objetivo aqui é gerar o máximo de valor possível nessa conversa, então vou te fazer algumas perguntas, tudo bem?</p>
+      <div class="espera">Aguardar responder</div>
+      <button class="copiar">Copiar</button>
+    </div>
+  </div>
+
+  <div class="bloco">
+    <h3>2. Situação</h3>
+    <div class="quando">Eliminatória. Não pule por educação.</div>
+    <div class="turno">
+      <p>Você lidera equipe hoje? Quantas pessoas?</p>
+      <div class="espera">Aguardar responder</div>
+      <button class="copiar">Copiar</button>
+    </div>
+    <p class="leitura"><b>Não lidera equipe: encerre com elegância e libere o horário.</b> Não é perda, é ganho de agenda.</p>
+  </div>
+
+  <div class="bloco">
+    <h3>3. Problema</h3>
+    <div class="quando">Cite literalmente o que ele escreveu. Não melhore as palavras dele.</div>
+    <div class="turno">
+      <p>Você escreveu que o que está te travando é "[citar literalmente]". Só para eu entender: o que está acontecendo na prática?</p>
+      <div class="espera">Aguardar responder</div>
+      <button class="copiar">Copiar</button>
+    </div>
+    <p class="leitura">Se ele responder curto, insista uma vez: <b>como assim? Me explica melhor essa parte.</b></p>
+  </div>
+
+  <div class="bloco">
+    <h3>4. Implicação</h3>
+    <div class="quando">É a pergunta que transforma um comentário em problema. A mais importante das quatro.</div>
+    <div class="turno">
+      <p>E isso está impactando o quê no seu dia a dia? Você tem conseguido olhar de forma estratégica, ou o dia inteiro vai em apagar incêndio?</p>
+      <div class="espera">Aguardar responder</div>
+      <button class="copiar">Copiar</button>
+    </div>
+    <p class="leitura">Aqui aparece hora extra, fim de semana, noite. <b>Não console e não resolva. Reconheça e siga.</b></p>
+  </div>
+
+  <div class="bloco">
+    <h3>5. Urgência</h3>
+    <div class="turno">
+      <p>Isso é uma coisa que você quer resolver para agora, ou seria mais para frente, talvez para o ano que vem?</p>
+      <div class="espera">Aguardar responder</div>
+      <button class="copiar">Copiar</button>
+    </div>
+    <p class="leitura">Resposta vaga é sinal amarelo. <b>Não cancela a reunião, mas anote e avise a Camila.</b></p>
+  </div>
+
+  <div class="bloco">
+    <h3>6. Teste de entendimento</h3>
+    <div class="quando">O passo mais poderoso do processo. O sim dele é o que autoriza avançar, e é com ele que a Camila abre a reunião.</div>
+    <div class="turno">
+      <p>Então, só para eu garantir que entendi: hoje o seu maior problema é [resumir com as palavras dele]. É isso?</p>
+      <div class="espera">Aguardar responder</div>
+      <button class="copiar">Copiar</button>
+    </div>
+    <p class="leitura">Se ele corrigir alguma coisa, ótimo. <b>A correção dele é mais valiosa que o resumo seu.</b></p>
+  </div>
+
+  <div class="bloco">
+    <h3>7. Apresentar a reunião e travar</h3>
+    <div class="turno">
+      <p>[nome], acho que essa Reunião de Diagnóstico vai ser muito útil para você. A Camila vai aprofundar nesses pontos e desenhar um plano específico para o seu caso. Muita gente pede a gravação, porque acaba sendo praticamente uma mentoria.</p>
+      <p>E se nessa conversa você entender que alguma das soluções dela pode te ajudar, é só pedir que ela te apresenta no final. Combinado?</p>
+      <div class="espera">Aguardar responder</div>
+      <button class="copiar">Copiar</button>
+    </div>
+    <div class="turno">
+      <div class="rotulo">Travar</div>
+      <p>Fica [dia] às [hora], no Google Meet. A agenda da Camila é bem apertada, então posso travar esse horário para você?</p>
+      <div class="espera">Aguardar responder</div>
+      <p>Seu e-mail é [e-mail], certo? Acabei de te mandar o convite.</p>
+      <p>Entra de um lugar onde você consiga falar à vontade, porque a conversa entra em situação real, com nome de pessoa. Se acontecer imprevisto, me avisa com pelo menos 1 hora de antecedência.</p>
+      <button class="copiar">Copiar</button>
+    </div>
+  </div>
+
+  <div class="bloco">
+    <h3>Quando encerrar sem agendar</h3>
+    <div class="turno">
+      <p>[nome], obrigada pela conversa. Pelo que você me contou, esse não é o momento certo para a Reunião de Diagnóstico. Ela é desenhada para quem está liderando equipe agora e quer se reposicionar dentro da empresa.</p>
+      <p>Vou liberar o horário, mas não te deixo sem nada: vou te mandar material da Camila que faz mais sentido para o seu momento. E deixo seu contato registrado, para eu te chamar quando o cenário mudar.</p>
+      <button class="copiar">Copiar</button>
+    </div>
+  </div>
+
+  <div class="bloco">
+    <h3>Como aprofundar quando a resposta vier curta</h3>
+    <p class="leitura">Como assim, [palavra que ele usou]?<br>Não entendi bem essa parte, me explica melhor?<br>E quando isso acontece, o que você faz?<br>Isso é com todo mundo do time, ou com uma pessoa específica?<br>Você sente que isso é mais com o seu time, com os seus pares, ou com a diretoria?<br>Há quanto tempo vem assim?</p>
+  </div>
+
+  <div class="bloco">
+    <h3>Onde a autoridade dele vaza</h3>
+    <div class="quando">Escute em qual das três está o problema. Anote com as palavras dele.</div>
+    <p class="leitura"><b>Time.</b> Equipe acomodada, não executa o combinado, precisa cobrar toda hora, ele acaba fazendo o trabalho deles.</p>
+    <p class="leitura"><b>Pares.</b> Descobre decisão depois, fica de fora de conversa, outros setores atropelam.</p>
+    <p class="leitura"><b>Diretoria.</b> Não é ouvido, apresenta dado e é deixado de fora, medo de ser preterido mesmo entregando.</p>
+  </div>
+
+  <div class="bloco">
+    <h3>O que nunca fazer na ligação</h3>
+    <label class="item"><input type="checkbox"><span>Falar mais que o lead</span></label>
+    <label class="item"><input type="checkbox"><span>Dar o preço do programa<em>Quem apresenta é a Camila, na reunião.</em></span></label>
+    <label class="item"><input type="checkbox"><span>Dar diagnóstico ou resolver o problema dele por telefone</span></label>
+    <label class="item"><input type="checkbox"><span>Usar a pergunta-chave sobre investimento<em>Essa é da Camila, dentro da reunião. Usada antes, o filtro se perde.</em></span></label>
+    <label class="item"><input type="checkbox"><span>Perguntar de todos os lados sem seguir a ordem das quatro perguntas</span></label>
+  </div>
+</section>
+<section id="passagem" hidden>
+  <h2>O card</h2>
+  <p class="sub">O que ler antes de ligar e o que registrar depois.</p>
+
+  <div class="bloco" id="card-abrir">
+    <h3>Antes de ligar, leia</h3>
+    <label class="item"><input type="checkbox"><span>O que ele escreveu na inscrição, palavra por palavra</span></label>
+    <label class="item"><input type="checkbox"><span>Cargo e renda declarada</span></label>
+    <label class="item"><input type="checkbox"><span>Se ele agendou ou não, e para quando</span></label>
+    <label class="item"><input type="checkbox"><span>O que já foi conversado antes, se houve</span></label>
+    <p class="leitura"><b>Você não descobre o que já sabe.</b> Perguntar de novo o que está escrito faz a ligação parecer formulário lido em voz alta.</p>
+  </div>
+
+  <div class="bloco">
+    <h3>Depois de falar, preencha na hora</h3>
+    <div class="quando">Antes de ligar para o próximo. Memória de ligação dura minutos.</div>
+    <label class="item"><input type="checkbox"><span>Quantas pessoas ele lidera e há quanto tempo</span></label>
+    <label class="item"><input type="checkbox"><span>Cargo, empresa e a quem ele reporta</span></label>
+    <label class="item"><input type="checkbox"><span>O problema, com as palavras dele</span></label>
+    <label class="item"><input type="checkbox"><span>Onde a autoridade vaza: time, pares ou diretoria</span></label>
+    <label class="item"><input type="checkbox"><span>O que ele já tentou e não funcionou</span></label>
+    <label class="item"><input type="checkbox"><span>O que isso custa hoje: hora extra, fim de semana, promoção</span></label>
+    <label class="item"><input type="checkbox"><span>Urgência: agora ou mais para frente</span></label>
+    <label class="item"><input type="checkbox"><span>Quem mais decide: ele, a empresa, o RH, alguém em casa</span></label>
+    <label class="item"><input type="checkbox"><span>Próximo passo com data</span></label>
+  </div>
+
+  <div class="bloco">
+    <h3>Contexto, não rótulo</h3>
+    <div class="regra" style="margin-bottom:12px"><strong>É aqui que a passagem funciona ou não.</strong> Rótulo não diz nada para quem vai conduzir a reunião. Contexto diz tudo.</div>
+    <p class="leitura"><b>Errado:</b> problema de tempo.</p>
+    <p class="leitura"><b>Certo:</b> ele falou que perde duas horas por semana refazendo o trabalho do time e que a diretoria não sabe disso.</p>
+    <p class="leitura">A Camila precisa entrar sabendo três coisas: quantas pessoas ele lidera, onde a autoridade dele vaza e o que ele já tentou. <b>Faltando uma, os primeiros vinte minutos vão embora descobrindo o que já era para estar aqui.</b></p>
+  </div>
+
+  <div class="bloco">
+    <h3>Régua semáforo</h3>
+    <div class="quando">Leitura rápida depois da ligação.</div>
+    <p class="leitura"><b>Verde.</b> Lidera cinco ou mais, nomeou um problema concreto, já tentou resolver e continua igual, quer resolver agora. Mantém a agenda e avisa a Camila.</p>
+    <p class="leitura"><b>Amarelo.</b> Tem perfil, mas a urgência é vaga ou a decisão passa por outra pessoa. Mantém a agenda e sinaliza o ponto de atenção.</p>
+    <p class="leitura"><b>Vermelho.</b> Não lidera equipe, está em recolocação, quer só material gratuito, ou não consegue nomear nada concreto. Cancela e libera.</p>
+  </div>
+
+  <div class="bloco">
+    <h3>Quando dar perdido</h3>
+    <div class="quando">Qualquer um destes já basta. Registre o motivo, sempre.</div>
+    <label class="item"><input type="checkbox"><span>10 dias sem responder nada</span></label>
+    <label class="item"><input type="checkbox"><span>6 tentativas sem resposta</span></label>
+    <label class="item"><input type="checkbox"><span>Diz que está satisfeito com a situação atual e não abre espaço</span></label>
+    <label class="item"><input type="checkbox"><span>Não lidera equipe hoje</span></label>
+    <label class="item"><input type="checkbox"><span>Não decide e não indica quem decide</span></label>
+    <label class="item"><input type="checkbox"><span>Quer outra coisa, que não é o que a Camila entrega</span></label>
+    <p class="leitura"><b>Lead parado no meio do funil por meses é sinal de processo ruim, não de oportunidade viva.</b> Dar perdido não é desistir, é limpar a fila para enxergar o que está vivo.</p>
+  </div>
+</section>
+<section id="objecoes" hidden><a id="obj-abrir"></a>
+  <h2>Objeções</h2>
+  <p class="sub">Nunca confrontar. Validar, voltar para a dor, propor o próximo passo.</p>
+
+  <div class="regra"><strong>Princípio.</strong> A objeção quase nunca é o motivo real. Ela é a saída mais educada que a pessoa encontrou. Valide sem discutir, aprofunde na dor e ofereça um passo concreto.</div>
+
+  <details class="obj"><summary>Não posso falar agora, me liga depois</summary><div class="corpo">
+    <div class="turno"><p>Tranquilo, [nome], sem problema. Só para você não achar que é telemarketing: estou te ligando porque você preencheu a aplicação pedindo ajuda com [trava]. Prometo ser rápida. Posso te fazer uma pergunta e, se não fizer sentido, eu desligo e a gente marca outro horário?</p><div class="espera">Aguardar responder</div><button class="copiar">Copiar</button></div>
+    <div class="turno"><div class="rotulo">Se ela realmente não puder</div><p>Fechado, sem problema. Só me ajuda com uma coisa para eu não te ligar em hora ruim: em que horário do dia você costuma conseguir falar cinco minutos? Costuma ser no almoço, meio da tarde, fim do dia?</p><div class="espera">Aguardar responder</div><p>Boa. Então eu te ligo [dia] às [hora]. Vou te mandar mensagem aqui com meu contato e um lembrete. Se tiver qualquer imprevisto, você me avisa?</p><button class="copiar">Copiar</button></div>
+  </div></details>
+
+  <details class="obj"><summary>Não lembro de ter preenchido, não sei quem é a Camila</summary><div class="corpo">
+    <div class="turno"><p>Tranquilo, [nome], sem problema. Eu te mando o Instagram dela aqui quando a gente desligar. Você provavelmente viu algum conteúdo sobre liderança, sobre entregar resultado e não ser reconhecida por quem decide, algo assim.</p><p>O que está rolando aí na sua liderança nesse ponto?</p><div class="espera">Aguardar responder</div><button class="copiar">Copiar</button></div>
+  </div></details>
+
+  <details class="obj"><summary>Não tenho interesse</summary><div class="corpo">
+    <div class="turno"><p>Entendo, [nome]. Sendo transparente com você: quem preenche essa aplicação normalmente tem um motivo real por trás. Pode ser time que não executa, pode ser não ser ouvida pela diretoria, pode ser posicionamento.</p><p>Só por curiosidade: como você está lidando com [trava que ela escreveu] hoje?</p><div class="espera">Aguardar responder</div><button class="copiar">Copiar</button></div>
+  </div></details>
+
+  <details class="obj"><summary>Manda por WhatsApp que eu vejo depois</summary><div class="corpo">
+    <div class="turno"><p>Claro, mando sim. Qual informação especificamente seria útil para você? Até para não virar só mais uma mensagem genérica no seu WhatsApp.</p><div class="espera">Aguardar responder</div><button class="copiar">Copiar</button></div>
+  </div></details>
+
+  <details class="obj"><summary>Prefiro conversar por aqui, por texto</summary><div class="corpo">
+    <div class="turno"><p>Tranquilo, [nome]. A ideia é realmente agregar para você, não mandar algo genérico. Por texto, quando você me responde uma coisa, eu não consigo aprofundar, eu já pulo para a próxima pergunta e acaba raso.</p><p>Sem contar que por escrito ia demorar bem mais do que cinco minutos. Eu consigo às [hora] ou às [hora]. O que fica melhor?</p><div class="espera">Aguardar responder</div><button class="copiar">Copiar</button></div>
+  </div></details>
+
+  <details class="obj"><summary>Já faço terapia, coach, ou já fiz curso de liderança</summary><div class="corpo">
+    <div class="turno"><p>Que bom, [nome]. Isso não é impeditivo de forma alguma, muito pelo contrário.</p><p>Deixa eu te perguntar: em que parte da sua liderança você sente que ainda não anda como você gostaria, mesmo com isso?</p><div class="espera">Aguardar responder</div><button class="copiar">Copiar</button></div>
+    <p class="leitura">Quem já tentou e continua no mesmo lugar é <b>exatamente</b> o perfil que a Camila atende. Não trate como concorrência, trate como confirmação.</p>
+  </div></details>
+
+  <details class="obj"><summary>Quanto custa?</summary><div class="corpo">
+    <div class="turno"><p>Olha, [nome], eu nem sei ainda se a gente consegue te ajudar, para ser sincera. Precisaria entender melhor como está sua liderança hoje, quantas pessoas você lidera, o que já tentou.</p><p>Se na conversa com a Camila você se interessar, e ela também perceber que dá para ajudar, é só você pedir que ela te apresenta o que encaixar melhor no seu caso.</p><div class="espera">Aguardar responder</div><button class="copiar">Copiar</button></div>
+    <div class="turno"><div class="rotulo">Se insistir</div><p>Os formatos variam bastante, tem desde programa em grupo até acompanhamento individual com ela. Não consigo te cravar um número porque depende do que você precisa. O que importa mesmo é entender se dá para te ajudar. É isso que essa conversa resolve.</p><button class="copiar">Copiar</button></div>
+    <p class="leitura"><b>A Daniele não apresenta preço.</b> Quem apresenta é a Camila, na Reunião de Diagnóstico, depois do diagnóstico.</p>
+  </div></details>
+
+  <details class="obj"><summary>Quem paga é a empresa, preciso falar com o RH</summary><div class="corpo">
+    <div class="turno"><p>Isso é ótimo, [nome], acontece bastante. Deixa eu entender: como funciona aí? Você leva a proposta e eles aprovam, ou o RH que decide o que a empresa contrata?</p><div class="espera">Aguardar responder</div><button class="copiar">Copiar</button></div>
+    <div class="turno"><div class="rotulo">Depois de mapear</div><p>Perfeito. Então vamos fazer assim: você participa dessa conversa com a Camila primeiro, sem compromisso nenhum. Ela vai desenhar o caminho para o seu caso. Com isso na mão, você tem argumento concreto para levar, em vez de pedir um curso genérico.</p><p>Muita gente chega no RH sem saber pedir e leva não. Você vai chegar com diagnóstico.</p><div class="espera">Aguardar responder</div><button class="copiar">Copiar</button></div>
+  </div></details>
+
+  <details class="obj"><summary>Preciso falar com meu marido, minha esposa</summary><div class="corpo">
+    <div class="turno"><p>Faz total sentido, [nome]. Nessa conversa com a Camila nada é decidido no susto, ela vai desenhar o caminho e você sai com clareza do que precisa acontecer.</p><p>Você prefere que essa conversa seja num horário em que ele possa participar também? Algumas pessoas fazem assim.</p><div class="espera">Aguardar responder</div><button class="copiar">Copiar</button></div>
+    <p class="leitura">Comunicar depois é normal e não é objeção. <b>Pedir autorização antes de conversar é sinal de trava. Anote e avise a Camila.</b></p>
+  </div></details>
+
+  <details class="obj"><summary>Uma hora é muito, só tenho 30 minutos</summary><div class="corpo">
+    <div class="turno"><p>Sem problema, [nome]. Mas te alinho: em trinta minutos não dá para destrinchar a sua situação e entender onde exatamente a sua autoridade está vazando. Até dá para conversar, mas você aproveita bem menos.</p><p>Eu consigo horários com mais folga. Prefere assim?</p><div class="espera">Aguardar responder</div><button class="copiar">Copiar</button></div>
+    <div class="turno"><div class="rotulo">Se insistir</div><p>A Camila é criteriosa com isso porque ela não apresenta nada sem ter certeza de que consegue ajudar. Para ter essa certeza, ela precisa entrar fundo. Vamos marcar um horário em que dê para aprofundar de verdade?</p><button class="copiar">Copiar</button></div>
+  </div></details>
+
+  <details class="obj"><summary>Me manda uma apresentação antes, quero saber quem é ela</summary><div class="corpo">
+    <div class="turno"><p>Sem problema, [nome]. Vou fazer melhor. Vou te mandar o Instagram da Camila e um caso de uma líder que estava exatamente na situação que você me descreveu.</p><p>Tem mais alguma coisa que você quer ver antes de a gente falar?</p><div class="espera">Aguardar responder</div><button class="copiar">Copiar</button></div>
+  </div></details>
+
+  <details class="obj"><summary>Se é só para me qualificar, manda as perguntas por escrito</summary><div class="corpo">
+    <div class="turno"><p>[nome], pelas suas respostas na aplicação eu já vi que você tem o perfil, nem precisaria disso para ser sincera.</p><p>O ponto dessa conversa rápida é outro: entender melhor o que está acontecendo com [trava], ver o que eu posso te mandar que já te ajude, e garantir que o horário com a Camila seja aproveitado. Cinco minutos. Consigo às [hora] ou às [hora].</p><div class="espera">Aguardar responder</div><button class="copiar">Copiar</button></div>
+  </div></details>
+
+  <details class="obj"><summary>Só quero o material gratuito</summary><div class="corpo">
+    <div class="turno"><p>Mando sim, [nome]. Vou te enviar o material aqui.</p><p>Só que pelo que você escreveu sobre [trava], o material sozinho vai te dar uma parte. Deixa eu te fazer uma ou duas perguntas para eu mandar o que realmente encaixa no seu caso?</p><div class="espera">Aguardar responder</div><button class="copiar">Copiar</button></div>
+  </div></details>
+
+  <details class="obj"><summary>Não quer entrar no grupo de WhatsApp</summary><div class="corpo">
+    <div class="turno"><p>Fica tranquila, [nome]. Não é grupo com um monte de gente e um monte de mensagem. É só para eu te apresentar a Camila, te mandar o material e ela tirar alguma dúvida antes, para a conversa render mais. Nada de arquivo pesado.</p><button class="copiar">Copiar</button></div>
+  </div></details>
+
+  <details class="obj"><summary>Encerrar contato sem deixar mal</summary><div class="corpo">
+    <div class="turno"><p>Sem problema, [nome]. De qualquer forma não vou te deixar de mãos vazias. Vou te mandar material da Camila sobre liderança e posicionamento, sem custo nenhum.</p><p>Te desejo muito sucesso, e quando o cenário mudar, me chama aqui direto.</p><button class="copiar">Copiar</button></div>
+  </div></details>
+</section>
+
+<section id="kommo" hidden>
+  <h2>Mensagens do Kommo</h2>
+  <p class="sub">Templates salvos, disparados sem saber nada da pessoa. A única variável é o nome.</p>
+
+<div class="rev conf"><div class="rt">Esta aba tem prazo de validade</div><p>A decisão de trocar o Kommo por um CRM próprio já foi tomada e a especificação está no ESPEC_CRM_CS_COUTO_v1, na reunião com o Rodrigo Balla. O conteúdo desta aba continua valendo, o que muda é o nome do sistema e onde ficam os campos.</p><p>Sugestão: manter o nome Kommo enquanto ele estiver no ar e reescrever a aba no dia da virada, não antes. Reescrever agora deixa a Daniele com um manual de um sistema que ela não vai abrir na segunda-feira.</p></div>
+  <div class="regra"><strong>Quando usar esta aba.</strong>
+ Abordagem direta pelo WhatsApp e disparo pelo Kommo, quando não há tempo de personalizar ou a Daniele ainda não leu a aplicação. <b>Sempre que der para personalizar, use a aba Mensagens, bloco Sumiu.</b> Mensagem escrita na mão com a trava da pessoa responde mais. Estas aqui garantem que ninguém fique sem contato.</div>
+
+  <div class="regra"><strong>Como a curiosidade funciona aqui.</strong> Sem saber o desafio da pessoa, a curiosidade tem que se apoiar no que é sempre verdade: ela preencheu uma aplicação, a Camila leu, e existe uma coisa a confirmar antes da Reunião de Diagnóstico. <b>Nunca prometa algo que a ligação não vai entregar.</b> Curiosidade que vira decepção na ligação seguinte custa mais caro do que uma mensagem ignorada.</div>
+
+  <div class="bloco">
+    <h3>Cadência 1. Preencheu e não respondeu</h3>
+    <div class="quando">Oito toques em onze dias. Um por dia, sem acumular dois no mesmo envio.</div>
+<div class="rev tira"><div class="rt">Oito toques por template é risco de banimento, não é cadência</div><p>Este número já foi banido, com prejuízo registrado de R$80 mil em 30 dias. Oito mensagens iniciadas pela empresa para alguém que nunca respondeu é exatamente o padrão que derruba conta.</p><p>O que eu faria: cortar para quatro toques, dia 1, dia 3, dia 7 e dia 11, e mover o dia 2 e o dia 5 para ligação, que não passa pela Meta. Quem responde qualquer coisa abre a janela de 24 horas e aí você escreve à vontade.</p><p>Se você quiser manter os oito, é decisão de risco e precisa ser sua, com a nota de qualidade do número na tela antes.</p></div>
+
+    <div class="turno"><span class="tom">dia 1, manhã</span>
+      <p>Oi [nome], tudo bem? Aqui é a Daniele, do time da Camila Couto.</p>
+      <p>A Camila leu a sua aplicação e me pediu para falar com você antes da Reunião de Diagnóstico. São cinco minutos no telefone, e é isso que confirma o seu horário.</p>
+      <p>Consigo agora ou às 17h. Qual fica melhor?</p>
+      <button class="copiar">Copiar</button></div>
+
+    <div class="turno"><span class="tom">dia 1, fim da tarde</span>
+      <p>Oi [nome], conseguiu ver minha mensagem?</p>
+      <button class="copiar">Copiar</button></div>
+    <div class="turno"><div class="rotulo">Variações do toque do fim da tarde</div>
+      <p>Oi [nome], me confirma se recebi certo o seu contato aqui?</p>
+      <p>Oi [nome], ainda dá para falar hoje?</p>
+      <button class="copiar">Copiar</button></div>
+
+    <div class="turno"><span class="tom">dia 2</span>
+      <p>Oi [nome], a Camila me pediu para te chamar aqui de novo. Consigo te ligar agora ou no fim do dia?</p>
+      <button class="copiar">Copiar</button></div>
+
+    <div class="turno"><span class="tom">dia 3</span>
+      <p>Oi [nome], tudo certo? Imagino a correria por aí.</p>
+      <p>Tem uma coisa na sua aplicação que eu preciso confirmar com você antes de reservar o horário com a Camila. É rápido, dois minutos. Posso te ligar hoje?</p>
+      <button class="copiar">Copiar</button></div>
+
+    <div class="turno"><span class="tom">dia 5, áudio</span>
+      <p>Oi [nome], tudo certo? Correria por aí? Acabamos não conversando ainda. Você tem cinco minutos hoje?</p>
+      <button class="copiar">Copiar</button></div>
+
+    <div class="turno"><span class="tom">dia 7</span>
+      <p>Oi [nome], tudo bem? Tem algum conteúdo ou material da Camila que eu possa te mandar por aqui e que te ajude agora na sua liderança?</p>
+      <button class="copiar">Copiar</button></div>
+
+    <div class="turno"><span class="tom">dia 9, saída fácil</span>
+      <p>Oi [nome], não quero ser inconveniente. Só me diz se você ainda quer falar sobre o que escreveu na aplicação, que aí eu te ligo. Se não for o momento, também tudo bem.</p>
+      <button class="copiar">Copiar</button></div>
+
+    <div class="turno"><span class="tom">dia 11, encerra</span>
+      <p>Olá [nome], tudo bem? Aqui é a Daniele, do time da Camila Couto, mais uma vez.</p>
+      <p>Como não recebi seu retorno depois de algumas tentativas, preciso te fazer um pedido: pode me confirmar se ainda é do seu interesse? Se não for, tudo bem, eu encerro por aqui e te desejo sucesso.</p>
+      <button class="copiar">Copiar</button></div>
+  </div>
+
+  <div class="bloco">
+    <h3>Cadência 2. Agendou sozinho pelo formulário</h3>
+    <div class="quando">Disparo automático assim que o agendamento entra. Três toques.</div>
+
+    <div class="turno"><span class="tom">imediato</span>
+      <p>Oi [nome], tudo bem? Aqui é a Daniele, do time da Camila Couto.</p>
+      <p>Vi que você marcou a Reunião de Diagnóstico. Antes dela eu preciso de cinco minutos com você no telefone, e é essa ligação que confirma o seu horário na agenda da Camila.</p>
+      <p>Consigo agora ou às 17h. Qual fica melhor?</p>
+      <button class="copiar">Copiar</button></div>
+
+    <div class="turno"><span class="tom">no dia seguinte, se não respondeu</span>
+      <p>Oi [nome], seu horário ainda está reservado, mas ele só fica confirmado depois da nossa ligação. Me diz um horário de hoje que eu te ligo.</p>
+      <button class="copiar">Copiar</button></div>
+
+    <div class="turno"><span class="tom">véspera da Reunião de Diagnóstico</span>
+      <p>Oi [nome], sua conversa com a Camila é amanhã. Como a gente ainda não falou, vou te ligar hoje para confirmar. Qual horário funciona melhor para você?</p>
+      <button class="copiar">Copiar</button></div>
+  </div>
+
+  <div class="bloco">
+    <h3>Cadência 3. Formulário parado no meio</h3>
+    <div class="quando">Disparo para quem começou e não terminou. Dois toques.</div>
+
+    <div class="turno"><span class="tom">dia 1</span>
+      <p>Oi [nome], tudo bem? Aqui é a Daniele, do time da Camila Couto.</p>
+      <p>Vi que você começou a aplicação e parou no meio. Não precisa voltar no formulário, eu termino com você por aqui em dois minutos. Você lidera equipe hoje?</p>
+      <button class="copiar">Copiar</button></div>
+
+    <div class="turno"><span class="tom">dia 3</span>
+      <p>Oi [nome], consigo terminar sua aplicação por aqui em dois minutos. Você lidera equipe hoje?</p>
+      <button class="copiar">Copiar</button></div>
+  </div>
+
+  <div class="bloco">
+    <h3>Cadência 4. Reaquecimento de base</h3>
+    <div class="quando">Lead antigo, no-show de mais de 30 dias, ex-aluna. Dois toques, com intervalo de três dias.</div>
+
+    <div class="turno"><span class="tom">toque 1, áudio</span>
+      <p>Oi [nome], tudo bem? Aqui é a Daniele, do time da Camila Couto.</p>
+      <p>Você deixou seu contato com a gente há um tempo e a nossa conversa acabou não acontecendo. A Camila abriu alguns horários esse mês e eu lembrei do seu caso.</p>
+      <p>Você lidera equipe hoje?</p>
+      <button class="copiar">Copiar</button></div>
+
+    <div class="turno"><span class="tom">toque 2</span>
+      <p>Oi [nome], continua valendo. Se você ainda lidera equipe e quer resolver o que te trouxe até a gente, me diz um horário que eu te ligo.</p>
+      <button class="copiar">Copiar</button></div>
+  </div>
+
+  <div class="bloco">
+    <h3>Cadência 5. Raio X da Liderança</h3>
+    <div class="quando">Para reabrir conversa parada. Entrega valor real e devolve o resultado, que é a informação que a ligação precisaria arrancar.</div>
+<div class="rev conf"><div class="rt">Confirmar antes de a Daniele usar</div><p>Esta cadência inteira depende do link do Raio X estar no ar e do resultado terminar com a parte sobre o custo de continuar no mesmo lugar. Eu não consegui verificar isso daqui.</p><p>Se o link não existir mais, a cadência 5 sai do portal. Mensagem que promete uma coisa que não abre queima o contato e não tem volta.</p></div>
+
+    <div class="regra" style="margin-bottom:12px"><strong>Por que funciona.</strong> Não é brinde. Quem responde qual resultado deu entrega de graça o que levaria cinco minutos de ligação para descobrir, e sai da conversa com o problema nomeado e sem saber o que fazer. <b>É exatamente esse o assunto da Reunião de Diagnóstico.</b></div>
+
+    <div class="regra" style="margin-bottom:12px"><strong>O Raio X já tem botão de WhatsApp no fim.</strong> Parte das pessoas vai chegar sozinha, dizendo que fez o teste. Essas entram direto no bloco de respostas abaixo, sem precisar dos toques 3 e 4.</div>
+
+    <div class="regra" style="margin-bottom:12px"><strong>Quem chega pelo botão já viu o custo.</strong> O resultado termina com o que acontece com quem permanece no mesmo lugar, e a pessoa pode ter salvado isso em PDF. <b>Não repita o conteúdo do resultado por mensagem.</b> Ela já leu. Reconheça e peça os cinco minutos.</div>
+
+    <div class="turno"><span class="tom">toque 1, a oferta</span>
+      <p>Oi [nome], a Camila me pediu para te mandar uma coisa.</p>
+      <p>É o Raio X da Liderança. Ele mostra se você já é percebida como referência estratégica ou ainda está no lugar de quem só entrega, e qual das três camadas está te segurando aí: time, pares ou diretoria.</p>
+      <p>São 12 perguntas, três minutos, e no fim você pode salvar o resultado em PDF. Quer que eu te mande?</p>
+      <button class="copiar">Copiar</button></div>
+
+    <div class="turno"><span class="tom">toque 2, depois do sim</span>
+      <p>Aqui está: [link do Raio X]</p>
+      <p>No fim tem um botão para salvar o resultado em PDF, vale guardar.</p>
+      <p>Quando terminar, me diz qual resultado deu para você, que eu te falo o que costuma estar por trás dele.</p>
+      <button class="copiar">Copiar</button></div>
+
+    <div class="turno"><span class="tom">toque 3, dois dias depois</span>
+      <p>Oi [nome], conseguiu fazer o Raio X? Qual resultado deu para você, e qual camada apareceu como a mais frágil?</p>
+      <button class="copiar">Copiar</button></div>
+
+    <div class="turno"><div class="rotulo">Se ela não respondeu ao toque 1</div>
+      <p>Oi [nome], te mando assim mesmo, sem compromisso: [link do Raio X].</p>
+      <p>Três minutos e você vê onde está hoje entre bom gestor e líder estratégico, e o que costuma acontecer com quem fica parada nesse lugar.</p>
+      <button class="copiar">Copiar</button></div>
+
+    <div class="turno"><span class="tom">toque 4, quem fez e não respondeu</span>
+      <p>Oi [nome], no fim do Raio X tem uma parte sobre o custo de continuar no mesmo lugar. É a parte que a maioria relê depois.</p>
+      <p>Qual resultado deu para você?</p>
+      <button class="copiar">Copiar</button></div>
+
+    <div class="turno"><div class="rotulo">Se ela chegou pelo botão do Raio X</div>
+      <p>Oi [nome], que bom que você fez o Raio X. Me diz duas coisas para eu já adiantar para a Camila: qual resultado deu, e qual camada apareceu como a mais frágil?</p>
+      <button class="copiar">Copiar</button></div>
+  </div>
+
+  <div class="bloco">
+    <h3>Respostas por camada</h3>
+    <div class="quando">Ela disse qual camada apareceu. Aqui a conversa vira para a ligação.</div>
+
+    <div class="turno"><div class="rotulo">Camada Time</div>
+      <p>Faz sentido, [nome]. Time é a camada em que a maioria tenta resolver com mais conversa e mais feedback, e volta ao mesmo lugar em poucas semanas. Quando o combinado precisa ser cobrado toda vez, o problema quase nunca é o que foi falado. É de onde foi falado.</p>
+      <p>Posso te ligar cinco minutos para entender como isso está acontecendo aí? Consigo hoje às [hora] ou amanhã às [hora].</p>
+      <button class="copiar">Copiar</button></div>
+
+    <div class="turno"><div class="rotulo">Camada Pares</div>
+      <p>Faz sentido, [nome]. Pares é a mais silenciosa das três, porque ninguém confronta. As decisões simplesmente acontecem ao seu lado e você descobre depois.</p>
+      <p>Posso te ligar cinco minutos para entender como isso está acontecendo aí? Consigo hoje às [hora] ou amanhã às [hora].</p>
+      <button class="copiar">Copiar</button></div>
+
+    <div class="turno"><div class="rotulo">Camada Diretoria</div>
+      <p>Faz sentido, [nome]. Diretoria é a camada que mais aparece em quem entrega resultado acima da média e mesmo assim não é chamada para as decisões que afetam a própria área.</p>
+      <p>Posso te ligar cinco minutos para entender como isso está acontecendo aí? Consigo hoje às [hora] ou amanhã às [hora].</p>
+      <button class="copiar">Copiar</button></div>
+  </div>
+
+  <div class="bloco">
+    <h3>Respostas por resultado</h3>
+    <div class="quando">Use junto com a resposta da camada, quando ela disser em qual faixa caiu.</div>
+
+    <div class="turno"><div class="rotulo">Deu Bom gestor sob pressão</div>
+      <p>Esse resultado costuma dizer menos sobre você e mais sobre o lugar onde você está liderando. A Camila separa o que é da empresa, o que é de um liderado específico e o que é seu, antes de tratar qualquer coisa. Tratar tudo como falha sua é o erro mais caro.</p>
+      <button class="copiar">Copiar</button></div>
+
+    <div class="turno"><div class="rotulo">Deu Bom gestor</div>
+      <p>Esse é o resultado mais comum entre quem já entrega bem. Você organiza, cumpre e faz a área funcionar, e mesmo assim não é lida como referência estratégica. Isso não muda com mais entrega, muda com posicionamento.</p>
+      <button class="copiar">Copiar</button></div>
+
+    <div class="turno"><div class="rotulo">Deu Em transição</div>
+      <p>Esse é o ponto onde a maioria fica parada por anos, porque é confortável o bastante para não doer e insuficiente para promover. É bem o lugar que a Camila trabalha.</p>
+      <button class="copiar">Copiar</button></div>
+
+    <div class="turno"><div class="rotulo">Deu Líder estratégico</div>
+      <p>Resultado alto, e isso é raro. Nesse caso a conversa com a Camila costuma ser menos sobre destravar e mais sobre sustentar: manter o lugar quando a estrutura muda, quando entra gente nova ou quando você assume uma área maior. Faz sentido para o seu momento?</p>
+      <button class="copiar">Copiar</button></div>
+
+    <p class="leitura"><b>Anote resultado e camada no Kommo assim que ela responder.</b> Isso já é metade do checklist de passagem, e a Camila entra na Reunião de Diagnóstico sabendo por onde começar.</p>
+    <p class="leitura">Não explique o movimento nem dê o caminho por mensagem. <b>Nomear o problema abre a conversa. Resolver por escrito fecha.</b></p>
+  </div>
+
+  <div class="bloco">
+    <h3>Regras da Meta para template</h3>
+    <div class="quando">O que faz um template ser recusado na aprovação.</div>
+    <label class="item"><input type="checkbox"><span>Nunca começar a mensagem com a variável<em>"[nome], tudo bem?" é recusado. "Oi [nome], tudo bem?" passa. Sempre uma palavra antes.</em></span></label>
+    <label class="item"><input type="checkbox"><span>Nunca terminar com a variável</span></label>
+    <label class="item"><input type="checkbox"><span>Nunca uma mensagem formada só por variável<em>"[nome]?" é recusado. Precisa de texto fixo em volta.</em></span></label>
+    <label class="item"><input type="checkbox"><span>Sem excesso de emoji, caixa alta ou promessa de resultado</span></label>
+    <label class="item"><input type="checkbox"><span>Uma variável só, o nome<em>Quanto menos campo variável, menor a chance de recusa e de erro no disparo.</em></span></label>
+    <p class="leitura">Estas regras valem quando a mensagem sai iniciada pela empresa, fora da janela de 24 horas. <b>Se a resposta do lead já abriu a janela, ou se a mensagem sai pelo aplicativo em coexistência, você escreve livre.</b></p>
+  </div>
+
+  <div class="bloco">
+    <h3>Regras de cadastro no Kommo</h3>
+    <label class="item"><input type="checkbox"><span>Usar o campo de mesclagem do Kommo para o nome<em>Nunca digitar [nome] no template salvo, senão sai literal para o lead.</em></span></label>
+    <label class="item"><input type="checkbox"><span>Uma mensagem por dia, nunca duas no mesmo disparo</span></label>
+    <label class="item"><input type="checkbox"><span>Assim que a pessoa responder, sair da cadência automática<em>A partir da resposta é conversa na mão, com a aba Mensagens, bloco Sumiu.</em></span></label>
+    <label class="item"><input type="checkbox"><span>Horário fixo no template só quando for realista<em>Se 17h nunca está livre, o template vira mentira repetida.</em></span></label>
+    <label class="item"><input type="checkbox"><span>Revisar os templates uma vez por mês na reunião de segunda</span></label>
+  </div>
+</section>
+
+<section id="fechamento" hidden>
+  <h2>Fechamento</h2>
+  <p class="sub">A Reunião de Diagnóstico. Esta aba é sua, não da Daniele.</p>
+
+  <div class="subnav">
+    <button aria-selected="true" data-sub="f-sete">Os 7 itens</button>
+    <button aria-selected="false" data-sub="f-prev">Prevenir objeção</button>
+    <button aria-selected="false" data-sub="f-check">Checagem</button>
+    <button aria-selected="false" data-sub="f-pedir">Pedir o sinal</button>
+    <button aria-selected="false" data-sub="f-pos">Depois da reunião</button>
+  </div>
+
+  <div class="sub-pane" id="f-sete">
+    <div class="regra"><strong>O princípio.</strong> Existem sete coisas que precisam estar resolvidas na cabeça da pessoa para ela comprar. <b>Se uma delas ficar de fora, ela vira objeção no fechamento.</b> A objeção que aparece no fim quase sempre é um desses sete itens que não foi tratado no meio.</div>
+
+    <div class="bloco">
+      <h3>1. Dor</h3>
+      <p class="leitura">Ela precisa ter um incômodo real. Muita gente chega com a dor mais leve do que ela é, porque já se acostumou. <b>Seu papel é tornar a dor mais nítida, não maior do que é.</b></p>
+      <div class="turno"><p>Quando isso acontece, o que muda no seu dia?</p><p>Você lembra da última vez? Como foi?</p><button class="copiar">Copiar</button></div>
+    </div>
+
+    <div class="bloco">
+      <h3>2. Achar que resolve sozinha</h3>
+      <p class="leitura">Se ela acredita que dá para resolver por conta, vai tentar por conta. Ela precisa chegar sozinha a uma destas três conclusões: não dá para resolver sozinha, dá mas custa mais caro em tempo, ou se desse ela já teria resolvido.</p>
+      <div class="turno"><p>Você já tentou resolver isso antes? O que você tentou?</p><p>E há quanto tempo você vem tentando?</p><p>O que te faz achar que dessa vez seria diferente sozinha?</p><button class="copiar">Copiar</button></div>
+    </div>
+
+    <div class="bloco">
+      <h3>3. Custo de continuar assim</h3>
+      <p class="leitura">Se o custo de continuar parece baixo, resolver não é urgente e qualquer preço parece caro. <b>A conta precisa virar: continuar sai mais caro do que resolver.</b> Para líder CLT o custo é tempo, promoção adiada e percepção que se consolida.</p>
+      <div class="turno"><p>Quanto tempo por semana isso está te custando hoje?</p><p>Se nada mudar nos próximos doze meses, onde você estaria?</p><p>Já teve alguma promoção ou projeto que passou por você e foi para outra pessoa?</p><button class="copiar">Copiar</button></div>
+    </div>
+
+    <div class="bloco">
+      <h3>4. Desejo não atendido</h3>
+      <p class="leitura">Nem todo mundo tem dor. Parte do público está bem, mas quer algo que não conseguiu ainda: a cadeira acima, a área maior, sair do operacional, um salário que muda a vida da família. <b>Desejo funciona tão bem quanto dor, e atrai gente melhor.</b></p>
+      <div class="turno"><p>Onde você quer estar daqui a dois anos?</p><p>O que precisaria acontecer para você considerar que valeu?</p><button class="copiar">Copiar</button></div>
+    </div>
+
+    <div class="bloco">
+      <h3>5. Recursos</h3>
+      <p class="leitura">Se não houver condição nem crédito, o fechamento trava mesmo com tudo o resto certo. Aqui entram as três portas: três meses, seis meses e o individual. <b>Trate como escolha de intensidade, não de bolso.</b> O de 2 mil e o de 4 mil custam o mesmo por mês.</p>
+<div class="rev conf"><div class="rt">Estes valores não batem com o catálogo registrado</div><p>O catálogo que está no projeto é: Abre Carteira R$197, Liderança Blindada Grupo R$2.997 com R$1.997 no fechamento, Líder Estrategista R$8.000 com R$7.000 no fechamento, e o corporativo por proposta. Aqui aparecem três portas de três meses, seis meses e individual, com 2 mil e 4 mil.</p><p>Ou o catálogo mudou e o projeto está desatualizado, ou este texto veio de um material antigo. Eu não corrijo nenhum dos dois sem você dizer qual é o certo. É a única inconsistência de preço do portal e ela está na aba onde o preço é dito em voz alta.</p></div>
+      <div class="turno"><p>Você já investiu em algum desenvolvimento antes? Como foi?</p><p>Esse tipo de decisão é sua ou passa por mais alguém?</p><button class="copiar">Copiar</button></div>
+    </div>
+
+    <div class="bloco">
+      <h3>6. Apoio de quem está perto</h3>
+      <p class="leitura">Decisão de compra raramente é isolada. Cônjuge, RH, gestor direto. <b>Comunicar depois é normal. Pedir autorização antes é trava.</b> Se a empresa paga, o processo é outro e precisa ser mapeado na hora, não no fim.</p>
+      <div class="turno"><p>Quando você toma uma decisão desse tamanho, você conversa com alguém antes?</p><p>Como funciona aí: você leva a proposta e aprovam, ou o RH decide o que a empresa contrata?</p><button class="copiar">Copiar</button></div>
+    </div>
+
+    <div class="bloco">
+      <h3>7. Confiança no processo</h3>
+      <p class="leitura">Ela precisa acreditar na solução e também em como ela é entregue. Isso se constrói mostrando o passo a passo, casos de quem estava na mesma camada e o que acontece na prática semana a semana. <b>Vago gera medo. Concreto gera decisão.</b></p>
+      <div class="turno"><p>Deixa eu te mostrar como funciona na prática, semana a semana.</p><p>Teve uma líder que chegou exatamente com [camada]. O que a gente fez com ela foi [caminho], e em [prazo] mudou [resultado].</p><button class="copiar">Copiar</button></div>
+    </div>
+
+    <div class="bloco">
+      <h3>Checklist antes de falar preço</h3>
+      <p class="leitura">Passe os sete antes de apresentar qualquer programa. <b>Item não marcado é objeção contratada.</b></p>
+      <label class="item"><input type="checkbox"><span>1. Ela nomeou uma dor concreta, com exemplo</span></label>
+      <label class="item"><input type="checkbox"><span>2. Ela concluiu sozinha que não resolve sem ajuda</span></label>
+      <label class="item"><input type="checkbox"><span>3. Ela disse em voz alta o que continuar assim custa</span></label>
+      <label class="item"><input type="checkbox"><span>4. Ela declarou onde quer chegar</span></label>
+      <label class="item"><input type="checkbox"><span>5. Você sabe se há condição e se a decisão é dela</span></label>
+      <label class="item"><input type="checkbox"><span>6. Você sabe quem mais participa da decisão</span></label>
+      <label class="item"><input type="checkbox"><span>7. Ela viu como a entrega funciona e um caso parecido</span></label>
+    </div>
+  </div>
+
+  <div class="sub-pane" id="f-prev" hidden>
+    <div class="regra"><strong>Prevenir em vez de quebrar.</strong> O modelo tradicional deixa as objeções chegarem no fim e tenta desmontar uma a uma. O problema é que, no primeiro sinal de força, a pessoa percebe que está numa conversa de venda e levanta a guarda. <b>A partir daí ela procura armadilha em cada frase que você diz.</b></div>
+
+    <div class="regra"><strong>Por que isso importa mais no seu caso.</strong> Seu lead é líder que já foi assediado por curso, coach e consultoria. Ele reconhece pressão de longe. <b>Quanto mais a conversa parecer diagnóstico, menos ele defende.</b> E venda feita sob pressão volta como cancelamento.</div>
+
+    <div class="bloco">
+      <h3>Micro compromissos</h3>
+      <div class="quando">Pequenos acordos ao longo da conversa. Quanto mais ela concorda com coisas pequenas, mais difícil fica contradizer tudo no fim.</div>
+      <p class="leitura"><b>Pergunta aberta.</b> Faz a pessoa detalhar e fechar portas sozinha.</p>
+      <div class="turno"><p>Você me disse que o time só executa quando você cobra. Me explica o que você acha que está causando isso?</p><button class="copiar">Copiar</button></div>
+      <p class="leitura"><b>Se, então.</b> Sempre que colocar algo na mesa, peça um compromisso em troca.</p>
+      <div class="turno"><p>Se eu te mostrar um caminho para resolver [trava] sem você virar outra pessoa, e que caiba no que você pode investir, faz sentido a gente trabalhar junto?</p><button class="copiar">Copiar</button></div>
+      <p class="leitura"><b>Valor demonstrado.</b> Depois de mostrar o que funciona, peça a intenção.</p>
+      <div class="turno"><p>Essa líder estava na mesma camada que você e mudou o cenário em [prazo]. Se eu te mostrar exatamente como isso foi feito e você entender que serve para o seu caso, você teria interesse em aplicar?</p><button class="copiar">Copiar</button></div>
+      <p class="leitura">Se ela <b>não quiser</b> assumir o micro compromisso, isso é ouro. Investigue ali, porque a objeção acabou de aparecer com tempo de sobra para ser resolvida.</p>
+    </div>
+
+    <div class="bloco">
+      <h3>Onde cada item se resolve na conversa</h3>
+      <label class="item"><input type="checkbox"><span>Dor e custo: no diagnóstico, antes de qualquer solução</span></label>
+      <label class="item"><input type="checkbox"><span>Não resolve sozinha: quando ela contar o que já tentou</span></label>
+      <label class="item"><input type="checkbox"><span>Desejo: quando ela disser onde quer chegar</span></label>
+      <label class="item"><input type="checkbox"><span>Quem decide: no meio, junto com cargo e estrutura</span></label>
+      <label class="item"><input type="checkbox"><span>Confiança: ao mostrar a entrega e um caso da mesma camada</span></label>
+      <label class="item"><input type="checkbox"><span>Recursos: por último, e como escolha de formato</span></label>
+    </div>
+  </div>
+
+  <div class="sub-pane" id="f-check" hidden>
+    <div class="regra"><strong>O sim que não é sim.</strong> A pessoa concorda com tudo e some depois. Quase sempre o sinal estava ali, na palavra escolhida e no tom, e a conversa seguiu adiante em vez de parar e aprofundar.</div>
+
+    <div class="bloco">
+      <h3>Sinais de que ela não está comprada</h3>
+      <p class="leitura">Acho que sim. Pode ser. Acredito que sim. Talvez. Vamos ver. Vou pensar. Preciso analisar melhor. Vou avaliar com calma. Tenho que ver direitinho. Vou verificar e te falo. Depois eu te retorno. Vamos conversando. Faz sentido, mas. Entendi, só que. Não sei. Não tenho certeza. Não sei se é o momento. Não sei se consigo aplicar. Vou ver com [alguém]. Tenho que alinhar aqui. Depende.</p>
+      <p class="leitura"><b>Some a isso o tom.</b> O jeito de falar entrega a hesitação mesmo quando a palavra não entrega.</p>
+    </div>
+
+    <div class="bloco">
+      <h3>Pergunta específica, resposta específica</h3>
+      <p class="leitura">Pergunta genérica gera resposta genérica. <b>"Faz sentido?" sempre recebe um sim que não vale nada.</b></p>
+      <div class="turno"><div class="rotulo">Depois de apresentar</div><p>Que perguntas você tem sobre o programa, especificamente?</p><p>Tem alguma coisa que talvez não tenha ficado clara para você?</p><p>Como você se sente em relação a isso?</p><p>Você sente mesmo que é isso que você precisa para [objetivo que ela disse]?</p><button class="copiar">Copiar</button></div>
+      <div class="turno"><div class="rotulo">Ao primeiro sinal de hesitação</div><p>O que está te deixando mais pé atrás nesse momento?</p><button class="copiar">Copiar</button></div>
+      <p class="leitura">Ela vai trazer algo raso na primeira resposta, do tipo não sei se vou conseguir aplicar. <b>Faça mais uma ou duas perguntas.</b> Muitas vezes nem ela sabe ainda o que a incomoda, e o seu papel é ajudar a colocar isso para fora.</p>
+    </div>
+
+    <div class="bloco">
+      <h3>A pergunta-chave</h3>
+      <div class="regra" style="margin-bottom:0"><strong>Se o investimento não fosse uma questão hoje, você entraria?</strong><br><br>Aplique antes de qualquer desconto e antes de encerrar qualquer conversa sem fechamento. Resposta com volta é trava real ou Pobre Sofisticado, e nos dois casos desconto não resolve.</div>
+    </div>
+  </div>
+
+  <div class="sub-pane" id="f-pedir" hidden>
+    <div class="regra"><strong>Antes de tudo.</strong> Pedir o pagamento não é o momento de convencer. É o momento de dizer o próximo passo. Se você chegou aqui com os 7 itens resolvidos, a decisão já foi tomada no meio da conversa. <b>O que falta é alguém dizer como se faz.</b></div>
+
+    <div class="regra"><strong>O que trava não é a técnica.</strong> A mecânica cabe em três frases. O que pesa é que pedir o pagamento é afirmar em voz alta que o que você entrega vale o que você cobra. Quando isso incomoda, o reflexo é adiar: "te mando depois", "me avisa quando decidir". <b>Adiar não protege a pessoa. Deixa ela sem saber o que fazer.</b></div>
+
+    <div class="bloco">
+      <h3>Passo 1. Checagem de dúvidas</h3>
+      <div class="quando">Antes de qualquer número. Pergunta específica, nunca "faz sentido?".</div>
+      <div class="turno"><p>Que perguntas você tem sobre o programa, especificamente?</p><div class="espera">Aguardar responder</div><p>Tem alguma parte que talvez não tenha ficado clara?</p><div class="espera">Aguardar responder</div><button class="copiar">Copiar</button></div>
+      <p class="leitura">Se aparecer qualquer hesitação, volte para a aba Checagem. <b>Dúvida não resolvida aqui vira "vou pensar" dois minutos depois.</b></p>
+    </div>
+
+    <div class="bloco">
+      <h3>Passo 2. Recomendar um formato, não abrir o cardápio</h3>
+      <div class="quando">Três opções na mesa fazem a pessoa escolher por preço. Uma recomendação faz escolher por critério.</div>
+      <div class="turno"><p>Pelo que você me contou, no seu caso eu recomendo [formato]. E te digo por quê: [motivo ligado à camada e ao que ela já tentou].</p><div class="espera">Aguardar responder</div><button class="copiar">Copiar</button></div>
+      <p class="leitura">Se ela perguntar dos outros, aí sim apresente. <b>Mas entre no fechamento com uma recomendação sua na mesa, não com um menu.</b></p>
+    </div>
+
+    <div class="bloco">
+      <h3>Passo 3. O valor, dito inteiro e sem pedido de desculpa</h3>
+      <div class="quando">Diga o número e pare. Sem "é um investimento de apenas", sem "eu sei que parece bastante", sem enrolar a frase.</div>
+      <div class="turno"><p>O [formato] são [valor]. São [prazo], com [entregas], e [número] encontros individuais comigo.</p><div class="espera">Silêncio. Deixe ela falar primeiro.</div><button class="copiar">Copiar</button></div>
+      <div class="regra" style="margin-bottom:0"><strong>Essa é a parte mais difícil e a mais decisiva.</strong> Depois do número, cale. Quem preenche o silêncio primeiro perde. Se você emendar uma explicação, um desconto ou uma justificativa, você acabou de dizer que o preço precisa ser defendido.</div>
+    </div>
+
+    <div class="bloco">
+      <h3>Passo 4. A pergunta que abre o pagamento</h3>
+      <div class="quando">Não pergunte se ela quer. Pergunte como ela vai fazer.</div>
+      <div class="turno"><div class="rotulo">Versão principal</div><p>Faz sentido para você começarmos?</p><div class="espera">Aguardar responder</div><p>Perfeito. Você prefere Pix à vista ou parcelado no cartão?</p><div class="espera">Aguardar responder</div><button class="copiar">Copiar</button></div>
+      <div class="turno"><div class="rotulo">Versão mais direta, quando ela já demonstrou decisão</div><p>Então vamos fazer assim: eu te mando agora os dados. Você prefere Pix ou cartão?</p><div class="espera">Aguardar responder</div><button class="copiar">Copiar</button></div>
+      <div class="turno"><div class="rotulo">Versão com micro compromisso, quando ela ainda pesa</div><p>Se eu te garantir que você começa já na próxima turma e que a gente ataca [camada] logo no primeiro encontro, você entra comigo?</p><div class="espera">Aguardar responder</div><button class="copiar">Copiar</button></div>
+      <p class="leitura"><b>Perguntar a forma de pagamento é o fechamento.</b> Quem está pronta responde a forma. Quem não está devolve uma objeção, e aí você descobre a real em vez de ficar imaginando depois.</p>
+    </div>
+
+    <div class="bloco">
+      <h3>Passo 5. Fazer acontecer na hora</h3>
+      <div class="quando">Não encerre e mande depois. Decisão tomada e não executada esfria em horas.</div>
+      <label class="item"><input type="checkbox"><span>Mandar a chave Pix ou o link ainda com ela na chamada</span></label>
+      <label class="item"><input type="checkbox"><span>Confirmar que ela recebeu</span></label>
+      <label class="item"><input type="checkbox"><span>Combinar o primeiro encontro com data antes de desligar</span></label>
+      <label class="item"><input type="checkbox"><span>Registrar no Kommo: valor, formato, forma de pagamento</span></label>
+      <div class="turno"><p>Vou te mandar aqui agora. Me confirma quando chegar?</p><p>E já deixo marcado o nosso primeiro encontro: [dia] às [hora]. Anota aí.</p><button class="copiar">Copiar</button></div>
+    </div>
+
+    <div class="bloco">
+      <h3>O que fazer com cada resposta</h3>
+      <p class="leitura"><b>Ela pergunta a forma de pagamento, o prazo ou o parcelamento.</b> É compra. Responda direto e execute o passo 5. Não acrescente argumento, não ofereça desconto que ninguém pediu.</p>
+      <p class="leitura"><b>Ela diz que precisa avisar o marido, a esposa ou o gestor.</b> Comunicar depois é normal e não é objeção. Pergunte se é aviso ou autorização. Se for aviso, siga. Se for autorização, adie com data marcada, sem abrir negociação.</p>
+      <p class="leitura"><b>Ela diz "vou pensar".</b> Não aceite sem entender. Pergunte o que exatamente ela vai pensar, e volte ao item dos 7 que ficou aberto. <b>Quase sempre é confiança no processo ou custo de continuar, não dinheiro.</b></p>
+      <p class="leitura"><b>Ela hesita no valor.</b> Antes de qualquer condição, faça a pergunta-chave: se o investimento não fosse uma questão hoje, você entraria? Se a resposta vier com volta, o problema não era preço e desconto não resolve.</p>
+      <p class="leitura"><b>Ela diz não.</b> Pergunte o que fez ela decidir assim, agradeça a honestidade e registre. <b>Não insista no mesmo dia.</b></p>
+    </div>
+
+    <div class="bloco">
+      <h3>O que nunca fazer aqui</h3>
+      <label class="item"><input type="checkbox"><span>Baixar o preço antes de aplicar a pergunta-chave</span></label>
+      <label class="item"><input type="checkbox"><span>Oferecer desconto que a pessoa não pediu</span></label>
+      <label class="item"><input type="checkbox"><span>Encolher o programa no improviso para caber no valor</span></label>
+      <label class="item"><input type="checkbox"><span>Mandar a proposta por WhatsApp em vez de fechar na conversa</span></label>
+      <label class="item"><input type="checkbox"><span>Encerrar sem próximo passo com data</span></label>
+      <label class="item"><input type="checkbox"><span>Dizer "fico à disposição" ou "me avisa quando decidir"</span></label>
+      <p class="leitura">Se o valor precisar mudar, isso é decisão de política comercial, tomada fora da conversa. <b>Preço decidido durante a reunião é preço decidido sob pressão.</b></p>
+    </div>
+
+    <div class="bloco">
+      <h3>Para lembrar antes da próxima</h3>
+      <p class="leitura">O Ricardo avisou a esposa e pagou no dia seguinte. A Jessica pediu o link de pagamento. A Rarissa disse que o valor não estava fora do que ela esperava.</p>
+      <p class="leitura"><b>Nenhum dos três precisou ser convencido.</b> Os três precisaram que alguém dissesse o próximo passo. Não pedir não protege a pessoa. Deixa ela sem saber o que fazer com uma decisão que ela já tinha tomado.</p>
+    </div>
+  </div>
+
+  <div class="sub-pane" id="f-pos" hidden>
+    <div class="regra"><strong>O dado que importa.</strong> A maioria das vendas de ticket alto acontece depois do quinto follow-up, e quase metade dos vendedores para na primeira tentativa. <b>Quanto mais caro o programa, mais follow-up ele exige.</b></div>
+
+    <div class="bloco">
+      <h3>Nunca sair sem o próximo passo</h3>
+      <label class="item"><input type="checkbox"><span>Combinar em voz alta o dia e a hora do próximo contato</span></label>
+      <label class="item"><input type="checkbox"><span>Enviar convite na agenda dela na hora</span></label>
+      <label class="item"><input type="checkbox"><span>Registrar a atividade no Kommo com data</span></label>
+      <p class="leitura">Marque para 24 ou 48 horas. <b>Pior cenário é ela sair com todas as informações e ficar de te retornar.</b></p>
+    </div>
+
+    <div class="bloco">
+      <h3>O que nunca escrever</h3>
+      <p class="leitura">Alguma novidade? Conseguiu decidir? Podemos avançar? Você já viu a proposta? Estou à disposição. Me avisa. No seu tempo. Fico no aguardo.</p>
+      <p class="leitura"><b>Todo vendedor escreve isso, e é o que ativa a defesa.</b> Também não tente vender por escrito, e não ofereça desconto por mensagem. Em quase todos os casos não é sobre preço.</p>
+    </div>
+
+    <div class="bloco">
+      <h3>Como retomar</h3>
+      <div class="quando">Gerar valor antes de pedir qualquer coisa. Sempre com um fato novo na mão.</div>
+      <div class="turno"><div class="rotulo">Áudio, com algo preparado</div><p>[nome], tudo bem? Estava revisando as anotações da nossa conversa e preparei uma coisa para você.</p><p>Peguei o que você me contou sobre [trava] e montei o desenho dos três movimentos que eu faria no seu caso, na ordem. Já dá para você começar pelo primeiro sozinha.</p><p>Quer que eu te mostre?</p><button class="copiar">Copiar</button></div>
+      <div class="turno"><div class="rotulo">Com caso da mesma camada</div><p>[nome], lembrei de você agora. Essa líder aqui estava exatamente na mesma situação que você me descreveu, com [camada]. Olha o que mudou em [prazo].</p><p>Aquilo do [trava] continua acontecendo aí?</p><button class="copiar">Copiar</button></div>
+      <div class="turno"><div class="rotulo">Mudando de canal</div><p>[nome], te mandei mensagem no WhatsApp e imagino que tenha se perdido na correria. Continua valendo o que a gente conversou?</p><button class="copiar">Copiar</button></div>
+    </div>
+
+    <div class="bloco">
+      <h3>Jogar limpo</h3>
+      <div class="quando">Depois de algumas tentativas sem resposta. Facilita para ela dizer o que está travando.</div>
+      <div class="turno"><p>[nome], te escrevi faz alguns dias e não tive retorno. Imagino que a correria esteja grande.</p><p>Me responde com sinceridade: resolver isso ainda é prioridade para você agora? Se não for, tudo bem, eu encerro por aqui. Se for, eu sigo com você.</p><button class="copiar">Copiar</button></div>
+    </div>
+
+    <div class="bloco">
+      <h3>Quando adiar o fechamento</h3>
+      <p class="leitura">Só nestes casos. <b>Apoiar demais em duas conversas é caminho rápido para perder venda, com a sensação de estar fazendo a coisa certa.</b></p>
+      <label class="item"><input type="checkbox"><span>A decisão passa por cônjuge, RH ou gestor</span></label>
+      <label class="item"><input type="checkbox"><span>Medo ou insegurança que você não conseguiu resolver na hora</span></label>
+      <label class="item"><input type="checkbox"><span>Experiência anterior muito ruim com outro programa</span></label>
+      <div class="turno"><div class="rotulo">Como adiar sem perder</div><p>[nome], eu prefiro que você não decida agora. Quero que você pense no que a gente conversou antes de qualquer coisa.</p><p>Vamos marcar uma conversa para eu te passar o restante dos detalhes. Tenho [dia] às [hora] ou [dia] às [hora]. Qual fica melhor?</p><p>Anota aí as dúvidas que aparecerem até lá, que a gente aprofunda. E vou te mandar uma coisa hoje que acredito que vai te dar clareza antes.</p><button class="copiar">Copiar</button></div>
+      <p class="leitura">No dia, mande mensagem de manhã lembrando. <b>Adiar sem próxima data marcada não é adiar, é perder.</b></p>
+    </div>
+
+    <div class="bloco">
+      <h3>Quando não fecha</h3>
+      <div class="turno"><p>[nome], obrigada pela conversa. Só me ajuda com uma coisa, que é importante para mim: o que fez você decidir não seguir agora?</p><button class="copiar">Copiar</button></div>
+      <p class="leitura">Registre a resposta no Kommo e leve para a reunião de segunda. <b>Objeção que aparece três vezes não é objeção, é buraco no processo.</b></p>
+    </div>
+  </div>
+</section>
+
+<section id="gestao" hidden>
+  <h2>Gestão</h2>
+  <p class="sub">Sua camada com o time. Números, regras e ritmo.</p>
+
+  <div class="bloco">
+    <h3>Os três números que importam</h3>
+    <div class="quando">Medidos toda sexta. Mapear, medir, melhorar.</div>
+    <p class="leitura"><b>90% respondidos em até 5 minutos.</b> Sai do log do Kommo, sem ninguém anotar nada. O sistema marca sozinho quem passou do prazo.</p>
+    <p class="leitura"><b>80% de comparecimento na Reunião.</b> Agendou e apareceu. Abaixo disso, é preciso agendar mais para entregar o mesmo.</p>
+    <p class="leitura"><b>33% de Reunião que vira venda.</b> É o número que diz se o tempo da Reunião basta para fechar.</p>
+    <p class="leitura">A conta que importa não é quantos leads entraram. É quantos viraram Reunião e quantas Reuniões viraram venda. O resto é volume.</p>
+  </div>
+
+  <div class="bloco">
+    <h3>Os números da semana</h3>
+    <div class="quando">Levantados na sexta, revisados na segunda às 10h.</div>
+    <label class="item"><input type="checkbox"><span>Formulários novos que entraram</span></label>
+    <label class="item"><input type="checkbox"><span>Quantos foram contactados em até 24 horas</span></label>
+    <label class="item"><input type="checkbox"><span>Quantos responderam</span></label>
+    <label class="item"><input type="checkbox"><span>Quantas ligações de qualificação aconteceram</span></label>
+    <label class="item"><input type="checkbox"><span>Quantas agendas confirmadas e quantas canceladas</span></label>
+    <label class="item"><input type="checkbox"><span>Reuniões de Diagnóstico realizadas</span></label>
+    <label class="item"><input type="checkbox"><span>No-show</span></label>
+    <label class="item"><input type="checkbox"><span>Vendas e valor</span></label>
+    <p class="leitura"><b>A conta que importa não é quantos leads entraram.</b> É quantos viraram Reunião de Diagnóstico e quantas Reuniões viraram venda. O resto é volume.</p>
+  </div>
+
+  <div class="bloco">
+    <h3>Duas correções de sistema que ainda não foram feitas<span class="novo">novo</span></h3>
+    <div class="quando">Nenhuma das duas é trabalho da Daniele. As duas mexem no número de no-show.</div>
+    <label class="item"><input type="checkbox"><span>Limitar o Calendly a 1 ou 2 dias à frente<em>Quanto mais longe o horário, mais tempo para esfriar. Três sessões marcadas na sexta para segunda é o padrão que mais falta. Leva dois minutos e não custa nada.</em></span></label>
+    <label class="item"><input type="checkbox"><span>Ligar o controle de duplicidade por telefone e e-mail<em>Enquanto não for feito, a Daniele confere duplicata na mão em todo card, o que já está na aba Agora.</em></span></label>
+  </div>
+
+  <div class="bloco">
+    <h3>Onde olhar quando o número cai</h3>
+    <div class="quando">Cada queda tem um lugar específico para investigar. Não trate tudo como falta de esforço.</div>
+    <p class="leitura"><b>Poucos leads contactados.</b> Problema de rotina ou de volume da campanha. Confira se os três blocos do dia estão sendo executados na ordem.</p>
+    <p class="leitura"><b>Muita gente contactada e pouca resposta.</b> Problema de mensagem ou de horário de disparo. Teste a variação da abordagem por duas semanas.</p>
+    <p class="leitura"><b>Responderam e não agendaram.</b> Problema na ligação. Ouça uma gravação antes de opinar.</p>
+    <p class="leitura"><b>Agendaram e não compareceram.</b> Problema na confirmação. Confira se o compromisso, o convite e o material de preparação estão sendo feitos, os três.</p>
+    <p class="leitura"><b>Compareceram e não fecharam.</b> Problema na Reunião de Diagnóstico, e aí é sua. Aba Fechamento.</p>
+  </div>
+
+  <div class="bloco">
+    <h3>Auditoria de no-show</h3>
+    <div class="quando">Uma vez por mês, com você. Não é a Daniele que audita isso.</div>
+    <div class="regra" style="margin-bottom:12px"><strong>Por que não é autoauditoria.</strong> As perguntas abaixo são todas sobre a execução do processo. Quem executa não enxerga o que pulou, e isso não é desconfiança, é limite de quem está dentro da tarefa. <b>O registro é dela, a auditoria é sua.</b></div>
+    <label class="item"><input type="checkbox"><span>A ligação de qualificação aconteceu em todos os casos?<em>No-show de quem nunca falou com a Daniele não é no-show, é falha de processo.</em></span></label>
+    <label class="item"><input type="checkbox"><span>A pergunta sobre o que poderia atrapalhar foi feita?</span></label>
+    <label class="item"><input type="checkbox"><span>O convite foi enviado e a presença dele na agenda foi confirmada?</span></label>
+    <label class="item"><input type="checkbox"><span>O material de preparação foi enviado?</span></label>
+    <label class="item"><input type="checkbox"><span>Ouvir uma ligação de alguém que faltou<em>É onde aparece se o compromisso foi travado de verdade ou só combinado no ar.</em></span></label>
+    <p class="leitura">Cruze com o registro semanal da Daniele, na aba Mensagens, bloco Faltou. <b>Se os quatro passos foram feitos e mesmo assim a pessoa faltou, o problema é de qualificação, não de confirmação.</b></p>
+  </div>
+
+  <div class="bloco">
+    <h3>Política comercial</h3>
+    <div class="quando">Decisões que precisam estar escritas antes de aparecerem numa conversa.</div>
+    <div class="regra" style="margin-bottom:12px"><strong>Por que escrever antes.</strong> Regra decidida no meio da conversa é regra decidida sob pressão. Com Síndrome da Impostora no meio, o improviso quase sempre desce o preço. <b>Preencha estes campos com o Igor e não mude durante uma Reunião.</b></div>
+    <label class="item"><input type="checkbox"><span>Existe desconto? De quanto, e em troca do quê</span></label>
+    <label class="item"><input type="checkbox"><span>Parcelamento máximo em cada formato</span></label>
+    <label class="item"><input type="checkbox"><span>Entrada mínima quando houver parcelamento</span></label>
+    <label class="item"><input type="checkbox"><span>Prazo de validade da condição apresentada</span></label>
+    <label class="item"><input type="checkbox"><span>Política de reembolso e prazo de arrependimento</span></label>
+    <label class="item"><input type="checkbox"><span>O que fazer quando a empresa é quem paga</span></label>
+    <label class="item"><input type="checkbox"><span>Quem pode aprovar exceção<em>Se a resposta for "a Camila decide na hora", não existe política.</em></span></label>
+  </div>
+
+  <div class="bloco">
+    <h3>Reunião de segunda</h3>
+    <div class="quando">10h, 45 minutos, quatro blocos na ordem.</div>
+    <label class="item"><input type="checkbox"><span>Números da semana</span></label>
+    <label class="item"><input type="checkbox"><span>O que travou: onde as conversas pararam e quais objeções mais apareceram</span></label>
+    <label class="item"><input type="checkbox"><span>O que muda essa semana: uma coisa concreta para testar diferente</span></label>
+    <label class="item"><input type="checkbox"><span>O que ela precisa: lista, material, acesso, treinamento, decisão pendente</span></label>
+    <label class="item"><input type="checkbox"><span>Leads que pareciam prontos para fechar</span></label>
+    <p class="leitura">Uma mudança por semana, não cinco. <b>Mexer em tudo ao mesmo tempo impede saber o que funcionou.</b></p>
+  </div>
+
+  <div class="bloco">
+    <h3>Ouvir uma ligação por semana</h3>
+    <div class="quando">Quinze minutos. É o que mais melhora resultado e o que menos se faz.</div>
+    <label class="item"><input type="checkbox"><span>A abertura citou o que a pessoa escreveu na aplicação?</span></label>
+    <label class="item"><input type="checkbox"><span>Houve espera depois de cada pergunta, ou as falas foram emendadas?</span></label>
+    <label class="item"><input type="checkbox"><span>Apareceu pergunta de aprofundamento, ou ficou na primeira resposta?</span></label>
+    <label class="item"><input type="checkbox"><span>A camada foi identificada?</span></label>
+    <label class="item"><input type="checkbox"><span>O horário foi travado com compromisso, e-mail e convite?</span></label>
+    <p class="leitura">Comece pelo que funcionou, depois um ponto só para ajustar. <b>Cinco correções de uma vez não viram nenhuma mudança.</b></p>
+  </div>
+
+  <div class="bloco">
+    <h3>A primeira semana da Daniele<span class="novo">novo</span></h3>
+    <div class="quando">Começa na segunda, 31 de agosto. A semana inteira antes de falar sozinha com qualquer lead.</div>
+    <label class="item"><input type="checkbox"><span>Segunda: quem é a Camila, o que é Reposicionamento, quem é o cliente maduro e quem não é<em>Ler o portal inteiro, aba por aba. As 3 Esferas e os 3 Vazamentos de Autoridade nesse mesmo dia. Sem isso ela não identifica camada e a passagem chega vazia.</em></span></label>
+    <label class="item"><input type="checkbox"><span>Segunda: os critérios inegociáveis, lidos junto em voz alta e assinados</span></label>
+    <label class="item"><input type="checkbox"><span>Terça: o funil inteiro, do anúncio até a Reunião de Diagnóstico, com o sistema aberto na frente<em>Onde o lead entra, o que o robô já respondeu, como o card nasce, o que é card duplicado.</em></span></label>
+    <label class="item"><input type="checkbox"><span>Terça: ouvir duas Reuniões de Diagnóstico gravadas e três ligações de qualificação<em>Sem opinar. Só anotar o que chamou atenção.</em></span></label>
+    <label class="item"><input type="checkbox"><span>Quarta: simulação, ela faz o papel da SDR e você faz o lead<em>Uma rodada limpa e uma rodada com objeção difícil, tirada da aba Objeções.</em></span></label>
+    <label class="item"><input type="checkbox"><span>Quarta: primeiras mensagens reais, só os lembretes de véspera de quem já está agendado<em>É o contato mais simples do portal e o de menor risco.</em></span></label>
+    <label class="item"><input type="checkbox"><span>Quinta: opera a fila do dia com revisão no fim da tarde</span></label>
+    <label class="item"><input type="checkbox"><span>Sexta: opera sozinha. Fechamento da semana ouvindo uma ligação dela<em>Comece pelo que funcionou, depois um ponto só para ajustar.</em></span></label>
+    <label class="item"><input type="checkbox"><span>Antes da segunda: acesso ao CRM, à planilha e ao número da empresa configurados<em>Se isso não estiver pronto no domingo, a segunda vira dia perdido.</em></span></label>
+  </div>
+<div class="rev conf"><div class="rt">Dois pontos em aberto nesta semana</div><p>Não está definido quem a Daniele procura para dúvida de processo e quem escuta as ligações dela. No manual eu coloquei a Pricilla, que saiu. Enquanto isso não for definido, quem responde é você e a Camila, e isso precisa estar dito para ela na segunda.</p><p>A meta de ligações por dia continua em branco. Ela depende de a Daniele ser SDR dedicada ou acumular outras funções, como a Carla acumulava. Sem número, não dá para saber se a semana foi boa.</p></div>
+
+  <div class="bloco">
+    <h3>O que fica fora deste portal</h3>
+    <p class="leitura">A Máquina de Vendas tem material de estrutura maior: remuneração por senioridade, transferência de leads entre closers, retenção e treinamento de closers, área interna do time, rotina de social seller.</p>
+    <p class="leitura"><b>Nada disso se aplica a uma operação de duas pessoas.</b> Quando o time crescer, esse material passa a valer e a gente traz. Trazer antes só enche o portal de coisa que ninguém abre, que é exatamente o problema que ele veio resolver.</p>
+  </div>
+</section>
+
+
+
+<section id="regras" hidden>
+  <h2>Critérios inegociáveis</h2>
+  <p class="sub">Como a operação comercial funciona aqui. Não são preferências, são condições.</p>
+
+  <div class="regra"><strong>Se bater dúvida no meio de uma conversa, a resposta está aqui.</strong> Na dúvida entre improvisar e parar para conferir, pare e confira. Ninguém é cobrado por consultar. É cobrado por inventar em silêncio.</div>
+
+  <details class="obj" open><summary>1. Todo contato sai do número da empresa</summary><div class="corpo">
+    <p class="leitura">Nenhuma conversa com lead acontece por número pessoal. Ligação, mensagem, áudio, nada. O número da empresa já existe e está em uso.</p>
+    <p class="leitura"><b>Por quê.</b> O lead precisa reconhecer a CS Couto, não um número desconhecido. A conversa fica com a empresa, então férias, folga ou imprevisto não levam o histórico junto. E se um número for banido por volume, e isso já aconteceu aqui, ninguém perde o WhatsApp pessoal.</p>
+    <p class="leitura"><b>Quando o contato não estiver no Kommo.</b> Não busque o número por fora e não use o seu para resolver. Sinalize na hora, com o nome do lead e a origem, que a gente resolve o cadastro. Contato faltando é problema de sistema, não motivo para abrir exceção.</p>
+  </div></details>
+
+  <details class="obj"><summary>2. Contato sem registro é contato que não aconteceu</summary><div class="corpo">
+    <p class="leitura">Ligou, mandou mensagem, agendou, cancelou, deu no-show. Entra no Kommo e na planilha no mesmo dia, até o fim do expediente.</p>
+    <p class="leitura"><b>Por quê.</b> Sem registro não dá para saber o que ajustar, e todo mês repete o anterior. E trabalho bem feito que não é registrado fica invisível.</p>
+  </div></details>
+
+  <details class="obj"><summary>3. Agendamento pelo formulário não é confirmação</summary><div class="corpo">
+    <p class="leitura">A pessoa marca sozinha na página, mas o horário só está confirmado depois da ligação de qualificação. A página de obrigado já avisa isso a ela.</p>
+    <p class="leitura"><b>Ninguém entra na agenda da Camila sem essa ligação ter acontecido.</b> Se não deu para falar antes, use o próprio horário reservado para a ligação. Está na aba Mensagens, bloco Já agendou.</p>
+  </div></details>
+
+  <details class="obj"><summary>4. Quem não lidera equipe não vai para a Reunião de Diagnóstico</summary><div class="corpo">
+    <p class="leitura">Sem exceção. Ficou claro na ligação que a pessoa não lidera ninguém hoje, o horário é cancelado e liberado, com a mensagem que está na aba Ligação.</p>
+    <p class="leitura"><b>Por quê.</b> É mais barato ter horário vazio do que ocupar a agenda com quem não é cliente. <b>Ninguém é cobrado por cancelar. É cobrado por não cancelar.</b></p>
+  </div></details>
+
+  <details class="obj"><summary>5. Quem qualifica não apresenta proposta</summary><div class="corpo">
+    <p class="leitura">Nenhuma proposta sai por WhatsApp depois da ligação. Nenhum valor de programa é apresentado, nem por escrito, nem por áudio, nem por telefone.</p>
+    <p class="leitura"><b>Por quê.</b> Proposta enviada antes do diagnóstico chega como preço solto na tela. A pessoa ainda não sabe onde a autoridade dela vaza nem o que isso já custou, então só sobra o número para ela olhar. É assim que uma conversa que valia 4 ou 12 mil vira um "vou pensar" e some.</p>
+    <p class="leitura">Quem apresenta é a Camila, na Reunião de Diagnóstico, depois do diagnóstico. Se o lead insistir, a resposta pronta está na aba Objeções.</p>
+    <p class="leitura"><b>Isso é uma etapa, não uma regra permanente.</b> Enquanto o processo novo está sendo validado, nada fecha fora da Reunião de Diagnóstico. Quando os números do mês mostrarem que o funil está rodando limpo, a ideia é abrir o fechamento do programa de entrada para quem qualifica, com valor fixo e sem negociação. Até lá, todo caso que parecer pronto para fechar vem para a reunião de segunda.</p>
+  </div></details>
+
+  <details class="obj"><summary>5b. O que pode ser falado sobre dinheiro</summary><div class="corpo">
+    <p class="leitura">Perguntar sobre investimento pode, e deve, quando a renda for abaixo de 6 mil. A sequência completa está na etapa 5 da aba Ligação.</p>
+    <p class="leitura">A lógica é: a pessoa diz o que quer alcançar, você devolve o ganho em número, e só então pergunta quanto ela consideraria investir por mês para chegar lá. Se ela não souber responder, você ancora comparando com pós e curso de inglês.</p>
+    <p class="leitura"><b>Isso não é preço, é medida de prontidão.</b> Você está descobrindo se existe condição real, não vendendo. Renda de 6 a 10 mil não recebe essa pergunta: nessa faixa capacidade não é o desafio, e perguntar planta objeção que ainda não existia.</p>
+  </div></details>
+
+  <details class="obj"><summary>6. Nada chega à Camila sem o checklist</summary><div class="corpo">
+    <p class="leitura">Antes de cada Reunião de Diagnóstico ela precisa saber três coisas: quantas pessoas a lead lidera, onde a autoridade dela vaza (time, pares ou diretoria) e o que ela já tentou e não funcionou.</p>
+    <p class="leitura"><b>Por quê.</b> Com isso na mão a Reunião de Diagnóstico começa em decisão. Sem isso, os primeiros vinte minutos vão para descobrir o que já era para estar registrado, e a conversa perde força. Checklist completo na aba O card.</p>
+  </div></details>
+
+  <details class="obj"><summary>7. As mensagens saem do portal</summary><div class="corpo">
+    <p class="leitura">O roteiro e as mensagens foram construídos a partir da metodologia que estamos aplicando com a consultoria.</p>
+    <p class="leitura">Se alguma não funcionar na prática, isso é informação valiosa: traga na reunião de segunda e a gente muda. <b>O que não pode é improvisar em silêncio</b>, porque aí não dá para saber se o problema é o script ou a execução.</p>
+  </div></details>
+
+  <details class="obj"><summary>8. O que não faz parte da função</summary><div class="corpo">
+    <p class="leitura">Não conduzir Reunião de Diagnóstico. Não dar diagnóstico ao lead na ligação, porque quem diagnostica é a Camila. Não prometer resultado. Não citar alunas pelo nome sem autorização.</p>
+  </div></details>
+
+  <div class="bloco" style="margin-top:16px">
+    <h3>Reunião de segunda</h3>
+    <div class="quando">Toda segunda, 10h, 45 minutos. Chegue com estes quatro blocos prontos.</div>
+    <label class="item"><input type="checkbox"><span>Números da semana<em>Contatos, respostas, agendamentos, reuniões realizadas, no-show, vendas.</em></span></label>
+    <label class="item"><input type="checkbox"><span>O que travou<em>Onde as conversas pararam, quais objeções mais apareceram, o que foi tentado.</em></span></label>
+    <label class="item"><input type="checkbox"><span>O que muda essa semana<em>Uma coisa concreta para testar diferente.</em></span></label>
+    <label class="item"><input type="checkbox"><span>O que você precisa<em>Lista, material, acesso, treinamento, decisão pendente da gestão.</em></span></label>
+    <label class="item"><input type="checkbox"><span>Leads que pareciam prontos para fechar<em>Quem demonstrou intenção de compra na ligação. Traga o caso para decidirmos juntas o encaminhamento.</em></span></label>
+  </div>
+</section>
+</main>
+
+<footer>Rotina viva. Script que não funciona na prática, muda. <b>Não vira documento morto.</b></footer>
+
+<script>
+var abas=document.querySelectorAll('nav>button');
+abas.forEach(function(b){b.addEventListener('click',function(){
+  abas.forEach(function(x){x.setAttribute('aria-selected','false')});
+  b.setAttribute('aria-selected','true');
+  document.querySelectorAll('main>section').forEach(function(s){s.hidden=true});
+  document.getElementById(b.dataset.alvo).hidden=false;
+  window.scrollTo({top:0,behavior:'instant'});
+})});
+var subs=document.querySelectorAll('.subnav button');
+subs.forEach(function(b){b.addEventListener('click',function(){
+  var pai=b.closest('section');
+  pai.querySelectorAll('.subnav button').forEach(function(x){x.setAttribute('aria-selected','false')});
+  b.setAttribute('aria-selected','true');
+  pai.querySelectorAll('.sub-pane').forEach(function(p){p.hidden=true});
+  document.getElementById(b.dataset.sub).hidden=false;
+})});
+document.querySelectorAll('.copiar').forEach(function(btn){btn.addEventListener('click',function(){
+  var txt=Array.prototype.map.call(btn.parentElement.querySelectorAll('p'),function(p){return p.innerText}).join('\n\n');
+  var t=document.createElement('textarea');t.value=txt;document.body.appendChild(t);t.select();
+  try{document.execCommand('copy')}catch(e){}
+  document.body.removeChild(t);
+  var o=btn.textContent;btn.textContent='Copiado';btn.classList.add('ok');
+  setTimeout(function(){btn.textContent=o;btn.classList.remove('ok')},1600);
+})});
+</script>
+
+<div class="barra-edit" id="barraEdit">
+  <button id="btEditar">Editar textos</button>
+  <button id="btExportar">Exportar arquivo</button>
+  <button id="btRestaurar">Restaurar originais</button>
+  <button id="btRevisar">Revisão</button>
+</div>
+<script>
+(function(){
+  var paras=Array.prototype.slice.call(document.querySelectorAll('.turno p'));
+  paras.forEach(function(p,i){p.dataset.msg='m'+i});
+  var CH='cspocket_edits_v2';
+  var mem={};
+  function ler(){try{return JSON.parse(localStorage.getItem(CH)||'{}')}catch(e){return mem}}
+  function grava(o){try{localStorage.setItem(CH,JSON.stringify(o))}catch(e){mem=o}}
+  var salvos=ler();
+  paras.forEach(function(p){if(salvos[p.dataset.msg]!==undefined)p.innerHTML=salvos[p.dataset.msg]});
+
+  var CN='cspocket_novas_v2';
+  function lerN(){try{return JSON.parse(localStorage.getItem(CN)||'[]')}catch(e){return memN}}
+  function gravaN(a){try{localStorage.setItem(CN,JSON.stringify(a))}catch(e){memN=a}}
+  var memN=[];
+
+  function idBloco(b){
+    var h=b.querySelector('h3');
+    var sec=b.closest('section');
+    return (sec?sec.id:'x')+'::'+(h?h.textContent.trim():'bloco'+Array.prototype.indexOf.call(b.parentNode.children,b));
+  }
+  function montaTurno(rotulo,texto,uid){
+    var d=document.createElement('div');
+    d.className='turno'; d.dataset.nova=uid;
+    d.innerHTML='<div class="rotulo">'+(rotulo||'Nova mensagem')+'</div><p>'+(texto||'Escreva a mensagem aqui.')+'</p>'+
+      '<button class="copiar">Copiar</button><button class="apagar-msg">Apagar</button>';
+    return d;
+  }
+  function ligaCopiar(btn){
+    btn.addEventListener('click',function(){
+      var txt=Array.prototype.map.call(btn.parentElement.querySelectorAll('p'),function(x){return x.innerText}).join('\n\n');
+      var t=document.createElement('textarea');t.value=txt;document.body.appendChild(t);t.select();
+      try{document.execCommand('copy')}catch(e){}
+      document.body.removeChild(t);
+      var o=btn.textContent;btn.textContent='Copiado';btn.classList.add('ok');
+      setTimeout(function(){btn.textContent=o;btn.classList.remove('ok')},1600);
+    });
+  }
+  function ligaApagar(btn){
+    btn.addEventListener('click',function(){
+      var t=btn.closest('.turno');
+      if(!confirm('Apagar esta mensagem?'))return;
+      gravaN(lerN().filter(function(n){return n.uid!==t.dataset.nova}));
+      t.remove();
+    });
+  }
+  function registraP(p){
+    if(p.dataset.msg)return;
+    p.dataset.msg='n'+(p.closest('.turno').dataset.nova);
+    if(editando)p.contentEditable='true';
+  }
+
+  document.querySelectorAll('.bloco').forEach(function(b){
+    if(!b.querySelector('.turno')&&!b.querySelector('h3'))return;
+    var add=document.createElement('button');
+    add.className='add-msg'; add.textContent='+ Adicionar mensagem';
+    add.addEventListener('click',function(){
+      var uid='u'+Date.now()+Math.floor(Math.random()*999);
+      var t=montaTurno('Nova mensagem','Escreva a mensagem aqui.',uid);
+      b.insertBefore(t,add);
+      ligaCopiar(t.querySelector('.copiar'));
+      ligaApagar(t.querySelector('.apagar-msg'));
+      registraP(t.querySelector('p'));
+      var arr=lerN(); arr.push({uid:uid,bloco:idBloco(b),rotulo:'Nova mensagem',texto:'Escreva a mensagem aqui.'}); gravaN(arr);
+      t.querySelector('p').focus();
+    });
+    b.appendChild(add);
+  });
+
+  lerN().forEach(function(n){
+    var alvo=null;
+    document.querySelectorAll('.bloco').forEach(function(b){ if(idBloco(b)===n.bloco) alvo=b; });
+    if(!alvo)return;
+    var t=montaTurno(n.rotulo,n.texto,n.uid);
+    var add=alvo.querySelector('.add-msg');
+    alvo.insertBefore(t,add);
+    ligaCopiar(t.querySelector('.copiar'));
+    ligaApagar(t.querySelector('.apagar-msg'));
+    registraP(t.querySelector('p'));
+    var sv=ler(); if(sv[t.querySelector('p').dataset.msg]!==undefined)t.querySelector('p').innerHTML=sv[t.querySelector('p').dataset.msg];
+  });
+
+  var editando=false;
+  var bt=document.getElementById('btEditar');
+  bt.addEventListener('click',function(){
+    editando=!editando;
+    document.body.classList.toggle('editando',editando);
+    document.querySelectorAll('.turno p, .turno .rotulo').forEach(function(p){p.contentEditable=editando?'true':'false'});
+    bt.textContent=editando?'Concluir edição':'Editar textos';
+    bt.classList.toggle('on',editando);
+  });
+  document.addEventListener('input',function(e){
+    var p=e.target.closest&&e.target.closest('.turno p');
+    if(!p||!editando)return;
+    var o=ler(); o[p.dataset.msg]=p.innerHTML; grava(o);
+    var t=p.closest('.turno');
+    if(t&&t.dataset.nova){
+      var arr=lerN().map(function(n){ if(n.uid===t.dataset.nova){n.texto=p.innerHTML; var r=t.querySelector('.rotulo'); if(r)n.rotulo=r.innerHTML;} return n; });
+      gravaN(arr);
+    }
+  });
+  document.getElementById('btRestaurar').addEventListener('click',function(){
+    if(!confirm('Isso apaga todas as edições e as mensagens adicionadas neste aparelho, voltando ao original. Continuar?'))return;
+    try{localStorage.removeItem(CH);localStorage.removeItem(CN)}catch(e){}
+    mem={}; memN=[]; location.reload();
+  });
+  document.getElementById('btExportar').addEventListener('click',function(){
+    var clone=document.documentElement.cloneNode(true);
+    var b=clone.querySelector('#barraEdit'); if(b)b.remove();
+    clone.querySelectorAll('.turno p').forEach(function(p){p.removeAttribute('contenteditable');p.removeAttribute('data-msg')});
+    clone.querySelectorAll('.turno[data-nova]').forEach(function(t){t.removeAttribute('data-nova')});
+    clone.querySelectorAll('.add-msg,.apagar-msg').forEach(function(x){x.remove()});
+    clone.querySelectorAll('input[type=checkbox]').forEach(function(c){c.checked=false});
+    var html='<!DOCTYPE html>\n'+clone.outerHTML;
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));
+    a.download='comercial-pocket.html'; a.click();
+  });
+})();
+</script>
+
+<script>
+document.querySelectorAll('.rota').forEach(function(b){b.addEventListener('click',function(){
+  var alvo=b.dataset.ir;
+  var mapa={'m-A':'mensagens','m-B':'mensagens','m-lig':'mensagens','m-fup':'mensagens','m-ns':'mensagens','m-rea':'mensagens','lig-abrir':'ligacao','obj-abrir':'objecoes','card-abrir':'passagem'};
+  var aba=mapa[alvo]||'mensagens';
+  var bt=document.querySelector('nav>button[data-alvo="'+aba+'"]');
+  if(bt)bt.click();
+  var sub=document.querySelector('.subnav button[data-sub="'+alvo+'"]');
+  if(sub)sub.click();
+  var el=document.getElementById(alvo);
+  if(el&&!sub)setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'})},60);
+})});
+</script>
+
+<script>
+(function(){
+  var bt = document.getElementById('btRevisar');
+  if(!bt) return;
+  var n = document.querySelectorAll('.rev').length;
+  bt.textContent = 'Revisão (' + n + ')';
+  bt.addEventListener('click', function(){
+    var on = document.body.classList.toggle('revisando');
+    bt.classList.toggle('on', on);
+  });
+})();
+</script>
+</body>
+</html>
